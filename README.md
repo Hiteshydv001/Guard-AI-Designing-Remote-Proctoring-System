@@ -93,9 +93,9 @@ Watch our community demo:
 
 
 
-### Added Features
+## Added Features
 
-## Gaze Tracker
+### Gaze Tracker
 
 
 <img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
