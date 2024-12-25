@@ -158,7 +158,6 @@ Watch our community demo:
   </tr>
 </table>
 
-<img src="demo/gaze_tracer.png" width="100%" alt="Behavioral Analysis"/>
 
 ---
 
