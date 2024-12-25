@@ -89,8 +89,6 @@ Watch our community demo:
 
 <img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
 
-<img src="demo/future_imp.jpg" width="100%" alt="Behavioral Analysis"/>
-
 
 ### Priority Areas for Contribution
 1. Database Integration
@@ -131,7 +129,6 @@ Watch our community demo:
         <li>Typing cadence detection</li>
         <li>Posture analysis for better behavior tracking</li>
       </ul>
-      <img src="assets/future-behavior-analysis.png" width="100%" alt="Behavioral Analysis"/>
     </td>
     <td>
       <h3>🔒 Blockchain for Data Integrity</h3>
@@ -139,10 +136,11 @@ Watch our community demo:
         <li>Tamper-proof logs of proctoring sessions</li>
         <li>Improved transparency and data auditability</li>
       </ul>
-      <img src="assets/future-blockchain.png" width="100%" alt="Blockchain Integrity"/>
     </td>
   </tr>
 </table>
+
+<img src="demo/future_imp.jpg" width="100%" alt="Behavioral Analysis"/>
 
 ---
 
