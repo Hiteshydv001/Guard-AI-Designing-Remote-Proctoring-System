@@ -241,8 +241,8 @@ graph TD
 
 Thanks to these wonderful people:
 
-<a href="https://github.com/Varsha-1605/SocioSell/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Varsha-1605/SocioSell" />
+<a href="https://github.com/Hiteshydv001/Guard-AI/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard AI" />
 </a>
 
 ## 📄 License
