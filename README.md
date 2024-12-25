@@ -1,3 +1,4 @@
+
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
     <h2>🎉 Transforming Remote Assessments with AI! 🎉</h2>
 </div>
@@ -5,31 +6,37 @@
 # AI-Based Proctoring System for Secure Assessments 🔒
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://www.tensorflow.org/)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)](https://opencv.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248.svg)](https://www.mongodb.com/atlas)
+[![Gemini AI](https://img.shields.io/badge/Gemini-1.5%20Pro-red.svg)](https://cloud.google.com/ai-platform)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Contributors](https://img.shields.io/github/contributors/your-repo-name/ai-proctoring)](https://github.com/your-repo-name/ai-proctoring/graphs/contributors)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Social Winter of Code](https://img.shields.io/badge/SWOC-2025-orange.svg)](https://swoc.tech)
+[![Contributors](https://img.shields.io/github/contributors/Hiteshydv001/Guard-AI)](https://github.com/Hiteshydv001/Guard-AI/graphs/contributors)
 
 <p align="center">
-  A state-of-the-art solution to ensure integrity and fairness in remote skill assessments using cutting-edge AI technologies. </p>
+  An open-source initiative to transform remote assessment integrity using cutting-edge AI technology. </p>
 
 [🌟 Features](#-features) •
+[⚙️ Installation](#️-installation) •
 [🏗️ Architecture](#️-architecture--design) •
-[🚀 Future Improvements](#-future-improvements) •
-[🤝 Contributing](#-contributing)
+[🚀 Usage](#-usage) •
+[🤝 Contributing](#-contributing) •
+[👥 Community](#-community)
 
-<img src="assets/project-banner.png" width="100%" alt="Project Banner"/>
+<img src="demo.png" width="100%" alt="Project Banner"/>
 
 ---
 
-## 🎯 Project Vision
+## 🌟 Overview
+This project introduces a cutting-edge **AI-powered proctoring system** designed to maintain **fairness**, **security**, and **integrity** in remote assessments. By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
 
-AI-Based Proctoring System aims to provide secure, efficient, and fair remote assessments. Whether you're an educator, HR professional, or developer, this project invites you to contribute to the evolution of digital proctoring.
+## 📺 Project Demo
 
-## 📺 Visual Demo
+Watch our community demo:
 
-<img src="assets/demo-gif.gif" width="80%" alt="Demo GIF" />
+[🎥 Watch Demo]()
 
 ---
 
@@ -58,8 +65,6 @@ AI-Based Proctoring System aims to provide secure, efficient, and fair remote as
   </tr>
 </table>
 
----
-
 ## 🏗️ Architecture & Design
 
 <table>
@@ -85,6 +90,46 @@ AI-Based Proctoring System aims to provide secure, efficient, and fair remote as
 
 ---
 
+### Priority Areas for Contribution
+1. Database Integration
+
+2. Features Integration
+
+3. UI/UX Improvements
+
+4. Features Development
+   
+
+## 🛣️ Project Roadmap
+
+### Phase 1 (Current)
+
+
+### Phase 2 (Upcoming)
+
+
+### Phase 3 (Future)
+
+
+
+## 🔧 Technology Stack
+
+### Backend Infrastructure
+```mermaid
+graph LR
+    A[Python 3.8+] --> B[FastAPI]
+    B --> C[MongoDB]
+    B --> D[Gemini AI]
+    B --> E[AsyncIO]
+```
+
+### Frontend Technologies
+```mermaid
+graph LR
+    A[HTML5] --> B[TailwindCSS]
+    B --> C[JavaScript]
+    C --> D[Font Awesome]
+```
 ## 🚀 Future Improvements
 
 <table>
@@ -110,9 +155,7 @@ AI-Based Proctoring System aims to provide secure, efficient, and fair remote as
 
 ---
 
-## 🤝 Contributing
-
-We warmly welcome contributions from developers and enthusiasts of all levels. Here's how you can help:
+## ⚙️ Development Setup
 
 1. Fork the repository.
 2. Create a feature branch:
@@ -129,11 +172,94 @@ We warmly welcome contributions from developers and enthusiasts of all levels. H
    ```
 5. Open a pull request for review.
 
+### Troubleshooting Common Issues
+
+PUT SOME GENERAL POINTS HERE ALSO
+
+
+
+## 📁 Project Structure
+```
+Guard AI/   CHANGE THESE WITH SAMPLE NAMES CHATGPT
+├── 📜 main.py                    # FastAPI application entry point
+├── 📁 .github/                   # GitHub specific files
+│   └── ISSUE_TEMPLATE/          # Issue templates for contributions
+├── 📁 static/                    # Static assets and files
+├── 📁 templates/                 # HTML templates
+├── 🔧 content_processor.py       # Content analysis and processing
+├── 💾 database_setup.py          # Database initialization
+├── 🖼️ image_processor.py         # Image processing module
+├── 📊 image_data.py              # Image data structures
+├── 🎥 video_processor.py         # Video processing module
+├── 📊 video_data.py              # Video data structures
+├── 🧪 test_image_processor.py    # Image processing tests
+├── 🧪 test_video_processor.py    # Video processing tests
+├── 📋 requirements.txt           # Project dependencies
+├── 📝 README.md                  # Project documentation
+├── 🔒 .env                       # Environment variables
+└── 📝 .gitignore                # Git ignore rules
+```
+## 🚀 Usage
+
+CHANGE THIS ALSO CHATGPT
+
+1. Start the development server:
+```bash
+uvicorn main:app --reload
+```
+
+2. Access the application at `http://localhost:8000`
+
+## 💡 API Endpoints
+USE SOME GENERAL POINTS HERE ALSO
+
+## 🤝 Contributing
+
+We warmly welcome contributions from developers of all skill levels! Here's how you can help:
+
+```mermaid
+graph TD
+    A[Fork Repository] --> B[Create Branch]
+    B --> C[Make Changes]
+    C --> D[Commit Changes]
+    D --> E[Push to Branch]
+    E --> F[Create Pull Request]
+```
+
+### 🎯 Good First Issues
+- Look for issues tagged with `good-first-issue`
+- Join our [community discussions](https://github.com/Hiteshydv001/Guard-AI/discussions/categories/general) for guidance
+
+## 👥 Community
+
+- 💬 Join our [Discord Server](https://discord.gg/pBasetQn)
+- 🔗 Connect on [LinkedIn](www.linkedin.com/in/hitesh-kumar-aiml)
+- 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)
+- 📧 Contact maintainers: hiteshofficial0001@gmail.com
+
+### 🌟 Contributors
+
+Thanks to these wonderful people:
+
+<a href="https://github.com/Varsha-1605/SocioSell/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Varsha-1605/SocioSell" />
+</a>
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- All our amazing contributors
+- [Social Winter of Code](https://swoc.tech) for selecting our project
+- [FastAPI](https://fastapi.tiangolo.com/)
+
 ---
 
 <div align="center">
 
-Made with ❤️ by the AI-Based Proctoring Community
+Made with ❤️ by the Guard AI Community
 
 [⬆ Back to Top](#ai-based-proctoring-system-for-secure-assessments-)
 
