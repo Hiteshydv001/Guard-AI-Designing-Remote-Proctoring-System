@@ -115,21 +115,10 @@ Watch our community demo:
 ## 🔧 Technology Stack
 
 ### Backend Infrastructure
-```mermaid
-graph LR
-    A[Python 3.8+] --> B[FastAPI]
-    B --> C[MongoDB]
-    B --> D[Gemini AI]
-    B --> E[AsyncIO]
-```
+
 
 ### Frontend Technologies
-```mermaid
-graph LR
-    A[HTML5] --> B[TailwindCSS]
-    B --> C[JavaScript]
-    C --> D[Font Awesome]
-```
+
 ## 🚀 Future Improvements
 
 <table>
@@ -201,17 +190,6 @@ Guard AI/   CHANGE THESE WITH SAMPLE NAMES CHATGPT
 ```
 ## 🚀 Usage
 
-CHANGE THIS ALSO CHATGPT
-
-1. Start the development server:
-```bash
-uvicorn main:app --reload
-```
-
-2. Access the application at `http://localhost:8000`
-
-## 💡 API Endpoints
-USE SOME GENERAL POINTS HERE ALSO
 
 ## 🤝 Contributing
 
