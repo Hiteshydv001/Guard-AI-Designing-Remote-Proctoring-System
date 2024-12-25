@@ -154,7 +154,7 @@ Watch our community demo:
   </tr>
 </table>
 
-<img src="demo/future_imp.jpg" width="100%" alt="Behavioral Analysis"/>
+<img src="demo/gaze_tracer.png" width="100%" alt="Behavioral Analysis"/>
 
 ---
 
