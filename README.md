@@ -90,9 +90,13 @@ Watch our community demo:
 <img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
 
 
+
+
+
 ### Added Features
 
 ## Gaze Tracker
+
 
 <img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
 
