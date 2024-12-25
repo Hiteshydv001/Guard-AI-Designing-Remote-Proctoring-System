@@ -217,7 +217,7 @@ graph TD
 Thanks to these wonderful people:
 
 <a href="https://github.com/Hiteshydv001/Guard-AI/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard AI" />
+  <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard-AI" />
 </a>
 
 ## 📄 License
