@@ -186,13 +186,28 @@ PUT SOME GENERAL POINTS HERE ALSO
 
 ## 📁 Project Structure
 ```
-
-
-
-
-
-
+Directory structure:
+└── Hiteshydv001-Guard-AI/
+    ├── GazeTracking/
+    │   ├── example.py
+    │   ├── requirements.txt
+    │   └── gaze_tracking/
+    │       ├── __init__.py
+    │       ├── gaze_tracking.py
+    │       ├── eye.py
+    │       ├── trained_models/
+    │       │   └── shape_predictor_68_face_landmarks.dat
+    │       ├── pupil.py
+    │       └── calibration.py
+    ├── Proctoring_features/
+    │   └── feature1.py
+    ├── demo/
+    │   └── assets
+    ├── README.md
+    └── src/
+        └── main.py
 ```
+
 ## 🚀 Usage
 
 
