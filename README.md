@@ -216,7 +216,7 @@ graph TD
 ## 👥 Community
 
 - 💬 Join our [Discord Server](https://discord.gg/pBasetQn)
-- 🔗 Connect on [LinkedIn](www.linkedin.com/in/hitesh-kumar-aiml)
+- 🔗 Connect on [LinkedIn](https://www.linkedin.com/in/hitesh-kumar-aiml/)
 - 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)
 - 📧 Contact maintainers: hiteshofficial0001@gmail.com
 
