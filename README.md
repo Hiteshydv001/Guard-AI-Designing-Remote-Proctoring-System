@@ -48,7 +48,6 @@ Watch our community demo:
         <li>Facial Emotion Recognition</li>
         <li>Screen and Audio Analysis</li>
       </ul>
-      <img src="assets/feature-ai-monitoring.png" width="100%" alt="AI Monitoring"/>
     </td>
     <td>
       <h3>🔒 Device and Port Checks</h3>
@@ -57,7 +56,6 @@ Watch our community demo:
         <li>Port monitoring and anomaly detection</li>
         <li>Wi-Fi/Bluetooth signal analysis</li>
       </ul>
-      <img src="assets/feature-device-checks.png" width="100%" alt="Device Checks"/>
     </td>
   </tr>
 </table>
@@ -72,7 +70,6 @@ Watch our community demo:
         <li>Real-time screen activity analysis</li>
         <li>Speech-to-text conversion for audio validation</li>
       </ul>
-      <img src="assets/architecture-screen-audio.png" width="100%" alt="Screen and Audio Monitoring"/>
     </td>
     <td>
       <h3>📶 Device and Network Monitoring</h3>
@@ -80,12 +77,20 @@ Watch our community demo:
         <li>Wi-Fi and Bluetooth signal scanning</li>
         <li>Pattern recognition for unauthorized devices</li>
       </ul>
-      <img src="assets/architecture-device-network.png" width="100%" alt="Device and Network Monitoring"/>
     </td>
   </tr>
 </table>
 
 ---
+
+### Key Features and Uniqueness
+
+<img src="demo/features.jpg" width="100%" alt="Behavioral Analysis"/>
+
+<img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
+
+<img src="demo/future_imp.jpg" width="100%" alt="Behavioral Analysis"/>
+
 
 ### Priority Areas for Contribution
 1. Database Integration
