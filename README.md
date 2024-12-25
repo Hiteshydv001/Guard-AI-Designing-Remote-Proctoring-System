@@ -95,10 +95,10 @@ Watch our community demo:
 
 ## Added Features
 
-### Gaze Tracker
+#### Gaze Tracker
 
 
-<img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
+<img src="demo/gaze_tracer.png" width="100%" alt="Behavioral Analysis"/>
 
 
 ### Priority Areas for Contribution
