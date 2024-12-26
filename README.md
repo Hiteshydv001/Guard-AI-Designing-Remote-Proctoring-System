@@ -15,11 +15,11 @@
 <p align="center">
   An open-source initiative to transform remote assessment integrity using cutting-edge AI technology. </p>
 
-[🌟 Features](#-features) •
-[⚙️ Installation](#️-installation) •
-[🏗️ Architecture](#️-architecture--design) •
-[🚀 Usage](#-usage) •
-[🤝 Contributing](#-contributing) •
+[🌟 Features](#-features) 
+[⚙️ Installation](#️-installation) 
+[🏗️ Architecture](#️-architecture--design) 
+[🚀 Usage](#-usage) 
+[🤝 Contributing](#-contributing) 
 [👥 Community](#-community)
 
 <img src="demo.png" width="100%" alt="Project Banner"/>
