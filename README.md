@@ -52,6 +52,21 @@
 ## 🌟 Overview
 This project introduces a cutting-edge **AI-powered proctoring system** designed to maintain **fairness**, **security**, and **integrity** in remote assessments. By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
 
+## 🏆 `Featured In`
+
+<div align="center">
+
+<table>
+   <tr>
+      <td><img src="https://www.socialwinterofcode.com/SWOC_W_Black.png" width="200" height="auto" loading="lazy" alt="GSSoC-EXT"/></td>
+      <td>Social Winter Of Code</td>
+      <td>Social Winter of Code is an open-source program Which aims to bring students into the world of open source development.</td>
+   </tr>
+</table>
+
+</div>
+
+
 ## 📺 Project Demo
 
 Watch our community demo:
