@@ -3,7 +3,7 @@
     <h2>🎉 Transforming Remote Assessments with AI!!! 🎉</h2>
 </div>
 
-# AI-Based Proctoring System for Secure Assessments 🔒
+# `AI-Based Proctoring System for Secure Assessments 🔒`
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
@@ -49,7 +49,7 @@
 </div>
 
 
-## 🌟 Overview
+## 🌟 `Overview`
 This project introduces a cutting-edge **AI-powered proctoring system** designed to maintain **fairness**, **security**, and **integrity** in remote assessments. By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
 
 ## 🏆 `Featured In`
@@ -67,7 +67,7 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
 </div>
 
 
-## 📺 Project Demo
+## 📺 `Project Demo`
 
 Watch our community demo:
 
@@ -75,7 +75,7 @@ Watch our community demo:
 
 ---
 
-## 🌟 Features
+## `🌟 Features`
 
 <table>
   <tr>
@@ -98,7 +98,7 @@ Watch our community demo:
   </tr>
 </table>
 
-## 🏗️ Architecture & Design
+## `🏗️ Architecture & Design`
 
 <table>
   <tr>
@@ -121,7 +121,7 @@ Watch our community demo:
 
 ---
 
-### Key Features and Uniqueness
+### `Key Features and Uniqueness`
 
 <img src="demo/features.jpg" width="100%" alt="Behavioral Analysis"/>
 
