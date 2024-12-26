@@ -131,15 +131,16 @@ Watch our community demo:
 
 
 
-## Added Features
+## `Added Features`
 
-#### Gaze Tracker
+#### `Gaze Tracker`
 
 
 <img src="demo/gaze_tracer.png" width="100%" alt="Behavioral Analysis"/>
 
 
-### Priority Areas for Contribution
+### `Priority Areas for Contribution`
+
 1. Database Integration
 
 2. Features Integration
@@ -149,7 +150,7 @@ Watch our community demo:
 4. Features Development
    
 
-## 🛣️ Project Roadmap
+## `🛣️ Project Roadmap`
 
 ### Phase 1 (Current)
 
@@ -161,21 +162,21 @@ Watch our community demo:
 
 
 
-## 🔧 Technology Stack
+## `🔧 Technology Stack`
 
-### Backend Infrastructure
-
-
-
-
-
-### Frontend Technologies
+### `Backend Infrastructure`
 
 
 
 
 
-## 🚀 Future Improvements
+### `Frontend Technologies`
+
+
+
+
+
+## `🚀 Future Improvements`
 
 <table>
   <tr>
@@ -199,7 +200,7 @@ Watch our community demo:
 
 ---
 
-## ⚙️ Development Setup
+## `⚙️ Development Setup`
 
 1. Fork the repository.
 2. Create a feature branch:
@@ -216,13 +217,14 @@ Watch our community demo:
    ```
 5. Open a pull request for review.
 
-### Troubleshooting Common Issues
+### `Troubleshooting Common Issues`
 
 PUT SOME GENERAL POINTS HERE ALSO
 
 
 
-## 📁 Project Structure
+## `📁 Project Structure`
+
 ```
 Directory structure:
 └── Hiteshydv001-Guard-AI/
@@ -246,10 +248,10 @@ Directory structure:
         └── main.py
 ```
 
-## 🚀 Usage
+## `🚀 Usage`
 
 
-## 🤝 Contributing
+## `🤝 Contributing`
 
 We warmly welcome contributions from developers of all skill levels! Here's how you can help:
 
@@ -262,18 +264,18 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
-### 🎯 Good First Issues
+### `🎯 Good First Issues`
 - Look for issues tagged with `good-first-issue`
 - Join our [community discussions](https://github.com/Hiteshydv001/Guard-AI/discussions/categories/general) for guidance
 
-## 👥 Community
+## `👥 Community`
 
 - 💬 Join our [Discord Server](https://discord.gg/pBasetQn)
 - 🔗 Connect on [LinkedIn](https://www.linkedin.com/in/hitesh-kumar-aiml/)
 - 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)
 - 📧 Contact maintainers: hiteshofficial0001@gmail.com
 
-### 🌟 Contributors
+### `🌟 Contributors`
 
 Thanks to these wonderful people:
 
@@ -281,11 +283,11 @@ Thanks to these wonderful people:
   <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard-AI" />
 </a>
 
-## 📄 License
+## `📄 License`
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## `🙏 Acknowledgments`
 
 - All our amazing contributors
 - [Social Winter of Code](https://swoc.tech) for selecting our project
