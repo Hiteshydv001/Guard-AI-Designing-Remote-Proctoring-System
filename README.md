@@ -22,7 +22,7 @@
 [🤝 Contributing](#-contributing) 
 [👥 Community](#-community)
 
-<img src="demo.png" width="100%" alt="Project Banner"/>
+<img src="demo/guard_eye.png" width="100%" alt="Project Banner"/>
 
 ---
 
