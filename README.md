@@ -23,7 +23,7 @@
 [👥 Community](#-community)
 
 <p align="center">
-  <img src="demo/guard_eye.png" width="50%" height="auto" alt="Project Banner"/>
+  <img src="demo/guard_eye.png" width="40%" height="40%" alt="Project Banner"/>
 </p>
 
 
