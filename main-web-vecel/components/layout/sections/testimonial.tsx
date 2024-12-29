@@ -107,7 +107,7 @@ export const TestimonialSection = () => {
                       />
                     ))}
                   </div>
-                  <p>"{review.comment}"</p>
+                  <p>{`"${review.comment}"`}</p> {/* Ensured the comment string is wrapped in escaped quotes */}
                 </CardContent>
 
                 <CardHeader>

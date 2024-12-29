@@ -12,7 +12,6 @@ export const FooterSection = () => {
               <Image
                 src="https://github.com/Hiteshydv001/Guard-AI/raw/main/demo/guard_eye_logo.png"
                 alt="Guard AI Logo"
-                className="w-12 h-12 mr-2"
                 width={48}
                 height={48}
                 className="mr-2 rounded-md"

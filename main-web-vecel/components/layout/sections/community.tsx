@@ -29,7 +29,7 @@ export const CommunitySection = () => {
             <CardContent className="lg:w-[80%] text-xl text-muted-foreground">
               Join our thriving community of innovators, developers, and AI enthusiasts! 
               Collaborate with the best minds in the field, share ideas, and shape the future of secure AI-driven proctoring. 
-              Together, let's make online assessments safer and smarter. 🚀
+              Together, let&#39;s make online assessments safer and smarter. 🚀
             </CardContent>
 
             <CardFooter>
@@ -46,3 +46,4 @@ export const CommunitySection = () => {
     </section>
   );
 };
+
