@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const HeroSection = () => {
   const { theme } = useTheme();
+  const router = useRouter();
+
   return (
     <section className="container w-full">
       <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
@@ -35,7 +37,11 @@ export const HeroSection = () => {
           </p>
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
-            <Button className="w-5/6 md:w-1/4 font-bold group/arrow">
+            {/* Use router.push for navigation */}
+            <Button
+              onClick={() => router.push("/proctor")}
+              className="w-5/6 md:w-1/4 font-bold group/arrow"
+            >
               Get Started
               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
@@ -45,15 +51,17 @@ export const HeroSection = () => {
               variant="secondary"
               className="w-5/6 md:w-1/4 font-bold"
             >
-              <Link
+              <a
                 href="https://github.com/Hiteshydv001/Guard-AI"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 View GitHub Repository
-              </Link>
+              </a>
             </Button>
           </div>
         </div>
+        
 
         <div className="relative group mt-14">
           <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-24 lg:h-80 bg-primary/50 rounded-full blur-3xl"></div>
