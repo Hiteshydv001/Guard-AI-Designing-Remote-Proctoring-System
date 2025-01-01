@@ -18,6 +18,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com", // Add this
       },
+      {
+        hostname: 'img.clerk.com',
+      },
+      {
+        protocol: "https", // Add protocol
+        hostname: "www.socialwinterofcode.com", // Corrected here
+      }
     ],
   },
 };
