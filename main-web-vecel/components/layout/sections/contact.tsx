@@ -52,7 +52,7 @@ export const ContactSection = () => {
     const { firstName, lastName, email, subject, message } = values;
     console.log(values);
 
-    const mailToLink = `mailto:leomirandadev@gmail.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`;
+    const mailToLink = `mailto:leomirandadev@gmail.com?subject=${encodeURIComponent(subject)}&body=Hello I am ${encodeURIComponent(firstName)} ${encodeURIComponent(lastName)}, my Email is ${encodeURIComponent(email)}. %0D%0A${encodeURIComponent(message)}`;
 
     window.location.href = mailToLink;
   }
