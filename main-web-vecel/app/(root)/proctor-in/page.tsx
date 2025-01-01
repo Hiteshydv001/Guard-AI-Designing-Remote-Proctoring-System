@@ -4,7 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+
+// Dynamically import the Lottie component with SSR disabled
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import animationData from "@/public/proctor-animation.json"; // Replace with the correct path to your JSON file
 
 const ProctorPage = () => {
