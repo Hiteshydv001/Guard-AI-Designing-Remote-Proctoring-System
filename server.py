@@ -1,6 +1,7 @@
 import cv2
 from flask import Flask, Response
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -27,9 +28,8 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
     
 
-    
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
-
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+    app.run(debug=debug_mode, port=5000)
