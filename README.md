@@ -25,7 +25,7 @@
 ---
 
 <p align="center">
-  <img src="demo/guard_eye_logo.png" width="20%" height="20%" alt="Project Banner"/>
+  <img src="demo/logo-ai.png" width="20%" height="20%" alt="Project Banner"/>
 </p>
 
 ---
