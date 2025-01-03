@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -37,12 +38,12 @@ export const HeroSection = () => {
           </p>
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
-            {/* Use router.push for navigation */}
+            {/* Existing buttons */}
             <Button
               onClick={() => router.push("/proctor")}
               className="w-5/6 md:w-1/4 font-bold group/arrow"
             >
-              Get Started
+              Check in Candidate
               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
 
@@ -59,9 +60,22 @@ export const HeroSection = () => {
                 View GitHub Repository
               </a>
             </Button>
+
+            <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
+
+            <Button
+              onClick={() => router.push("/proctor-in")}
+              className="w-5/6 md:w-1/4 font-bold"
+            >
+              Check in Proctor
+              <ArrowRight className="size-7 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+            </Button>
+
+            </div>
+
+            
           </div>
         </div>
-        
 
         <div className="relative group mt-14">
           <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-24 lg:h-80 bg-primary/50 rounded-full blur-3xl"></div>
