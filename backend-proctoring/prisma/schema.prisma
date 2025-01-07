@@ -1,0 +1,112 @@
+// Define the database provider
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Database URL from .env
+}
+
+// Define the Prisma client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Enum for user roles
+enum UserRole {
+  ADMIN
+  PROCTOR
+  STUDENT
+}
+
+// Organisation model
+model Organisation {
+  id        String   @id @default(cuid()) // Unique identifier for each organisation
+  name      String   @unique // Organisation name (must be unique)
+  createdAt DateTime @default(now()) // Timestamp for organisation creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+
+  // Relations
+  users    User[] // One-to-many relation with users
+  exams    Exam[] // One-to-many relation with exams
+  sessions ProctoringSession[] // Relation to proctoring sessions
+}
+
+// User model
+model User {
+  id             String   @id @default(cuid()) // Unique identifier for each user
+  name           String // User's name
+  email          String   @unique // Unique email for each user
+  password       String // Password
+  salt           String // Salt for password hashing
+  role           UserRole @default(STUDENT) // Role of the user
+  organisationId String // Foreign key to Organisation
+
+  createdAt DateTime @default(now()) // Timestamp for user creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+
+  // Relations
+  organisation  Organisation        @relation(fields: [organisationId], references: [id]) // Many-to-one relation with organisation
+  exams         Exam[]              @relation("UserExams") // Many-to-many relation with exams
+  sessions      ProctoringSession[] // Relation to proctoring sessions
+  tabChangeLogs TabChangeLog[] // Relation to tab change logs
+  heartbeatLogs HeartbeatLog[] // Relation to heartbeat logs
+}
+
+// Exam model
+model Exam {
+  id             String @id @default(cuid()) // Unique identifier for each exam
+  title          String // Exam title
+  duration       Int // Duration of the exam in minutes
+  organisationId String // Foreign key to Organisation
+
+  createdAt DateTime @default(now()) // Timestamp for exam creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+
+  // Relations
+  organisation  Organisation        @relation(fields: [organisationId], references: [id]) // Many-to-one relation with organisation
+  users         User[]              @relation("UserExams") // Many-to-many relation with users
+  sessions      ProctoringSession[] // Relation to proctoring sessions
+  tabChangeLogs TabChangeLog[] // Relation to tab change logs
+  heartbeatLogs HeartbeatLog[] // Relation to heartbeat logs
+}
+
+// Proctoring Session model
+model ProctoringSession {
+  id             String    @id @default(cuid()) // Unique identifier for each session
+  status         String // Status of the session (e.g., 'active', 'completed')
+  startTime      DateTime // Timestamp for when the session started
+  endTime        DateTime? // Timestamp for when the session ended (nullable)
+  examId         String // Foreign key to Exam
+  userId         String // Foreign key to User
+  organisationId String // Foreign key to Organisation
+
+  createdAt DateTime @default(now()) // Timestamp for session creation
+  updatedAt DateTime @updatedAt // Timestamp for last update
+
+  // Relations
+  user         User         @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+  exam         Exam         @relation(fields: [examId], references: [id]) // Many-to-one relation with Exam
+  organisation Organisation @relation(fields: [organisationId], references: [id]) // Many-to-one relation with Organisation
+}
+
+model TabChangeLog {
+  id        String   @id @default(cuid())
+  examId    String
+  userId    String
+  timestamp DateTime
+
+  // Relations
+  exam Exam @relation(fields: [examId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+}
+
+model HeartbeatLog {
+  id        String   @id @default(cuid())
+  examId    String
+  userId    String
+  timestamp DateTime
+
+  // Relations
+  exam Exam @relation(fields: [examId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+}
+
+
