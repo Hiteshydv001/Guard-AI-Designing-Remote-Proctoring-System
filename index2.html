@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #111;
+    }
+
+    header h1 {
+      color: #ff4f00;
+      font-size: 1.8rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li {
+      font-size: 1rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff4f00;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(to bottom, #000, #111);
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      color: #ff4f00;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    .swiper-container {
+      width: 100%;
+      padding: 40px 0;
+    }
+
+    .swiper-slide {
+      background-color: #222;
+      color: #fff;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      padding: 30px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      color: #ccc;
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</head>
+<body>
+  <header>
+    <h1>Guard AI</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <h2>Your Personal AI Security Solution</h2>
+    <p>Guard AI ensures your safety with cutting-edge technology and seamless AI integration.</p>
+  </section>
+
+  <section id="about">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Real-Time Threat Detection</div>
+        <div class="swiper-slide">24/7 Surveillance Monitoring</div>
+        <div class="swiper-slide">Automated Alerts and Responses</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Guard AI. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+  </script>
+</body>
+</html>
