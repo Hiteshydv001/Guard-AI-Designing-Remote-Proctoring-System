@@ -1,0 +1,4 @@
+ultralytics==8.3.57
+opencv-python==4.8.1.78
+pillow==9.4.0
+mediapipe==0.10.20
