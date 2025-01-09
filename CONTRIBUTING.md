@@ -4,32 +4,6 @@
 
 # `AI-Based Proctoring System for Secure Assessments 🔒`
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Social Winter of Code](https://img.shields.io/badge/SWOC-2025-orange.svg)](https://swoc.tech)
-[![Contributors](https://img.shields.io/github/contributors/Hiteshydv001/Guard-AI)](https://github.com/Hiteshydv001/Guard-AI/graphs/contributors)
-
-<p align="center">
-  An open-source initiative to transform remote assessment integrity using cutting-edge AI technology. </p>
-
-[🌟 Features](#-features) 
-[⚙️ Installation](#️-installation) 
-[🏗️ Architecture](#️-architecture--design) 
-[🚀 Usage](#-usage) 
-[🤝 Contributing](#-contributing) 
-[👥 Community](#-community)
-
----
-
-<p align="center">
-  <img src="demo/guard_eye_logo.png" width="20%" height="20%" alt="Project Banner"/>
-</p>
-
----
-
----
 
 ## 📄 `Provide Your Feedback or Participate`
 
@@ -64,27 +38,6 @@ We value your feedback! Please take a moment to fill out the Google Form and con
 ## 🌟 `Overview`
 This project introduces a cutting-edge **AI-powered proctoring system** designed to maintain **fairness**, **security**, and **integrity** in remote assessments. By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
 
-## 🏆 `Featured In`
-
-<div align="center">
-
-<table>
-   <tr>
-      <td><img src="https://www.socialwinterofcode.com/SWOC_W_Black.png" width="200" height="auto" loading="lazy" alt="GSSoC-EXT"/></td>
-      <td>Social Winter Of Code</td>
-      <td>Social Winter of Code is an open-source program Which aims to bring students into the world of open source development.</td>
-   </tr>
-</table>
-
-</div>
-
-## 📺 `Project Demo`
-
-Watch our community demo:
-
-[🎥 Watch Demo]()
-
----
 
 ## `🌟 Features`
 
@@ -208,7 +161,7 @@ git push origin feature-name
 ### 7. Open a Pull Request
 Go to your forked repository on GitHub and click **Compare & Pull Request**. Add a meaningful title and description, link the relevant issue, and submit the PR.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions on contributing.
+
 ```
 ## 🌍 Community
 
@@ -217,6 +170,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions on contributing
 - 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)  
 - 📧 Contact maintainers: [hiteshofficial0001@gmail.com](mailto:hiteshofficial0001@gmail.com)
 
+```
 ---
 
 ## ❓ FAQ
@@ -262,5 +216,7 @@ Made with ❤️ by the **Guard AI Community**
 [⬆ Back to Top](#ai-based-proctoring-system-for-secure-assessments)
 
 </div>
+
+
 
 
