@@ -3,3 +3,6 @@ frontend
 generate.sh
 tree.txt
 sample.http
+venv
+__pycache__
+.pyc
