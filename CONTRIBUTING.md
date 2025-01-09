@@ -1,178 +1,171 @@
-<div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Proctoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #1e1e2f;
+            color: white;
+            height: 150px;
+        }
+        .header h2 {
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        a {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background: #005bb5;
+        }
+        code {
+            display: block;
+            background: #f4f4f4;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #0078d7;
+            overflow-x: auto;
+        }
+        .contributors img {
+            max-width: 100%;
+            border-radius: 50%;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background: #1e1e2f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
     <h2>🎉 Transforming Remote Assessments with AI!!! 🎉</h2>
 </div>
 
-# `AI-Based Proctoring System for Secure Assessments 🔒`
+<div class="container">
+    <h1>AI-Based Proctoring System for Secure Assessments 🔒</h1>
 
+    <section>
+        <h2>📄 Provide Your Feedback or Participate</h2>
+        <p>We value your feedback! Please take a moment to fill out the Google Form and contribute to improving our project.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdqqOSG82asLvwYaL6YfR35y2m6t_x_j7SHeS3W4636mzM-oQ/viewform?usp=dialog" class="button">📋 Google Form - Participate Now!</a>
+    </section>
 
-## 📄 `Provide Your Feedback or Participate`
+    <hr>
 
-We value your feedback! Please take a moment to fill out the Google Form and contribute to improving our project.
+    <section>
+        <h2>🌟 Overview</h2>
+        <p>
+            This project introduces a cutting-edge <strong>AI-powered proctoring system</strong> designed to maintain 
+            <strong>fairness</strong>, <strong>security</strong>, and <strong>integrity</strong> in remote assessments. 
+            By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
+        </p>
+    </section>
 
-[📋 Google Form - Participate Now!](https://docs.google.com/forms/d/e/1FAIpQLSdqqOSG82asLvwYaL6YfR35y2m6t_x_j7SHeS3W4636mzM-oQ/viewform?usp=dialog)
+    <section>
+        <h2>🔧 Development Setup</h2>
+        <ol>
+            <li>Fork the repository.</li>
+            <li>Create a feature branch:
+                <code>git checkout -b feature-name</code>
+            </li>
+            <li>Commit your changes:
+                <code>git commit -m "Add your feature"</code>
+            </li>
+            <li>Push to the branch:
+                <code>git push origin feature-name</code>
+            </li>
+            <li>Open a pull request for review.</li>
+        </ol>
+        <h3>Troubleshooting Common Issues</h3>
+        <p>1. Dependencies missing? Use:</p>
+        <code>pip install -r requirements.txt</code>
+        <p>2. Facing runtime errors? Check the <a href="FAQ.md">FAQ</a>.</p>
+    </section>
 
----
+    <section>
+        <h2>🔧 Contribution Guide</h2>
+        <p>Welcome to <strong>Guard AI</strong>! This guide will help you contribute effectively to the project. We are excited to have you here!</p>
 
-## 🌟 `Overview`
-This project introduces a cutting-edge **AI-powered proctoring system** designed to maintain **fairness**, **security**, and **integrity** in remote assessments. By leveraging advanced machine learning techniques, this system redefines how online tests are monitored.
+        <h3>What are Issues? 🔍</h3>
+        <p>Issues are tasks, bugs, or feature requests that need attention. They are the starting point for most contributions to the project.</p>
 
+        <h3>Issue Types</h3>
+        <ul>
+            <li><strong>Beginner Issues (1-3 points):</strong> Simple tasks like fixing typos or minor bug fixes.</li>
+            <li><strong>Intermediate Issues (4-6 points):</strong> Moderate complexity tasks like adding a feature.</li>
+            <li><strong>Advanced Issues (7-10 points):</strong> Complex tasks like integrating APIs or optimizing models.</li>
+        </ul>
+    </section>
 
-## `🔧 Development Setup`
+    <section>
+        <h2>🌍 Community</h2>
+        <p>
+            💬 Join our <a href="https://discord.gg/pBasetQn">Discord Server</a><br>
+            🔗 Connect on <a href="https://www.linkedin.com/in/hitesh-kumar-aiml/">LinkedIn</a><br>
+            🐦 Follow us on <a href="https://x.com/Hitesh_0003">Twitter</a><br>
+            📧 Contact maintainers: <a href="mailto:hiteshofficial0001@gmail.com">hiteshofficial0001@gmail.com</a>
+        </p>
+    </section>
 
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add your feature"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a pull request for review.
-
-### `Troubleshooting Common Issues`
-
-1. Dependencies missing? Use:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Facing runtime errors? Check the [FAQ](FAQ.md).
-
-## `🔧 Contribution Guide`
-
-Welcome to **Guard AI**! This guide will help you contribute effectively to the project. We are excited to have you here!
-
-## What are Issues? 🔍
-
-Issues are tasks, bugs, or feature requests that need attention. They are the starting point for most contributions to the project. We use issues to track everything that needs to be done.
-
-### Issue Types
-
-- **Beginner Issues (1-3 points)**  
-  Simple tasks like fixing typos, updating documentation, or minor bug fixes.
-  - Example: "Fix typo in README.md" or "Add a missing dependency to requirements.txt."
-
-- **Intermediate Issues (4-6 points)**  
-  Tasks of moderate complexity, such as implementing a new feature, improving code efficiency, or writing test cases.
-  - Example: "Add error handling for edge cases in the login module."
-
-- **Advanced Issues (7-10 points)**  
-  Complex tasks like integrating a new API, optimizing an AI model, or refactoring core components.
-  - Example: "Implement eye-tracking calibration using a new machine learning model."
-
-## Points System 🏆
-
-Points are assigned based on the difficulty of an issue. This helps contributors track their progress and achievements.
-
-- **Beginner:** 1-3 points
-- **Intermediate:** 4-6 points
-- **Advanced:** 7-10 points
-
-Contributors can earn points and badges as they complete tasks. This provides a sense of accomplishment and helps track involvement.
-
----
-
-## How to Create a Pull Request (PR) 🖊️
-
-Here’s a simple step-by-step guide to submit your first Pull Request (PR).
-
-Your content is mostly correct but has a small formatting issue in step **2. Clone the Forked Repository 🔄**—the code block isn't properly closed. Here's the corrected and formatted version:
-
-```markdown
-### 1. Fork the Repository 🍴
-Go to the Guard AI repository on GitHub and click **Fork** in the top right.
-
-### 2. Clone the Forked Repository 🔄
-```bash
-git clone https://github.com/your-username/Guard-AI.git
-cd Guard-AI
-```
-
-### 3. Create a branch
-Create a new branch for your changes:
-```bash
-git checkout -b feature-name
-```
-
-### 4. Make changes
-Edit files and test the updates locally.
-
-### 5. Commit the Changes
-Add your changes and write a detailed commit message:
-```bash
-git add .
-git commit -m "Fix issue #X: Detailed commit message"
-```
-
-### 6. Push the Changes to Your Fork
-Push your changes to your forked repository:
-```bash
-git push origin feature-name
-```
-
-### 7. Open a Pull Request
-Go to your forked repository on GitHub and click **Compare & Pull Request**. Add a meaningful title and description, link the relevant issue, and submit the PR.
-
-
-```
-## 🌍 Community
-
-- 💬 Join our [Discord Server](https://discord.gg/pBasetQn)  
-- 🔗 Connect on [LinkedIn](https://www.linkedin.com/in/hitesh-kumar-aiml/)  
-- 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)  
-- 📧 Contact maintainers: [hiteshofficial0001@gmail.com](mailto:hiteshofficial0001@gmail.com)
-
-```
----
-
-## ❓ FAQ
-
-### 1. How can I contribute to the project?  
-Check out our [Contributing Guide](CONTRIBUTING.md) for detailed instructions on how to get started.
-
-### 2. Where can I report bugs or request features?  
-Please use the [GitHub Issues](https://github.com/Hiteshydv001/Guard-AI/issues) tab to report bugs or suggest new features.
-
-### 3. Who can I contact for help?  
-Feel free to reach out on [Discord](https://discord.gg/pBasetQn) or email us at [hiteshofficial0001@gmail.com](mailto:hiteshofficial0001@gmail.com).
-
----
-
-## 🤝 Code of Conduct
-
-We are committed to creating a welcoming and inclusive community. By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).  
-
-### Key Points:
-- Be respectful and inclusive.  
-- No harassment, discrimination, or offensive behavior.  
-- Provide constructive feedback.  
-
-For more details, refer to the full [Code of Conduct](CODE_OF_CONDUCT.md).
-
----
-
-### 🌟 Contributors
-
-Thanks to these wonderful people:
-
-<a href="https://github.com/Hiteshydv001/Guard-AI/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard-AI" alt="Contributors" />
-</a>
-
----
-
-<div align="center">
-
-Made with ❤️ by the **Guard AI Community**
-
-[⬆ Back to Top](#ai-based-proctoring-system-for-secure-assessments)
-
+    <section>
+        <h2>🌟 Contributors</h2>
+        <div class="contributors">
+            <a href="https://github.com/Hiteshydv001/Guard-AI/graphs/contributors">
+                <img src="https://contrib.rocks/image?repo=Hiteshydv001/Guard-AI" alt="Contributors">
+            </a>
+        </div>
+    </section>
 </div>
 
+<div class="footer">
+    Made with ❤️ by the <strong>Guard AI Community</strong>
+    <br>
+    <a href="#top">⬆ Back to Top</a>
+</div>
 
-
-
+</body>
+</html>
