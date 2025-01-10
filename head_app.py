@@ -15,14 +15,17 @@ def generate():
         while True:
             ret, frame = cap.read()
             if not ret:
+                print("Failed to capture frame")  
                 continue
 
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = face_mesh.process(rgb_frame)
 
             if results.multi_face_landmarks:
+                print("Face landmarks detected") 
                 for face_landmarks in results.multi_face_landmarks:
-                    mp_drawing.draw_landmarks(frame, face_landmarks, mp_face_mesh.FACEMESH_CONTOURS)
+                    mp_drawing.draw_landmarks(
+                        frame, face_landmarks, mp_face_mesh.FACEMESH_CONTOURS)
 
                     nose = face_landmarks.landmark[1]
                     left_eye = face_landmarks.landmark[33]
@@ -45,12 +48,13 @@ def generate():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('head_pose_feature/index2.html')
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(generate(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    response = Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
