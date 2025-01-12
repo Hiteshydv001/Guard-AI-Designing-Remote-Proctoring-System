@@ -113,7 +113,7 @@ export const TestimonialSection = () => {
                         ))}
                       </div>
                       <p className="text-base leading-relaxed mb-6">
-                        "{review.comment}"
+                        &quot;{review.comment}&quot;
                       </p>
                       <div className="flex items-center gap-4">
                         <Avatar className="h-10 w-10 border-2 border-primary/20">
