@@ -36,7 +36,7 @@ const reviewList: ReviewProps[] = [
     image: "https://github.com/shadcn.png",
     name: "Michael Nguyen",
     comment:
-      "The integration process was smooth, and the system’s real-time monitoring capabilities are unmatched. It’s a must-have for modern assessments.",
+      "The integration process was smooth, and the system's real-time monitoring capabilities are unmatched. It's a must-have for modern assessments.",
     rating: 4.9,
   },
   {
@@ -50,7 +50,7 @@ const reviewList: ReviewProps[] = [
     image: "https://github.com/shadcn.png",
     name: "David Lee",
     comment:
-      "Guard AI’s robust anti-cheating mechanisms and user-friendly interface have made online exams stress-free for both instructors and students.",
+      "Guard AI's robust anti-cheating mechanisms and user-friendly interface have made online exams stress-free for both instructors and students.",
     rating: 4.8,
   },
   {
@@ -71,67 +71,83 @@ const reviewList: ReviewProps[] = [
 
 export const TestimonialSection = () => {
   return (
-    <section id="testimonials" className="container py-24 sm:py-32">
-      <div className="text-center mb-8">
-        <h2 className="text-lg text-primary tracking-wider mb-2">
-          Testimonials
-        </h2>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          What Educators and Professionals Say About Guard AI
-        </h2>
+    <section className="w-full bg-slate-50 dark:bg-slate-900/50">
+      <div className="container py-16 md:py-24">
+        <div className="space-y-4 text-center mb-12">
+          <h3 className="text-sm font-medium uppercase tracking-wider text-primary">
+            Testimonials
+          </h3>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            What Educators and Professionals Say
+          </h2>
+          <p className="mx-auto max-w-2xl text-muted-foreground">
+            Discover how Guard AI is transforming online assessments for institutions worldwide
+          </p>
+        </div>
+
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full max-w-6xl mx-auto"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {reviewList.map((review, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+              >
+                <div className="h-full">
+                  <Card className="h-full border-2 transition-colors hover:border-primary/20">
+                    <CardContent className="p-6">
+                      <div className="flex gap-1 mb-4">
+                        {Array.from({ length: 5 }, (_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${
+                              i < Math.floor(review.rating)
+                                ? "fill-primary text-primary"
+                                : "fill-muted stroke-muted text-muted"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-base leading-relaxed mb-6">
+                        "{review.comment}"
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-10 w-10 border-2 border-primary/20">
+                          <AvatarImage
+                            src={review.image}
+                            alt={`${review.name}'s avatar`}
+                          />
+                          <AvatarFallback className="bg-primary/5">
+                            {review.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-semibold leading-none">
+                            {review.name}
+                          </p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Verified User
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center gap-2 mt-8">
+            <CarouselPrevious className="relative static" />
+            <CarouselNext className="relative static" />
+          </div>
+        </Carousel>
       </div>
-
-      <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="relative w-[80%] sm:w-[90%] lg:max-w-screen-xl mx-auto"
-      >
-        <CarouselContent>
-          {reviewList.map((review) => (
-            <CarouselItem
-              key={review.name}
-              className="md:basis-1/2 lg:basis-1/3"
-            >
-              <Card className="bg-muted/50 dark:bg-card">
-                <CardContent className="pt-6 pb-0">
-                  <div className="flex gap-1 pb-6">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <Star
-                        key={index}
-                        className={`size-4 ${
-                          index < Math.round(review.rating)
-                            ? "fill-primary text-primary"
-                            : "fill-muted text-muted"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <p>{`"${review.comment}"`}</p> {/* Ensured the comment string is wrapped in escaped quotes */}
-                </CardContent>
-
-                <CardHeader>
-                  <div className="flex flex-row items-center gap-4">
-                    <Avatar>
-                      <AvatarImage
-                        src={review.image}
-                        alt={`${review.name}'s avatar`}
-                      />
-                      <AvatarFallback>{review.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <CardTitle className="text-lg">{review.name}</CardTitle>
-                      <CardDescription>User</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
     </section>
   );
 };
+
+export default TestimonialSection;
