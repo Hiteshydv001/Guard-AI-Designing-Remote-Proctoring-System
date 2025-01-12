@@ -1,0 +1,32 @@
+INFO:AudioMonitor:Monitoring started
+INFO:AudioMonitor:Monitoring stopped
+INFO:AudioMonitor:Monitoring started
+INFO:AudioMonitor:Monitoring stopped
+INFO:AudioMonitor:Monitoring started
+INFO:AudioMonitor:Monitoring stopped
+INFO:AudioMonitor:Monitoring started
+INFO:AudioMonitor:Monitoring started
+INFO:AudioMonitor:Monitoring stopped
+2025-01-12 02:17:53,014 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 02:18:23,259 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 02:21:11,522 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 02:21:42,492 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 02:25:06,688 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 02:25:36,906 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 02:26:01,040 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 02:26:31,213 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 02:33:40,923 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 02:34:11,207 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:18:23,781 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:18:26,727 - AudioMonitor - WARNING - Audio stream status: 2
+2025-01-12 18:18:54,781 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:20:11,050 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:20:42,037 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:23:16,487 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:23:47,456 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:27:11,656 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:27:42,622 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:34:08,944 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:35:09,913 - AudioMonitor - INFO - Monitoring stopped successfully
+2025-01-12 18:37:07,071 - AudioMonitor - INFO - Monitoring started successfully
+2025-01-12 18:38:08,060 - AudioMonitor - INFO - Monitoring stopped successfully
