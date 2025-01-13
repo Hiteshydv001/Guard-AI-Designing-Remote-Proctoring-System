@@ -23,6 +23,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ToggleTheme } from "./toogle-theme";
+import { usePathname } from "next/navigation";
 
 const routeList = [
   { href: "#testimonials", label: "Project" },
@@ -50,6 +51,11 @@ const featureList = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname === "/Signin" || pathname === "/Signup"  || pathname === "/candidate" || pathname === "/proctor") {
+    return null;
+  }
 
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
@@ -118,13 +124,13 @@ export const Navbar = () => {
 
                 {/* Login Link */}
                 <Button
-                  key="/sign-in"
+                  key="/Signin"
                   onClick={() => setIsOpen(false)}
                   asChild
                   variant="ghost"
                   className="justify-start text-base"
                 >
-                  <Link href="/sign-in">Login</Link>
+                  <Link href="/Signin">Login</Link>
                 </Button>
               </div>
             </div>
@@ -191,7 +197,7 @@ export const Navbar = () => {
 
             {/* Login Link */}
             <NavigationMenuLink asChild>
-              <Link href="/sign-in" className="text-base px-2">
+              <Link href="/Signin" className="text-base px-2">
                 Login
               </Link>
             </NavigationMenuLink>
