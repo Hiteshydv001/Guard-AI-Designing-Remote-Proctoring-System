@@ -1,2 +1,8 @@
-
-.codegpt
+node_modules
+frontend
+generate.sh
+tree.txt
+sample.http
+venv
+__pycache__
+.pyc
