@@ -5,6 +5,7 @@ import numpy as np
 from GazeTracking.gaze_tracking import GazeTracking
 from HeadPoseEstimation.session import Session
 import base64
+import os
 
 app = Flask(__name__)
 cap = cv2.VideoCapture(0)
@@ -188,4 +189,5 @@ def start():
     return render_template("index.html")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+    app.run(debug=debug_mode)
