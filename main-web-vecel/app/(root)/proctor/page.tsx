@@ -6,10 +6,6 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-// Dynamically import the Lottie component with SSR disabled
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
-import animationData from "@/public/proctor-animation.json"; // Replace with the correct path to your JSON file
-
 const ProctorPage = () => {
   const router = useRouter();
 
@@ -47,18 +43,6 @@ const ProctorPage = () => {
               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
           </div>
-        </div>
-
-        <div className="relative group mt-14">
-          <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-20 lg:h-40 bg-primary/50 rounded-full blur-3xl"></div>
-          <div className="w-full md:w-[800px] mx-auto h-[400px]">
-            <Lottie
-              animationData={animationData}
-              loop={true}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div className="absolute bottom-0 left-0 w-full h-16 md:h-20 bg-gradient-to-b from-background/0 via-background/50 to-background rounded-lg"></div>
         </div>
       </div>
     </section>
