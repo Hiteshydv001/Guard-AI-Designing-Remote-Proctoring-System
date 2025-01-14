@@ -12,11 +12,10 @@ Usage:
 """
 
 
-from face_detection import Face_Detector
-from face_landmarker import Face_Landmarker
-from head_pose_estimation import Pose_Estimation
-from anomaly_detection import Anomaly_Detection
-from anomaly_detection import LOG_STORAGE_DIR
+from .face_detection import Face_Detector
+from .face_landmarker import Face_Landmarker
+from .head_pose_estimation import Pose_Estimation
+from .anomaly_detection import Anomaly_Detection, LOG_STORAGE_DIR
 
 import cv2
 from ultralytics import YOLO
@@ -25,13 +24,15 @@ from datetime import datetime
 import time
 
 class Session:
+    """
+    Manages the proctoring session, including face detection, head pose estimation, and anomaly detection.
+    """
     def __init__(self):
         self.face_detector = Face_Detector()
         self.face_landmarker = Face_Landmarker()
         self.pose_estimator = Pose_Estimation()
         self.anomaly_detector = Anomaly_Detection()     # you can customize anomaly detection parameters as per preference, just hover it
-        self.cam = cv2.VideoCapture(0)
-
+    
         self.ideal_pitch = 0
         self.ideal_yaw = 0
 
@@ -58,23 +59,10 @@ class Session:
             self.anomaly_detector.check_sus(pitch, yaw, frame)
 
 
-    def calibrate(self):
+    def calibrate(self, frame):
         """
         Calibrates the Pitch and Yaw by setting the ideal head pose based on user input.
         """
-        
-        while True:
-            _, frame = self.cam.read()
-            txt1 = "Please sit in a position, you are comfortable in and position your head"
-            txt2 = "in a ideal state which you will be possing through out this protoring."
-            txt3 = "Look at the center of the screen. Press 'k' when you are ready!"
-
-            cv2.putText(frame, txt1, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (133, 199, 125), 1)
-            cv2.putText(frame, txt2, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (133, 199, 125), 1)
-            cv2.putText(frame, txt3, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (133, 199, 125), 1)
-            
-            cv2.imshow("Protoring Frame", frame)
-            if cv2.waitKey(1) & 0xFF == ord('k'): break
         
         count_faces = self.face_detector.detect(frame)
         if count_faces == 0:
@@ -95,3 +83,7 @@ class Session:
         """
         with open(f"{LOG_STORAGE_DIR}/logs.json", 'w') as f:
             json.dump(self.anomaly_detector.logs, f)
+        self.anomaly_detector.logs = None
+    
+    def reset_session(self):
+        self.anomaly_detector = Anomaly_Detection()

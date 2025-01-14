@@ -14,11 +14,15 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import cv2
-
+import os
 
 class Face_Landmarker:
     def __init__(self):
-        self.base_option = python.BaseOptions(model_asset_path = 'face_landmarker.task')
+        module_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(module_dir, "face_landmarker.task") 
+
+        self.base_option = python.BaseOptions(model_asset_path=model_path) 
+        print(self.base_option)
         self.options = vision.FaceLandmarkerOptions(
             base_options = self.base_option,
             output_face_blendshapes = True,
