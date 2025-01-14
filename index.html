@@ -17,6 +17,421 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 
     <title>Guard AI</title>
+    
+    <style>
+        @keyframes gradientBG {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+    
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+    
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+        }
+    
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+    
+        :root {
+          --primary: #6366f1;
+          --secondary: #ec4899;
+          --accent: #8b5cf6;
+          --dark: #1e293b;
+          --light: #f8fafc;
+        }
+    
+        .about-section {
+          max-width: 1200px;
+          margin: 2rem auto;
+          padding: 2rem;
+          font-family: system-ui, -apple-system, sans-serif;
+          background: var(--light);
+          border-radius: 24px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    
+        .hero-banner {
+          background: linear-gradient(-45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+          background-size: 400% 400%;
+          animation: gradientBG 15s ease infinite;
+          padding: 4rem 2rem;
+          border-radius: 20px;
+          text-align: center;
+          margin-bottom: 3rem;
+        }
+    
+        .hero-banner h2 {
+          color: white;
+          font-size: 3rem;
+          margin: 0;
+          animation: float 3s ease-in-out infinite;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    
+        .badges {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin: 2rem 0;
+        }
+    
+        .badges a {
+          transition: all 0.3s;
+        }
+    
+        .badges a:hover {
+          transform: translateY(-5px) rotate(-2deg);
+        }
+    
+        .nav-links {
+          display: flex;
+          gap: 1.5rem;
+          justify-content: center;
+          margin: 2rem 0;
+          flex-wrap: wrap;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 15px;
+          backdrop-filter: blur(10px);
+        }
+    
+        .nav-links a {
+          color: var(--primary);
+          text-decoration: none;
+          padding: 0.75rem 1.5rem;
+          border-radius: 12px;
+          transition: all 0.3s;
+          background: rgba(99, 102, 241, 0.1);
+          font-weight: 500;
+        }
+    
+        .nav-links a:hover {
+          background: var(--primary);
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+    
+        .content-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 2rem;
+          margin: 3rem 0;
+        }
+    
+        .feature-card {
+          background: white;
+          padding: 2rem;
+          border-radius: 16px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+          transition: all 0.3s;
+          border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+    
+        .feature-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 24px rgba(99, 102, 241, 0.1);
+        }
+    
+        .feature-card h3 {
+          color: var(--primary);
+          margin-top: 0;
+          font-size: 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+    
+        .feature-card ul {
+          list-style-type: none;
+          padding-left: 0;
+        }
+    
+        .feature-card li {
+          margin: 1rem 0;
+          padding-left: 2rem;
+          position: relative;
+          line-height: 1.6;
+        }
+    
+        .feature-card li::before {
+          content: "→";
+          position: absolute;
+          left: 0;
+          color: var(--secondary);
+          font-weight: bold;
+        }
+    
+        .stats-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+          margin: 3rem 0;
+        }
+    
+        .stat-card {
+          background: white;
+          padding: 1.5rem;
+          border-radius: 16px;
+          text-align: center;
+          transition: all 0.3s;
+          border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+    
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
+        }
+    
+        .roadmap-section {
+          background: linear-gradient(to right, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+          padding: 2rem;
+          border-radius: 16px;
+          margin: 3rem 0;
+        }
+    
+        .roadmap-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+          margin-top: 2rem;
+        }
+    
+        .roadmap-card {
+          background: white;
+          padding: 1.5rem;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+          transition: all 0.3s;
+        }
+    
+        .roadmap-card:hover {
+          transform: scale(1.02);
+        }
+    
+        .tech-stack {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin: 3rem 0;
+        }
+    
+        .tech-category {
+          background: white;
+          padding: 2rem;
+          border-radius: 16px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+    
+        .community-section {
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+          padding: 2rem;
+          border-radius: 16px;
+          margin: 3rem 0;
+        }
+    
+        .footer {
+          text-align: center;
+          margin-top: 4rem;
+          padding: 2rem;
+          background: var(--dark);
+          color: white;
+          border-radius: 16px;
+        }
+    
+        .footer p {
+          margin: 0;
+          animation: pulse 2s infinite;
+        }
+    
+        @media (max-width: 768px) {
+          .about-section {
+            padding: 1rem;
+            margin: 1rem;
+          }
+          
+          .hero-banner {
+            padding: 2rem 1rem;
+          }
+    
+          .hero-banner h2 {
+            font-size: 2rem;
+          }
+    
+          .content-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+    
+        .featured-section {
+          background: white;
+          padding: 2rem;
+          border-radius: 16px;
+          margin: 3rem 0;
+          text-align: center;
+        }
+    
+        .featured-logo {
+          max-width: 200px;
+          margin: 1rem auto;
+          transition: transform 0.3s;
+        }
+    
+        .featured-logo:hover {
+          transform: scale(1.1);
+        }
+    
+        .acknowledgements {
+          background: linear-gradient(to right, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+          padding: 2rem;
+          border-radius: 16px;
+          margin: 3rem 0;
+          text-align: center;
+        }
+    
+        img.screenshot {
+          width: 100%;
+          border-radius: 12px;
+          margin: 1rem 0;
+          transition: transform 0.3s;
+        }
+    
+        img.screenshot:hover {
+          transform: scale(1.02);
+        }
+
+        .website-banner {
+          background: linear-gradient(-45deg, #009688, #4CAF50, #2196F3, #3F51B5);
+          background-size: 400% 400%;
+          padding: 4rem 2rem;
+          text-align: center;
+          animation: gradientBG 15s ease infinite;
+          border-radius: 1rem;
+          margin: 2rem auto; /* Centers the element horizontally */
+          width: 80%; /* Adjust the width as needed */
+          max-width: 900px; /* Optional: Add a maximum width */
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes gradientBG {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .website-link {
+          display: inline-block;
+          padding: 1rem 2rem;
+          font-size: 1.5rem;
+          color: white;
+          text-decoration: none;
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid white;
+          border-radius: 2rem;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(5px);
+        }
+
+        .website-link:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.2);
+        }
+        .features-showcase {
+          padding: 4rem 0;
+          background: #f8f9fa;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .features-showcase .container {
+          max-width: 1200px; /* Adjust this value as needed */
+          width: 100%;
+          padding: 2rem;
+          background-color: #e9ecef; /* Slightly darker light grey */
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow for depth */
+        }
+
+
+        .showcase-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+          padding: 2rem;
+        }
+
+        .showcase-card {
+          background: white;
+          padding: 2rem;
+          border-radius: 1rem;
+          text-align: center;
+          transition: transform 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .showcase-card:hover {
+          transform: translateY(-10px);
+        }
+
+        .showcase-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background: linear-gradient(90deg, #009688, #4CAF50);
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
+        }
+
+        .showcase-card:hover::before {
+          transform: scaleX(1);
+        }
+
+        .showcase-icon {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+          color: #009688;
+        }
+
+        .showcase-title {
+          font-size: 1.25rem;
+          margin-bottom: 1rem;
+          color: #333;
+        }
+
+        .showcase-description {
+          color: #666;
+          line-height: 1.6;
+        }
+
+        /* Floating animation for icons */
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+        }
+
+        .showcase-icon {
+          animation: float 3s ease-in-out infinite;
+        }
+      </style>
+
+
 </head>
 
 <body>
@@ -120,276 +535,295 @@
                 </div>
             </div>
         </section>
+        
+        <!--============= Animated Website Banner Section=========-->
+        <section class="website-banner">
+          <a href="https://guard-ai-proctor.vercel.app/" class="website-link" target="_blank">
+            🚀 Experience Guard-AI Platform
+          </a>
+        </section>
+
 
         <!--========== GITHUB README =============-->
-        <section class="about section" id="about">
-            <div
-                style="max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background-color: #fff;">
-                <div
-                    style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: skyblue; color: white; height: 150px;">
-                    <h2>🎉 Transforming Remote Assessments with AI!!! 🎉</h2>
-                </div>
-
-                <h1 style="text-align: center;">AI-Based Proctoring System for Secure Assessments 🔒</h1>
-
-                <p class="p2" style="text-align: center;">
-                    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%2B-blue.svg"
-                            alt="Python"></a>
-                    <a href="https://fastapi.tiangolo.com/"><img
-                            src="https://img.shields.io/badge/FastAPI-Latest-009688.svg" alt="FastAPI"></a>
-                    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"></a>
-                    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"
-                            alt="PRs Welcome"></a>
-                    <a href="https://swoc.tech"><img src="https://img.shields.io/badge/SWOC-2025-orange.svg"
-                            alt="Social Winter of Code"></a>
-                    <a href="https://github.com/Hiteshydv001/Guard-AI/graphs/contributors"><img
-                            src="https://img.shields.io/github/contributors/Hiteshydv001/Guard-AI"
-                            alt="Contributors"></a>
-                </p>
-
-                <p class="p2" align="center">
-                    An open-source initiative to transform remote assessment integrity using cutting-edge AI technology.
-                </p>
-
-                <p class="p2"  align="center">
-                    <a href="#-features">🌟 Features</a>
-                    <a href="#-installation">⚙ Installation</a>
-                    <a href="#-architecture--design">🏗 Architecture</a>
-                    <a href="#-usage">🚀 Usage</a>
-                    <a href="#-contributing">🤝 Contributing</a>
-                    <a href="#-community">👥 Community</a>
-                </p>
-
-                <img class="img" src="./assets/img/project banner card.jpg"  width="100%" alt="Project Banner">
-
-                <hr>
-
-                <table lign="center" style="margin: 10px; width: 100%;">
-                    <thead >
-                        <tr>
-                            <th>🌟 Stars</th>
-                            <th>🍴 Forks</th>
-                            <th>🐛 Issues</th>
-                            <th>🔔 Open PRs</th>
-                            <th>🔕 Close PRs</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img alt="Stars"
-                                    src="https://img.shields.io/github/stars/Hiteshydv001/Guard-AI?style=flat&logo=github">
-                            </td>
-                            <td><img alt="Forks"
-                                    src="https://img.shields.io/github/forks/Hiteshydv001/Guard-AI?style=flat&logo=github">
-                            </td>
-                            <td><img alt="Issues"
-                                    src="https://img.shields.io/github/issues/Hiteshydv001/Guard-AI?style=flat&logo=github">
-                            </td>
-                            <td><img alt="Open Pull Requests"
-                                    src="https://img.shields.io/github/issues-pr/Hiteshydv001/Guard-AI?style=flat&logo=github">
-                            </td>
-                            <td><img alt="Close Pull Requests"
-                                    src="https://img.shields.io/github/issues-pr-closed/Hiteshydv001/Guard-AI?style=flat&color=critical&logo=github">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-
-                <h2>🌟 Overview</h2>
-                <p>This project introduces a cutting-edge <b>AI-powered proctoring system</b> designed to maintain
-                    <b>fairness</b>, <b>security</b>, and <b>integrity</b> in remote assessments. By leveraging advanced
-                    machine learning techniques, this system redefines how online tests are monitored.</p>
-
-                <h2>🏆 Featured In</h2>
-                <div align="center">
-                    <table style="margin: auto;">
-                        <tr>
-                            <td><img src="https://www.socialwinterofcode.com/SWOC_W_Black.png" width="200" alt="SWOC">
-                            </td>
-                            <td>Social Winter Of Code</td>
-                            <td>Social Winter of Code is an open-source program which aims to bring students into the
-                                world of open source development.</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <hr>
-
-                <h2>🌟 Features</h2>
-                <table>
-                    <tr>
-                        <td>
-                            <h3>🤖 AI-Powered Monitoring</h3>
-                            <ul>
-                                <li>Eyeball and Lips Movement Detection</li>
-                                <li>Facial Emotion Recognition</li>
-                                <li>Screen and Audio Analysis</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <h3>🔒 Device and Port Checks</h3>
-                            <ul>
-                                <li>Unauthorized device detection</li>
-                                <li>Port monitoring and anomaly detection</li>
-                                <li>Wi-Fi/Bluetooth signal analysis</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
-
-                <h2>🏗 Architecture & Design</h2>
-                <table>
-                    <tr>
-                        <td>
-                            <h3>🎥 Screen and Audio Monitoring</h3>
-                            <ul>
-                                <li>Real-time screen activity analysis</li>
-                                <li>Speech-to-text conversion for audio validation</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <h3>📶 Device and Network Monitoring</h3>
-                            <ul>
-                                <li>Wi-Fi and Bluetooth signal scanning</li>
-                                <li>Pattern recognition for unauthorized devices</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-
-                <h2>Key Features and Uniqueness</h2>
-                <img src="demo/features.jpg" style="width: 100%;" alt="Behavioral Analysis">
-                <img src="demo/features1.jpg" style="width: 100%;" alt="Behavioral Analysis">
-
-                <h2>Added Features</h2>
-                <h3>Gaze Tracker</h3>
-                <img class="img" src="https://github.com/Hiteshydv001/Guard-AI/raw/main/demo/gaze_tracer.png" style="max-width: 100%; height: auto;" alt="Behavioral Analysis">
-
-
-                <h2>Priority Areas for Contribution</h2>
-                <ul>
-                    <li>Database Integration</li>
-                    <li>Features Integration</li>
-                    <li>UI/UX Improvements</li>
-                    <li>Features Development</li>
-                </ul>
-
-                <hr>
-
-                <h2>🛣 Project Roadmap</h2>
-                <ul>
-                    <li>Phase 1 (Current)</li>
-                    <li>Phase 2 (Upcoming)</li>
-                    <li>Phase 3 (Future)</li>
-                </ul>
-
-                <hr>
-
-                <h2>🔧 Technology Stack</h2>
-                <h3>Backend Infrastructure</h3>
-                <ul>
-                    <li>FastAPI for backend API development</li>
-                    <li>TensorFlow and PyTorch for AI model integration</li>
-                </ul>
-                <h3>Frontend Technologies</h3>
-                <ul>
-                    <li>React.js for responsive UI</li>
-                    <li>Bootstrap for quick styling</li>
-                </ul>
-
-                <hr>
-
-                <h2>🚀 Future Improvements</h2>
-                <table>
-                    <tr>
-                        <td>
-                            <h3>🧠 Enhanced Behavioral Analysis</h3>
-                            <ul>
-                                <li>Typing cadence detection</li>
-                                <li>Posture analysis for better behavior tracking</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <h3>🔒 Blockchain for Data Integrity</h3>
-                            <ul>
-                                <li>Tamper-proof logs of proctoring sessions</li>
-                                <li>Improved transparency and data auditability</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-
-                <h2>⚙ Development Setup</h2>
-                <ol class="ol">
-                    <li>Fork the repository.</li>
-                    <li>Create a feature branch:
-                        <pre><code>git checkout -b feature-name</code></pre>
-                    </li>
-                    <li>Commit your changes:
-                        <pre><code>git commit -m "Add your feature"</code></pre>
-                    </li>
-                    <li>Push to the branch:
-                        <pre><code>git push origin feature-name</code></pre>
-                    </li>
-                    <li>Open a pull request for review.</li>
-                </ol>
-
-                <hr>
-
-                <h3>Troubleshooting Common Issues</h3>
-                <p>If you encounter issues while setting up the project, ensure the following:</p>
-                <ul>
-                    <li>All dependencies are installed using <code>pip install -r requirements.txt</code>.</li>
-
-                    <li>Ensure the correct Python version (3.8 or above) is installed.</li>
-                    <li>Check database connectivity for PostgreSQL.</li>
-                    <li>Review the environment variables setup as per the documentation.</li>
-                </ul>
-
-                <hr>
-
-                <h2>🤝 Contributing</h2>
-                <p>We welcome contributions to improve this project. Follow our <a href="CONTRIBUTING.md">Contributing
-                        Guidelines</a> for more details.</p>
-                <p>Here are a few ways you can contribute:</p>
-                <ul>
-                    <li>Report bugs and suggest features.</li>
-                    <li>Fix issues and submit pull requests.</li>
-                    <li>Enhance the documentation.</li>
-                    <li>Spread the word and star the repository.</li>
-                </ul>
-
-                <hr>
-
-                <h2>👥 Community</h2>
-                <p>Join the discussion and stay updated:</p>
-                <ul>
-                    <li>Discord: <a href="https://discord.gg/pBasetQn"> Join Here
-                        here </a></li>
-                    <li>GitHub Discussions: <a href="https://github.com/Hiteshydv001/Guard-AI/discussions">Participate
-                            here</a></li>
-                </ul>
-
-                <hr>
-
-                <h2>📜 License</h2>
-                <p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
-
-                <hr>
-
-                <h2>🙌 Acknowledgements</h2>
-                <p>Special thanks to all the contributors and open-source communities for their valuable support.</p>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <p><strong>Made with ❤ by the Guard-AI Team</strong></p>
-                      
-                </div>
+        <section class="about-section">
+            <!-- Hero Section -->
+            <div class="hero-banner">
+              <h2>🎉 Transforming Remote Assessments with AI! 🎉</h2>
             </div>
+        
+            <h1 style="text-align: center; color: var(--dark);">AI-Based Proctoring System for Secure Assessments 🔒</h1>
+        
+            <!-- Badges -->
+            <div class="badges">
+              <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%2B-blue.svg" alt="Python"></a>
+              <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-Latest-009688.svg" alt="FastAPI"></a>
+              <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"></a>
+              <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+              <a href="https://swoc.tech"><img src="https://img.shields.io/badge/SWOC-2025-orange.svg" alt="Social Winter of Code"></a>
+            </div>
+        
+            <!-- Navigation -->
+            <nav class="nav-links">
+              <a href="#features">🌟 Features</a>
+              <a href="#installation">⚙️ Installation</a>
+              <a href="#architecture">🏗️ Architecture</a>
+              <a href="#usage">🚀 Usage</a>
+              <a href="#contributing">🤝 Contributing</a>
+              <a href="#community">👥 Community</a>
+            </nav>
+        
+            <!-- Project Banner -->
+            <img class="screenshot" src="/api/placeholder/1200/400" alt="Project Banner">
+        
+            <!-- Stats Grid -->
+            <div class="stats-container">
+              <div class="stat-card">
+                <h3>🌟 Stars</h3>
+                <img alt="Stars" src="https://img.shields.io/github/stars/Hiteshydv001/Guard-AI?style=flat&logo=github">
+              </div>
+              <div class="stat-card">
+                <h3>🍴 Forks</h3>
+                <img alt="Forks" src="https://img.shields.io/github/forks/Hiteshydv001/Guard-AI?style=flat&logo=github">
+              </div>
+              <div class="stat-card">
+                <h3>🐛 Issues</h3>
+                <img alt="Issues" src="https://img.shields.io/github/issues/Hiteshydv001/Guard-AI?style=flat&logo=github">
+              </div>
+              <div class="stat-card">
+                <h3>🔔 Open PRs</h3>
+                <img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/Hiteshydv001/Guard-AI?style=flat&logo=github">
+              </div>
+            </div>
+        
+            <!-- Features Grid -->
+            <div class="content-grid">
+              <div class="feature-card">
+                <h3>🤖 AI-Powered Monitoring</h3>
+                <ul>
+                  <li>Eyeball and Lips Movement Detection</li>
+                  <li>Facial Emotion Recognition</li>
+                  <li>Screen and Audio Analysis</li>
+                </ul>
+              </div>
+              <div class="feature-card">
+                <h3>🔒 Device and Port Checks</h3>
+                <ul>
+                  <li>Unauthorized device detection</li>
+                  <li>Port monitoring and anomaly detection</li>
+                  <li>Wi-Fi/Bluetooth signal analysis</li>
+                </ul>
+              </div>
+              <div class="feature-card">
+                <h3>🎥 Screen and Audio Monitoring</h3>
+                <ul>
+                  <li>Real-time screen activity analysis</li>
+                  <li>Speech-to-text conversion</li>
+                  <li>Audio validation systems</li>
+                </ul>
+              </div>
+              <div class="feature-card">
+                <h3>📶 Device and Network Monitoring</h3>
+                <ul>
+                  <li>Wi-Fi and Bluetooth scanning</li>
+                  <li>Pattern recognition</li>
+                  <li>Unauthorized device detection</li>
+                </ul>
+              </div>
+            </div>
+        
+            <!-- Featured Section -->
+            <div class="featured-section">
+              <h2>🏆 Featured In</h2>
+              <img class="featured-logo" src="assets/img/sponsors2.png" alt="SWOC Logo">
+              <p>Social Winter of Code is an open-source program which aims to bring students into the world of open source development.</p>
+            </div>
+        
+            <!-- Technology Stack -->
+            <div class="tech-stack">
+              <div class="tech-category">
+                <h3>🔧 Backend Infrastructure</h3>
+                <ul>
+                  <li>FastAPI for backend API development</li>
+                  <li>TensorFlow and PyTorch for AI model integration</li>
+                </ul>
+              </div>
+              <div class="tech-category">
+                <h3>🎨 Frontend Technologies</h3>
+                <ul>
+                  <li>React.js for responsive UI</li>
+                  <li>Bootstrap for quick styling</li>
+                </ul>
+              </div>
+            </div>
+        
+            <!-- Community Section -->
+            <div class="community-section">
+              <h2>👥 Join Our Community</h2>
+              <div class="content-grid">
+                <div class="feature-card">
+                  <h3>💬 Discord</h3>
+                  <p>Join our Discord community for real-time discussions and support.</p>
+                  <a href="https://discord.gg/pBasetQn" class="btn">Join Discord</a>
+                </div>
+                <div class="feature-card">
+                    <h3>🤝 GitHub Discussions</h3>
+          <p>Participate in discussions and share your ideas.</p>
+          <a href="https://github.com/Hiteshydv001/Guard-AI/discussions" class="btn">Join Discussions</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Development Setup -->
+    <div class="setup-section">
+      <h2>⚙️ Development Setup</h2>
+      <div class="content-grid">
+        <div class="feature-card">
+          <h3>🔄 Getting Started</h3>
+          <div class="code-block">
+            <pre><code>git checkout -b feature-name
+git commit -m "Add your feature"
+git push origin feature-name</code></pre>
+          </div>
+        </div>
+        <div class="feature-card">
+          <h3>🔍 Troubleshooting</h3>
+          <ul>
+            <li>Run <code>pip install -r requirements.txt</code></li>
+            <li>Verify Python 3.8+ installation</li>
+            <li>Check PostgreSQL connectivity</li>
+            <li>Review environment variables</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="roadmap-section">
+      <h2>🛣️ Project Roadmap</h2>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <h3>Phase 1 (Current)</h3>
+          <ul>
+            <li>Core AI monitoring features</li>
+            <li>Basic device detection</li>
+            <li>Initial UI implementation</li>
+          </ul>
+        </div>
+        <div class="roadmap-card">
+          <h3>Phase 2 (Upcoming)</h3>
+          <ul>
+            <li>Advanced behavioral analysis</li>
+            <li>Enhanced security features</li>
+            <li>Performance optimizations</li>
+          </ul>
+        </div>
+        <div class="roadmap-card">
+          <h3>Phase 3 (Future)</h3>
+          <ul>
+            <li>AI model improvements</li>
+            <li>Blockchain integration</li>
+            <li>Extended platform support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority Areas -->
+    <div class="priority-section">
+      <h2>🎯 Priority Areas for Contribution</h2>
+      <div class="content-grid">
+        <div class="feature-card">
+          <h3>Database Integration</h3>
+          <p>Help improve our data management systems and optimize database performance.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Features Integration</h3>
+          <p>Work on integrating new monitoring and security features.</p>
+        </div>
+        <div class="feature-card">
+          <h3>UI/UX Improvements</h3>
+          <p>Enhance the user interface and overall user experience.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Features Development</h3>
+          <p>Develop new features and improve existing functionality.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Improvements -->
+    <div class="improvements-section">
+      <h2>🚀 Future Improvements</h2>
+      <div class="content-grid">
+        <div class="feature-card">
+          <h3>🧠 Enhanced Behavioral Analysis</h3>
+          <ul>
+            <li>Typing cadence detection</li>
+            <li>Posture analysis for better tracking</li>
+            <li>Advanced pattern recognition</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 Blockchain Integration</h3>
+          <ul>
+            <li>Tamper-proof logging system</li>
+            <li>Enhanced data integrity</li>
+            <li>Improved audit trails</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acknowledgements -->
+    <div class="acknowledgements">
+      <h2>🙌 Acknowledgements</h2>
+      <p>Special thanks to all contributors and open-source communities for their valuable support.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Made with ❤️ by the Guard-AI Team</p>
+    </div>
+         </section>
+
+         
+       <!--========== New Features Showcase Section =============-->
+        <section class="features-showcase">
+          <h2 class="section__title">Why Choose Guard-AI?</h2>
+          
+          <div class="showcase-grid">
+            <div class="showcase-card">
+              <div class="showcase-icon">🎯</div>
+              <h3 class="showcase-title">99.9% Accuracy</h3>
+              <p class="showcase-description">
+                Advanced AI algorithms ensure precise detection of unauthorized activities during assessments.
+              </p>
+            </div>
+            
+            <div class="showcase-card">
+              <div class="showcase-icon">⚡</div>
+              <h3 class="showcase-title">Real-Time Results</h3>
+              <p class="showcase-description">
+                Instant notifications and reports for immediate action on suspicious behavior.
+              </p>
+            </div>
+            
+            <div class="showcase-card">
+              <div class="showcase-icon">🛡️</div>
+              <h3 class="showcase-title">Enterprise Security</h3>
+              <p class="showcase-description">
+                Bank-grade encryption and security measures to protect assessment data.
+              </p>
+            </div>
+            
+            <div class="showcase-card">
+              <div class="showcase-icon">💡</div>
+              <h3 class="showcase-title">Smart Analytics</h3>
+              <p class="showcase-description">
+                Comprehensive insights and patterns to improve assessment integrity.
+              </p>
+            </div>
+          </div>
         </section>
 
         <!--==================== DISCOVER ====================-->
@@ -465,6 +899,8 @@
                 </div>
             </div>
         </section>
+
+        
 
         <!--==================== VIDEO ====================-->
         <section class="video section">
@@ -576,6 +1012,8 @@
                 </div>
             </div>
         </section>
+
+        
 
         <!--==================== SUBSCRIBE ====================-->
         <section class="subscribe section">
@@ -695,6 +1133,45 @@
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
+
+    <style>
+        .code-block {
+          background: #1e1e1e;
+          border-radius: 8px;
+          padding: 1rem;
+          margin: 1rem 0;
+          overflow-x: auto;
+        }
+    
+        .code-block code {
+          color: #d4d4d4;
+          font-family: 'Courier New', Courier, monospace;
+        }
+    
+        .btn {
+          display: inline-block;
+          padding: 0.75rem 1.5rem;
+          background: var(--primary);
+          color: white;
+          text-decoration: none;
+          border-radius: 8px;
+          transition: all 0.3s;
+          margin-top: 1rem;
+        }
+    
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+          background: var(--accent);
+        }
+    
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+      </style>
 </body>
 
 </html>
