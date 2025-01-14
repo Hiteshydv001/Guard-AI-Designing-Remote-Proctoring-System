@@ -62,7 +62,7 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
     ```bash
     pip install -r requirements.txt
     ```
-2. Facing runtime errors? Check the [FAQ](FAQ.md).
+2. Facing runtime errors? Check the [FAQ.md](FAQ.md).
 
 ---
 
@@ -76,6 +76,9 @@ Welcome to **Guard AI**! This guide will help you contribute effectively to the 
 - **Intermediate Issues**: **30 points**
 - **Advanced Issues**: **40 points**
 
+<div style="text-align: center;">
+    <img src="images/points.png" alt="Points Image" width="400px">
+</div>
 ---
 
 ## 🌍 Community
@@ -85,14 +88,21 @@ Welcome to **Guard AI**! This guide will help you contribute effectively to the 
 - 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)
 - 📧 Contact maintainers: [hiteshofficial0001@gmail.com](mailto:hiteshofficial0001@gmail.com)
 
+<div style="text-align: center;">
+    <img src="images/discord.png" alt="Discord Image" width="400px">
+</div>
 ---
 
 ## 🧑‍🤝‍🧑 How to Find Our Project
 
 You can find this project on the **SWOC website** under the list of open-source projects, or you can also connect through our **Discord server**. Here's how:
 
-- **SWOC Website**: [Find Our Project Here](https://github.com/Hiteshydv001/Guard-AI-Designing-Remote-Proctoring-System)
+- **SWOC Website**: [Find Our Project Here](https://www.socialwinterofcode.com/project)
 - **Discord Server**: Join the discussion on our [SWOC Discord](https://discord.gg/wyeWZ2zP).
+
+<div style="text-align: center;">
+    <img src="images/project.png" alt="Project Overview Image" width="400px">
+</div>
 
 ---
 
