@@ -91,7 +91,7 @@ Welcome to **Guard AI**! This guide will help you contribute effectively to the 
 
 You can find this project on the **SWOC website** under the list of open-source projects, or you can also connect through our **Discord server**. Here's how:
 
-- **SWOC Website**: [Find Our Project Here](https://www.swocwebsite.com)
+- **SWOC Website**: [Find Our Project Here](https://github.com/Hiteshydv001/Guard-AI-Designing-Remote-Proctoring-System)
 - **Discord Server**: Join the discussion on our [SWOC Discord](https://discord.gg/wyeWZ2zP).
 
 ---
