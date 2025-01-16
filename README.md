@@ -245,25 +245,240 @@ PUT SOME GENERAL POINTS HERE ALSO
 
 ```
 Directory structure:
-└── Hiteshydv001-Guard-AI/
+└── hiteshydv001-guard-ai-designing-remote-proctoring-system/
+    ├── README.md
+    ├── CONTRIBUTING.md
+    ├── index.html
+    ├── lips_movement_detection.py
+    ├── server.py
     ├── GazeTracking/
     │   ├── example.py
     │   ├── requirements.txt
     │   └── gaze_tracking/
     │       ├── __init__.py
-    │       ├── gaze_tracking.py
+    │       ├── calibration.py
     │       ├── eye.py
-    │       ├── trained_models/
-    │       │   └── shape_predictor_68_face_landmarks.dat
+    │       ├── gaze_tracking.py
     │       ├── pupil.py
-    │       └── calibration.py
-    ├── Proctoring_features/
-    │   └── feature1.py
+    │       └── trained_models/
+    │           └── shape_predictor_68_face_landmarks.dat
+    ├── HeadPoseDetect/
+    │   ├── README.md Head_Tracking
+    │   ├── head_app.py
+    │   ├── head_pose_detection.py
+    │   └── index2.html
+    ├── HeadPoseEstimation/
+    │   ├── README.md
+    │   ├── anomaly_detection.py
+    │   ├── demo.py
+    │   ├── face_detection.py
+    │   ├── face_landmarker.py
+    │   ├── face_landmarker.task
+    │   ├── head_pose_estimation.py
+    │   ├── requirements.txt
+    │   ├── session.py
+    │   ├── yolov11n-face.pt
+    │   ├── Suspicious Activity/
+    │   │   └── User1/
+    │   │       ├── 2025-01-08/
+    │   │       │   └── 19_54_13/
+    │   │       │       ├── logs.json
+    │   │       │       └── Captures/
+    │   │       │           ├── Frequent Head Movement/
+    │   │       │           ├── More than 1 face/
+    │   │       │           ├── No face/
+    │   │       │           └── Prolonged Looking Away/
+    │   │       ├── 2025-01-09/
+    │   │       │   ├── 11_30_40/
+    │   │       │   │   ├── logs.json
+    │   │       │   │   └── Captures/
+    │   │       │   │       ├── Frequent Head Movement/
+    │   │       │   │       ├── More than 1 face/
+    │   │       │   │       ├── No face/
+    │   │       │   │       └── Prolonged Looking Away/
+    │   │       │   └── 11_38_04/
+    │   │       │       ├── logs.json
+    │   │       │       └── Captures/
+    │   │       │           ├── Frequent Head Movement/
+    │   │       │           ├── More than 1 face/
+    │   │       │           ├── No face/
+    │   │       │           └── Prolonged Looking Away/
+    │   │       └── 2025-01-12/
+    │   │           └── 22_50_36/
+    │   │               ├── logs.json
+    │   │               └── Captures/
+    │   │                   ├── Frequent Head Movement/
+    │   │                   ├── More than 1 face/
+    │   │                   └── Prolonged Looking Away/
+    │   └── templates/
+    │       ├── calibrate.html
+    │       ├── hello.html
+    │       ├── index.html
+    │       ├── proctering_screen.html
+    │       └── stop_proctering.html
+    ├── assets/
+    │   ├── css/
+    │   │   └── styles.css
+    │   ├── img/
+    │   ├── js/
+    │   │   └── main.js
+    │   └── scss/
+    │       └── styles.scss
+    ├── backend-proctoring/
+    │   ├── README.md
+    │   ├── package-lock.json
+    │   ├── package.json
+    │   ├── tsconfig.json
+    │   ├── .env.example
+    │   ├── .gitignore
+    │   ├── prisma/
+    │   │   ├── schema.prisma
+    │   │   └── migrations/
+    │   │       ├── migration_lock.toml
+    │   │       ├── 20250102012215_init/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250102104616_init/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250102104943_init/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250102111739_init/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250102113050_init/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250102145210_add_tab_change_and_heartbeat_logs/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250103204652_add_chat_message_model/
+    │   │       │   └── migration.sql
+    │   │       ├── 20250103221011_updated_enums_and_roles/
+    │   │       │   └── migration.sql
+    │   │       └── 20250104022816_/
+    │   │           └── migration.sql
+    │   └── src/
+    │       ├── server.ts
+    │       ├── auth/
+    │       │   └── Auth.ts
+    │       ├── config/
+    │       │   └── jwt.ts
+    │       ├── constants/
+    │       │   └── user.constants.ts
+    │       ├── controllers/
+    │       │   ├── auth.controller.ts
+    │       │   ├── exam.controller.ts
+    │       │   ├── organisation.controller.ts
+    │       │   ├── proctor.controller.ts
+    │       │   └── user.controller.ts
+    │       ├── middleware/
+    │       │   └── auth.ts
+    │       ├── modules/
+    │       │   ├── auth/
+    │       │   │   └── auth.service.ts
+    │       │   ├── exams/
+    │       │   │   └── exam.service.ts
+    │       │   ├── organisation/
+    │       │   │   └── organisation.service.ts
+    │       │   ├── proctoring/
+    │       │   │   └── proctor.service.ts
+    │       │   └── users/
+    │       │       └── user.service.ts
+    │       ├── routes/
+    │       │   ├── auth.routes.ts
+    │       │   ├── exam.routes.ts
+    │       │   ├── organisation.routes.ts
+    │       │   ├── proctor.routes.ts
+    │       │   └── user.routes.ts
+    │       ├── types/
+    │       │   └── express/
+    │       │       └── index.d.ts
+    │       ├── utils/
+    │       │   ├── errorResponse.ts
+    │       │   └── passwordHash.ts
+    │       └── websockets/
+    │           └── websocket.ts
     ├── demo/
-    │   └── assets
-    ├── README.md
-    └── src/
-        └── main.py
+    ├── main-web-vecel/
+    │   ├── components.json
+    │   ├── middleware.ts
+    │   ├── next.config.mjs
+    │   ├── package-lock.json
+    │   ├── package.json
+    │   ├── postcss.config.mjs
+    │   ├── tailwind.config.ts
+    │   ├── tsconfig.json
+    │   ├── .eslintrc.json
+    │   ├── .gitignore
+    │   ├── app/
+    │   │   ├── globals.css
+    │   │   ├── layout.tsx
+    │   │   ├── (root)/
+    │   │   │   ├── loading.tsx
+    │   │   │   ├── page.tsx
+    │   │   │   ├── candidate/
+    │   │   │   │   └── page.tsx
+    │   │   │   └── proctor/
+    │   │   │       └── page.tsx
+    │   │   ├── Signin/
+    │   │   │   └── [[...sign-in]]/
+    │   │   │       └── page.tsx
+    │   │   └── Signup/
+    │   │       └── [[...sign-up]]/
+    │   │           └── page.tsx
+    │   ├── components/
+    │   │   ├── icons/
+    │   │   │   ├── discord-icon.tsx
+    │   │   │   ├── github-icon.tsx
+    │   │   │   ├── linkedin-icon.tsx
+    │   │   │   └── x-icon.tsx
+    │   │   ├── layout/
+    │   │   │   ├── navbar.tsx
+    │   │   │   ├── theme-provider.tsx
+    │   │   │   ├── toogle-theme.tsx
+    │   │   │   ├── usealert.tsx
+    │   │   │   └── sections/
+    │   │   │       ├── benefits.tsx
+    │   │   │       ├── community.tsx
+    │   │   │       ├── contact.tsx
+    │   │   │       ├── faq.tsx
+    │   │   │       ├── features.tsx
+    │   │   │       ├── footer.tsx
+    │   │   │       ├── hero.tsx
+    │   │   │       ├── pricing.tsx
+    │   │   │       ├── services.tsx
+    │   │   │       ├── sponsors.tsx
+    │   │   │       ├── team.tsx
+    │   │   │       └── testimonial.tsx
+    │   │   └── ui/
+    │   │       ├── accordion.tsx
+    │   │       ├── alert.tsx
+    │   │       ├── avatar.tsx
+    │   │       ├── badge.tsx
+    │   │       ├── button.tsx
+    │   │       ├── card.tsx
+    │   │       ├── carousel.tsx
+    │   │       ├── collapsible.tsx
+    │   │       ├── form.tsx
+    │   │       ├── icon.tsx
+    │   │       ├── input.tsx
+    │   │       ├── label.tsx
+    │   │       ├── navigation-menu.tsx
+    │   │       ├── scroll-area.tsx
+    │   │       ├── select.tsx
+    │   │       ├── separator.tsx
+    │   │       ├── sheet.tsx
+    │   │       └── textarea.tsx
+    │   ├── lib/
+    │   │   └── utils.ts
+    │   ├── public/
+    │   │   └── proctor-animation.json
+    │   └── .vscode/
+    │       └── settings.json
+    └── .github/
+        ├── ISSUE_TEMPLATE/
+        │   ├── bug_report.md
+        │   ├── custom.md
+        │   └── feature_request.md
+        └── workflows/
+            └── static.yml
+
 ```
 
 ## `🚀 Usage`
