@@ -18,6 +18,27 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
 
 ---
 
+## 🚀 SWOC Program Overview
+
+**SWOC** (Social Winter of Code) is a mentorship and open-source contribution program aimed at helping contributors enhance their skills and gain experience while contributing to real-world projects. It focuses on four key components:
+
+### Strengths
+- **Mentorship**: SWOC provides a structured mentorship environment, allowing participants to learn from experienced open-source contributors and professionals.
+- **Skill Building**: It is an excellent opportunity to build real-world skills in open-source development, project management, and collaboration.
+- **Networking**: Participants can build connections within the open-source community and industry experts, enhancing career opportunities.
+
+### Weaknesses
+- **Self-Motivation**: Since the program is self-driven, participants need to be proactive and self-motivated. The lack of structured timelines may be challenging for some.
+- **Time Commitment**: Contributing to open-source can require a significant time investment, which may be difficult for those juggling multiple commitments.
+- **Learning Curve**: Some technical tasks may have a steep learning curve, requiring participants to learn new tools or technologies outside their usual workflow.
+
+### Opportunities
+- **Skill Enhancement**: Participants can work on advanced features, improve coding skills, and gain practical experience in AI and machine learning.
+- **Recognition**: Earn points, badges, and certificates by contributing to the project, gaining visibility within the SWOC community and beyond.
+- **Career Growth**: The program provides a great platform to showcase contributions, helping participants gain internships or job opportunities in the tech industry.
+
+---
+
 ## 🔧 Development Setup
 
 1. Fork the repository.
@@ -41,7 +62,7 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
     ```bash
     pip install -r requirements.txt
     ```
-2. Facing runtime errors? Check the [FAQ](FAQ.md).
+2. Facing runtime errors? Check the [FAQ.md](FAQ.md).
 
 ---
 
@@ -49,12 +70,15 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
 
 Welcome to **Guard AI**! This guide will help you contribute effectively to the project. We are excited to have you here!
 
-### Issue Types
+### Points are assigned based on:
 
-- **Beginner Issues (20 points):** Simple tasks like fixing typos, updating documentation, or minor bug fixes.
-- **Intermediate Issues (30 points):** Moderate complexity tasks like implementing new features or improving code efficiency.
-- **Advanced Issues (40 points):** Complex tasks like integrating APIs or optimizing an AI model.
+- **Beginner Issues**: **20 points**
+- **Intermediate Issues**: **30 points**
+- **Advanced Issues**: **40 points**
 
+<div style="text-align: center;">
+    <img src="images/points.png" alt="Points Image" width="400px">
+</div>
 ---
 
 ## 🌍 Community
@@ -63,6 +87,22 @@ Welcome to **Guard AI**! This guide will help you contribute effectively to the 
 - 🔗 Connect on [LinkedIn](https://www.linkedin.com/in/hitesh-kumar-aiml/)
 - 🐦 Follow us on [Twitter](https://x.com/Hitesh_0003)
 - 📧 Contact maintainers: [hiteshofficial0001@gmail.com](mailto:hiteshofficial0001@gmail.com)
+
+<div style="text-align: center;">
+    <img src="images/discord.png" alt="Discord Image" width="400px">
+</div>
+---
+
+## 🧑‍🤝‍🧑 How to Find Our Project
+
+You can find this project on the **SWOC website** under the list of open-source projects, or you can also connect through our **Discord server**. Here's how:
+
+- **SWOC Website**: [Find Our Project Here](https://www.socialwinterofcode.com/project)
+- **Discord Server**: Join the discussion on our [SWOC Discord](https://discord.gg/wyeWZ2zP).
+
+<div style="text-align: center;">
+    <img src="images/project.png" alt="Project Overview Image" width="400px">
+</div>
 
 ---
 
@@ -78,6 +118,4 @@ Thanks to these wonderful people:
 
 <div align="center">
     Made with ❤️ by the **Guard AI Community**
-
-[⬆ Back to Top](#ai-based-proctoring-system-for-secure-assessments)
 </div>
