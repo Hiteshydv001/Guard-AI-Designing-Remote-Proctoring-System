@@ -99,9 +99,205 @@ body.dark-theme {
 }
 
 
-.about section{
-  
+/* Light Theme Styles */
+.about-section {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+.about-section h1, 
+.about-section h2, 
+.about-section h3 {
+  color: var(--title-color);
+}
+
+.about-section .hero-banner {
+  background-color: var(--first-color-alt);
+  color: var(--white-color);
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.about-section .badges a img {
+  margin-right: 8px;
+}
+
+.about-section .nav-links a {
+  color: var(--text-color);
+  margin: 0 10px;
+  font-weight: var(--font-semi-bold);
+}
+
+.about-section .nav-links a:hover {
+  color: var(--first-color);
+}
+
+.about-section .stats-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.about-section .stat-card {
+  background-color: var(--input-color);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-section .content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.about-section .feature-card {
+  background-color: var(--input-color);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.about-section .feature-card h3 {
+  color: var(--title-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Dark Theme Overrides */
+body.dark-theme .about-section {
+  background-color: var(--input-color);
+  color: var(--text-color);
+}
+
+body.dark-theme .about-section .hero-banner {
+  background-color: var(--first-color-second);
+}
+
+body.dark-theme .about-section .stat-card,
+body.dark-theme .about-section .feature-card {
+  background-color: var(--input-color);
+  box-shadow: 0px 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .about-section .nav-links a {
+  color: var(--text-color-light);
+}
+
+body.dark-theme .about-section .nav-links a:hover {
+  color: var(--text-color);
+}
+
+body.dark-theme .about-section h1, 
+body.dark-theme .about-section h2, 
+body.dark-theme .about-section h3 {
+  color: var(--title-color);
+}
+
+/* Define reusable class for headers using --dark variable */
+.header-dark {
+  color: var(--dark); /* Default dark color in light mode */
+  text-align: center;
+  transition: color 0.3s ease; /* Smooth transition for mode toggle */
+}
+
+/* Dark theme override for header-dark */
+body.dark-theme .header-dark {
+  color: var(--light); /* Light color in dark mode */
+}
+
+
+.stats-container,
+.feature-card,
+.roadmap-card {
+  margin: 20px 0;
+}
+
+.feature-card h3,
+.roadmap-card h3 {
+  text-align: center; 
+}
+
+/* Featured Section and Technology Stack */
+.featured-section,
+.tech-stack {
+  background-color: var(--input-color); /* Light mode background */
+  color: var(--text-color); /* Light mode text color */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Override for dark mode */
+body.dark-theme .featured-section,
+body.dark-theme .tech-stack {
+  background-color: var(--dark); /* Dark mode background */
+  color: var(--light); /* Dark mode text color */
+}
+
+/* Header Dark Reuse */
+.featured-section h2,
+.tech-stack h3 {
+  color: var(--dark); /* Default header color in light mode */
+}
+
+body.dark-theme .featured-section h2,
+body.dark-theme .tech-stack h3 {
+  color: var(--light); /* Header color in dark mode */
+}
+
+/* Image in the featured section */
+.featured-logo {
+  max-width: 200px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Technology Stack */
+.tech-stack {
+  background-color: var(--input-color); /* Light mode background */
+  color: var(--text-color); /* Light mode text color */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Override for dark mode */
+body.dark-theme .tech-stack {
+  background-color: var(--dark); /* Dark mode background */
+  color: var(--light); /* Dark mode text color */
+}
+
+/* Header Dark Reuse for Technology Stack */
+.tech-stack h3 {
+  color: var(--dark); /* Default header color in light mode */
+}
+
+body.dark-theme .tech-stack h3 {
+  color: var(--light); /* Header color in dark mode */
+}
+
+/* List item adjustments */
+body.dark-theme .tech-stack ul li {
+  color: var(--light); /* Ensure list items are visible in dark mode */
+}
+
+body.dark-theme .tech-stack ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 
 /*========== Button Dark/Light ==========*/
