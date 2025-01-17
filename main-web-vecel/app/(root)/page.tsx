@@ -42,22 +42,18 @@ export const metadata = {
 export default function Home() {
   return (
     <>
-      <div className="space-y-16">
-        <HeroSection />
-        <SponsorsSection />
-        <BenefitsSection />
-        <FeaturesSection />
-        <ServicesSection />
-        <TestimonialSection />
-        <TeamSection />
-        <CommunitySection />
-        <PricingSection />
-        <ContactSection />
-        <FAQSection />
-      </div>
+      <HeroSection />
+      <SponsorsSection />
+      <BenefitsSection />
+      <FeaturesSection />
+      <ServicesSection />
+      <TestimonialSection />
+      <TeamSection />
+      <CommunitySection />
+      <PricingSection />
+      <ContactSection />
+      <FAQSection />
       <FooterSection />
     </>
   );
 }
-
-

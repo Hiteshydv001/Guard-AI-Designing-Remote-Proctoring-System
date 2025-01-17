@@ -3,55 +3,51 @@
 import { Marquee } from "@devnomic/marquee";
 import "@devnomic/marquee/dist/index.css";
 
-interface Sponsor {
+interface sponsorsProps {
   logoUrl: string;
   name: string;
   altText: string;
 }
 
-const sponsors: Sponsor[] = [
+const sponsors: sponsorsProps[] = [
   {
-    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg", // GitHub logo
     name: "GitHub",
     altText: "GitHub Logo",
   },
   {
-    logoUrl: "https://www.socialwinterofcode.com/static/media/favicon-logo-2.633feaf5.png",
+    logoUrl: "https://www.socialwinterofcode.com/static/media/favicon-logo-2.633feaf5.png", // SWOC logo (replace with the correct one if available)
     name: "SWOC",
     altText: "SWOC Logo",
   },
-  // Add more sponsors here
+  // You can add more sponsors here if needed
 ];
 
 export const SponsorsSection = () => {
   return (
-    <section id="sponsors" className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 pb-24 sm:pb-32">
-      <h2 className="text-center text-2xl sm:text-3xl font-bold mb-8 text-gray-800 dark:text-gray-200">
+    <section id="sponsors" className="max-w-[75%] mx-auto pb-24 sm:pb-32">
+      <h2 className="text-lg md:text-xl text-center mb-6">
         Our Sponsors
       </h2>
 
-      <div className="overflow-hidden">
+      <div className="mx-auto">
         <Marquee
-          className="gap-12" // Adjust the gap between logos
+          className="gap-[4rem]" // Increased gap between logos
           fade
-          innerClassName="gap-12"
+          innerClassName="gap-[4rem]" // Increased gap between logos
           pauseOnHover
         >
           {sponsors.map(({ logoUrl, name, altText }) => (
             <div
               key={name}
-              className="flex flex-col items-center justify-center text-center"
-              style={{ width: "150px" }} // Ensures consistent sizing
+              className="flex items-center text-xl md:text-2xl font-medium"
             >
               <img
                 src={logoUrl}
                 alt={altText}
-                className="h-12 sm:h-16 mb-3 object-contain"
-                loading="lazy" // Improves performance
+                className="mr-4 h-10" // Space and size adjustment for the logos
               />
-              <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400 font-medium">
-                {name}
-              </span>
+              {name}
             </div>
           ))}
         </Marquee>
@@ -59,4 +55,3 @@ export const SponsorsSection = () => {
     </section>
   );
 };
-  
