@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Lottie from "lottie-react";
-import animation1 from "/Guard-AI-Designing-Remote-Proctoring-System/main-web-vecel/public/s1.json";
-import animation2 from "/Guard-AI-Designing-Remote-Proctoring-System/main-web-vecel/public/s2.json";
-import animation4 from "/Guard-AI-Designing-Remote-Proctoring-System/main-web-vecel/public/security-dark.json";
+import animation1 from "@/public/s1.json";
+import animation2 from "@/public/s2.json";
+import animation4 from "@/public/security-dark.json";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
