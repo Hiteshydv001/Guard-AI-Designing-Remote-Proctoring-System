@@ -10,6 +10,11 @@ import { useEffect, useState } from "react";
 // Dynamically import Lottie
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+interface AnimationData {
+  animation: any; // Replace 'any' with the specific type if you know it (e.g., `object`)
+  text: string;
+}
+
 const animationDataPaths = [
   { path: "/s1.json", text: "Intelligent Proctoring Solutions" },
   { path: "/s2.json", text: "Real-time Monitoring & Analysis" },
@@ -20,7 +25,7 @@ export const HeroSection = () => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTextFading, setIsTextFading] = useState(false);
-  const [animations, setAnimations] = useState([]);
+  const [animations, setAnimations] = useState<AnimationData[]>([]); // Explicitly define state type
 
   // Fetch animation data dynamically
   useEffect(() => {
@@ -32,7 +37,7 @@ export const HeroSection = () => {
           return { animation, text: item.text };
         })
       );
-      setAnimations(data);
+      setAnimations(data); // TypeScript now knows the type of `data`
     };
 
     fetchAnimations();
