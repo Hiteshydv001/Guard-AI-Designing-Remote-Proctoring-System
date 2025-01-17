@@ -1,4 +1,4 @@
-#Head Tracking Feature for Guard-AI
+# Head Tracking Feature for Guard-AI
 
 This project implements a **Head Pose Detection** feature for the Guard-AI proctoring system. It monitors the user's head movements during online exams and raises alerts when the user looks away from the screen, ensuring exam integrity. 
 
