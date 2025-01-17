@@ -572,13 +572,14 @@
               <a href="#community">👥 Community</a>
           </nav>
       
-          <!-- Project Banner -->
-          <img 
-              class="screenshot" 
-              src="https://github.com/Hiteshydv001/Guard-AI-Designing-Remote-Proctoring-System/blob/main/demo/logo-ai.png?raw=true" 
-              alt="Project Banner" 
-              style="width: 200px; height: 200px;">
-      
+        <!-- Project Banner -->
+          <div class="banner-container">
+            <img 
+                class="screenshot" 
+                src="https://github.com/Hiteshydv001/Guard-AI-Designing-Remote-Proctoring-System/blob/main/demo/logo-ai.png?raw=true" 
+                alt="Project Banner">
+          </div>
+
           <!-- Stats Grid -->
           <div class="stats-container">
               <div class="stat-card">
@@ -791,42 +792,62 @@ git push origin feature-name</code></pre>
          </section>
 
          
-       <!--========== New Features Showcase Section =============-->
-        <section class="features-showcase">
-          <h2 style="color: var(--dark)" class="section__title">Why Choose Guard-AI?</h2>
+        <!--========== New Features Showcase Section =============-->
+        <section class="features-showcase" aria-labelledby="features-title">
+          <h2 id="features-title" class="section__title header-dark">Why Choose Guard-AI?</h2>
           
-          <div class="showcase-grid">
-            <div class="showcase-card">
-              <div class="showcase-icon">🎯</div>
-              <h3 class="showcase-title">99.9% Accuracy</h3>
-              <p class="showcase-description">
-                Advanced AI algorithms ensure precise detection of unauthorized activities during assessments.
-              </p>
-            </div>
-            
-            <div class="showcase-card">
-              <div class="showcase-icon">⚡</div>
-              <h3 class="showcase-title">Real-Time Results</h3>
-              <p class="showcase-description">
-                Instant notifications and reports for immediate action on suspicious behavior.
-              </p>
-            </div>
-            
-            <div class="showcase-card">
-              <div class="showcase-icon">🛡️</div>
-              <h3 class="showcase-title">Enterprise Security</h3>
-              <p class="showcase-description">
-                Bank-grade encryption and security measures to protect assessment data.
-              </p>
-            </div>
-            
-            <div class="showcase-card">
-              <div class="showcase-icon">💡</div>
-              <h3 class="showcase-title">Smart Analytics</h3>
-              <p class="showcase-description">
-                Comprehensive insights and patterns to improve assessment integrity.
-              </p>
-            </div>
+          <div class="showcase-grid" role="list">
+              <div class="showcase-card" role="listitem">
+                  <div class="showcase-icon" aria-hidden="true">🎯</div>
+                  <div class="card-content">
+                      <h3 class="showcase-title">99.9% Accuracy</h3>
+                      <p class="showcase-description">
+                          Advanced AI algorithms ensure precise detection of unauthorized activities during assessments.
+                      </p>
+                      <div class="card-hover-content">
+                          <span class="learn-more">Learn more about our accuracy →</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="showcase-card" role="listitem">
+                  <div class="showcase-icon" aria-hidden="true">⚡</div>
+                  <div class="card-content">
+                      <h3 class="showcase-title">Real-Time Results</h3>
+                      <p class="showcase-description">
+                          Instant notifications and reports for immediate action on suspicious behavior.
+                      </p>
+                      <div class="card-hover-content">
+                          <span class="learn-more">Explore real-time features →</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="showcase-card" role="listitem">
+                  <div class="showcase-icon" aria-hidden="true">🛡️</div>
+                  <div class="card-content">
+                      <h3 class="showcase-title">Enterprise Security</h3>
+                      <p class="showcase-description">
+                          Bank-grade encryption and security measures to protect assessment data.
+                      </p>
+                      <div class="card-hover-content">
+                          <span class="learn-more">View security details →</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="showcase-card" role="listitem">
+                  <div class="showcase-icon" aria-hidden="true">💡</div>
+                  <div class="card-content">
+                      <h3 class="showcase-title">Smart Analytics</h3>
+                      <p class="showcase-description">
+                          Comprehensive insights and patterns to improve assessment integrity.
+                      </p>
+                      <div class="card-hover-content">
+                          <span class="learn-more">Discover analytics capabilities →</span>
+                      </div>
+                  </div>
+              </div>
           </div>
         </section>
 

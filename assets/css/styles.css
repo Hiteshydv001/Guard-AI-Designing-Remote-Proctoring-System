@@ -128,13 +128,15 @@ body.dark-theme {
 }
 
 .about-section .nav-links a {
-  color: var(--text-color);
+  color: var(--dark);  /* Dark color for light mode */
   margin: 0 10px;
-  font-weight: var(--font-semi-bold);
+  font-weight: 700;  /* Bold text */
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .about-section .nav-links a:hover {
-  color: var(--first-color);
+  color: var(--first-color);  /* Keep your accent color for hover */
 }
 
 .about-section .stats-container {
@@ -189,11 +191,11 @@ body.dark-theme .about-section .feature-card {
 }
 
 body.dark-theme .about-section .nav-links a {
-  color: var(--text-color-light);
+  color: var(--dark);  /* Light/white color for dark mode */
 }
 
 body.dark-theme .about-section .nav-links a:hover {
-  color: var(--text-color);
+  color: var(--first-color);  /* Keep your accent color for hover in dark mode */
 }
 
 body.dark-theme .about-section h1, 
@@ -214,6 +216,32 @@ body.dark-theme .header-dark {
   color: var(--light); /* Light color in dark mode */
 }
 
+.banner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.screenshot {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.screenshot:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .screenshot {
+      width: 250px;
+      height: 250px;
+  }
+}
 
 .stats-container,
 .feature-card,
@@ -299,6 +327,174 @@ body.dark-theme .tech-stack ul {
   list-style-type: none;
   padding-left: 0;
 }
+
+/* Features Showcase Section Base Styles */
+.features-showcase {
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  border-radius: 10px;
+  background-color: var(--body-color);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.showcase-card {
+  position: relative;
+  background-color: var(--input-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.showcase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.showcase-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.showcase-card:hover .showcase-icon {
+  transform: scale(1.1);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.showcase-title {
+  color: var(--title-color);
+  font-size: var(--h3-font-size);
+  margin-bottom: 1rem;
+  font-weight: var(--font-semi-bold);
+  transition: color 0.3s ease;
+}
+
+.showcase-description {
+  color: var(--text-color);
+  font-size: var(--normal-font-size);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.card-hover-content {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.showcase-card:hover .card-hover-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.learn-more {
+  display: inline-block;
+  color: var(--first-color);
+  font-size: var(--small-font-size);
+  font-weight: var(--font-semi-bold);
+  margin-top: 1rem;
+  transition: color 0.3s ease;
+}
+
+.learn-more:hover {
+  color: var(--first-color-alt);
+}
+
+/* Dark Theme Overrides */
+body.dark-theme .features-showcase {
+  background-color: var(--input-color);
+}
+
+body.dark-theme .showcase-card {
+  background-color: var(--container-color);
+  box-shadow: 0px 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .showcase-card:hover {
+  box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.15);
+}
+
+body.dark-theme .showcase-title {
+  color: var(--title-color);
+}
+
+body.dark-theme .showcase-description {
+  color: var(--text-color-light);
+}
+
+body.dark-theme .learn-more {
+  color: var(--first-color-lighter);
+}
+
+body.dark-theme .learn-more:hover {
+  color: var(--first-color-alt);
+}
+
+/* Accessibility */
+.showcase-card:focus-within {
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .showcase-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+  }
+  
+  .features-showcase {
+      padding: 2rem 1.5rem;
+      margin: 1.5rem 0;
+  }
+  
+  .showcase-icon {
+      font-size: 2.5rem;
+  }
+  
+  .showcase-card {
+      padding: 1.5rem;
+  }
+}
+
+/* Animation for cards on page load */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.showcase-card {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.showcase-card:nth-child(1) { animation-delay: 0.1s; }
+.showcase-card:nth-child(2) { animation-delay: 0.2s; }
+.showcase-card:nth-child(3) { animation-delay: 0.3s; }
+.showcase-card:nth-child(4) { animation-delay: 0.4s; }
 
 /*========== Button Dark/Light ==========*/
 .nav__dark {
