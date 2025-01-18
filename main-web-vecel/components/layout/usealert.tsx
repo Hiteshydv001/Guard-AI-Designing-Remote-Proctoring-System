@@ -19,36 +19,42 @@ export const TabSwitchingAlert: React.FC<TabSwitchingAlertProps> = ({ message, o
   );
 };
 
-// Hook to monitor tab switching and generate alert message
 export function useTabSwitchingAlert() {
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [switchCount, setSwitchCount] = useState(0);
+  const [timeAway, setTimeAway] = useState(0);
 
   useEffect(() => {
     let lastFocusTime = Date.now();
 
     const handleVisibilityChange = () => {
       const currentTime = Date.now();
+      
       if (document.hidden) {
         lastFocusTime = currentTime;
       } else {
-        const timeAway = (currentTime - lastFocusTime) / 1000; // time in seconds
-        if (timeAway > 0) {
-          setAlertMessage("Warning: You switched tabs during the session!");
-        } else {
-          setAlertMessage(null); // Clear the alert if tab is focused again
+        const timeAwaySeconds = (currentTime - lastFocusTime) / 1000;
+        if (timeAwaySeconds > 0) {
+          setTimeAway(timeAwaySeconds);
+          setPopupVisible(true);
+          setSwitchCount(prev => prev + 1);
         }
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Cleanup on component unmount
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
-  return alertMessage;
+  return {
+    isPopupVisible,
+    setPopupVisible,
+    switchCount,
+    timeAway
+  };
 }
 
 // Hook to manage proctoring status and alert message

@@ -20,6 +20,7 @@ import {
   useProctoringAlert,
 } from "@/components/layout/usealert";
 import Image from "next/image"; // Import Image from next/image
+import TabSwitchPopup from "@/components/layout/tabswitchpopup";
 
 // Monitor tab switching and display an alert
 export default function Page() {
@@ -57,6 +58,13 @@ export default function Page() {
   const stopProctoringSession = () => {
     setIsProctoringActive(false);
   };
+
+  const { isPopupVisible, setPopupVisible, switchCount, timeAway } = useTabSwitchingAlert();
+
+  const handleDismissPopup = () => {
+    setPopupVisible(false);
+  };
+
 
   return (
     <>
@@ -106,23 +114,18 @@ export default function Page() {
       <section className="container w-full">
         <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
           <Card className="max-w-[800px] w-full shadow-lg rounded-2xl">
-            <CardHeader>
-              {alertMessage && (
-                <Alert variant="default" className="mb-4">
-                  {alertMessage}
-                </Alert>
+                  {isPopupVisible && (
+                <TabSwitchPopup 
+                  onDismiss={handleDismissPopup}
+                  switchCount={switchCount}
+                  timeAway={timeAway}
+                />
               )}
-              {proctoringAlertMessage && (
-                <Alert variant="default" className="mb-4">
-                  {proctoringAlertMessage}
-                </Alert>
-              )}
-            </CardHeader>
 
             <CardContent>
               <div className="camera-feed-container w-full bg-black rounded-xl shadow-xl">
                 <Image
-                  className="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg mt-10"
                   src="/video_feed"
                   alt="Webcam Feed"
                   width={640} // specify width
