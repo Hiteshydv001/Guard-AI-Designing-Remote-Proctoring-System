@@ -30,6 +30,10 @@
 
 ---
 
+## Contributing Guide
+
+Please refer to our [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
+
 ---
 
 ## 📄 `Provide Your Feedback or Participate`
@@ -316,6 +320,3 @@ Made with ❤️ by the Guard AI Community
 [⬆ Back to Top](#ai-based-proctoring-system-for-secure-assessments-)
 
 </div>
-## Contributing
-
-Please refer to our [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.

@@ -2,180 +2,67 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { Alert } from "@/components/ui/alert";
-import { FooterSection } from "@/components/layout/sections/footer";
-import {
-  useTabSwitchingAlert,
-  useProctoringAlert,
-} from "@/components/layout/usealert";
-import Image from "next/image"; // Import Image from next/image
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
-// Monitor tab switching and display an alert
-export default function Page() {
+// Dynamically import the Lottie component with SSR disabled
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import animationData from "@/public/proctor-animation.json"; // Replace with the correct path to your JSON file
+
+const ProctorPage = () => {
   const router = useRouter();
-  const [isProctoringActive, setIsProctoringActive] = useState<boolean>(false);
-  const [timer, setTimer] = useState<number>(0);
-  const [pupilDistance, setPupilDistance] = useState<string>("N/A");
-  const [gazeDirection, setGazeDirection] = useState<string>("N/A");
-
-  // Use the tab switching alert hook
-  const alertMessage = useTabSwitchingAlert();
-  // Use the proctoring alert hook
-  const proctoringAlertMessage = useProctoringAlert(isProctoringActive);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPupilDistance("10 cm");
-      setGazeDirection("Looking right");
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const startProctoringSession = () => {
-    setIsProctoringActive(true);
-    setTimer(0);
-    const interval = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  };
-
-  const stopProctoringSession = () => {
-    setIsProctoringActive(false);
-  };
 
   return (
-    <>
-      <section className="container w-full">
-        <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-          <div className="text-center space-y-8">
-            <Badge variant="outline" className="text-sm py-2">
-              <span className="mr-2 text-primary">
-                <Badge>New</Badge>
-              </span>
-              <span> Guard AI: The future of security is here!</span>{" "}
-              {/* Escaped quotes */}
-            </Badge>
+    <section className="container w-full">
+      <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
+        <div className="text-center space-y-8">
+          <Badge variant="outline" className="text-sm py-2">
+            <span className="mr-2 text-primary">
+              <Badge>Proctor</Badge>
+            </span>
+            <span> Securely manage candidate check-ins with Guard AI</span>
+          </Badge>
 
-            <h1 className="text-4xl md:text-6xl font-bold">
-              Ready to
+          <div className="max-w-screen-md mx-auto text-center text-4xl md:text-6xl font-bold">
+            <h1>
+              Monitor with precision using
               <span className="text-transparent px-2 bg-gradient-to-r from-[#D247BF] to-primary bg-clip-text">
-                Start Your
+                Guard AI Proctor
               </span>
-              Exam
             </h1>
+          </div>
 
-            <p className="text-xl text-muted-foreground">
-              Guard AI isn&apos;t just another security solution; it&apos;s a
-              smart, AI-powered system that evolves with your needs. Protect
-              your digital assets, enhance your security, and get real-time
-              insights like never before. AND GIVE
-            </p>
+          <p className="max-w-screen-sm mx-auto text-xl text-muted-foreground">
+            {`Guard AI Proctor enables you to seamlessly monitor and manage candidate check-ins with a high level of security and precision.
+            Experience the future of secure digital check-ins and ensure the integrity of your assessments.`}
+          </p>
 
+          <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
             <Button
-              asChild
-              variant="secondary"
-              className="w-5/6 md:w-1/4 font-bold"
+              onClick={() => router.push("/proctor-in")}
+              className="w-5/6 md:w-1/4 font-bold group/arrow"
             >
-              <a
-                href="https://github.com/Hiteshydv001/Guard-AI"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View GitHub Repository
-              </a>
+              Start Proctoring Now
+              <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>
-      </section>
 
-      <section className="container w-full">
-        <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-          <Card className="max-w-[800px] w-full shadow-lg rounded-2xl">
-            <CardHeader>
-              {alertMessage && (
-                <Alert variant="default" className="mb-4">
-                  {alertMessage}
-                </Alert>
-              )}
-              {proctoringAlertMessage && (
-                <Alert variant="default" className="mb-4">
-                  {proctoringAlertMessage}
-                </Alert>
-              )}
-            </CardHeader>
-
-            <CardContent>
-              <div className="camera-feed-container w-full bg-black rounded-xl shadow-xl">
-                <Image
-                  className="w-full h-auto rounded-lg"
-                  src="/video_feed"
-                  alt="Webcam Feed"
-                  width={640} // specify width
-                  height={480} // specify height
-                />
-              </div>
-              <div className="mt-6 p-6 rounded-xl shadow-xl light:bg-white">
-                <h2 className="text-lg font-semibold mb-4">Gaze Information</h2>
-                <p className="text-sm">Pupil Distance: {pupilDistance}</p>
-                <p className="text-sm">Gaze Direction: {gazeDirection}</p>
-              </div>
-
-              {/* Add Timer Section Below Gaze Information */}
-              {isProctoringActive && (
-                <div className="mt-6 p-6 rounded-xl shadow-xl light:bg-white">
-                  <h2 className="text-lg font-semibold mb-4">Proctoring Timer</h2>
-                  <p className="text-sm">Timer: {timer}s</p>
-                </div>
-              )}
-            </CardContent>
-
-            <Separator />
-            <CardFooter className="flex flex-wrap gap-6 justify-center mt-8">
-              {!isProctoringActive ? (
-                <Button
-                  onClick={startProctoringSession}
-                  className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-                >
-                  Start Proctoring
-                  <ArrowRight className="ml-2 transition-transform" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={stopProctoringSession}
-                  className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-                >
-                  Stop Proctoring
-                  <ArrowRight className="ml-2 transition-transform" />
-                </Button>
-              )}
-              <Button
-                onClick={() => router.push("/")}
-                className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-              >
-                Go to Main Page
-                <ArrowRight className="ml-2 transition-transform" />
-              </Button>
-            </CardFooter>
-          </Card>
+        <div className="relative group mt-14">
+          <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-20 lg:h-40 bg-primary/50 rounded-full blur-3xl"></div>
+          <div className="w-full md:w-[800px] mx-auto h-[400px]">
+            <Lottie
+              animationData={animationData}
+              loop={true}
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-16 md:h-20 bg-gradient-to-b from-background/0 via-background/50 to-background rounded-lg"></div>
         </div>
-      </section>
-
-      <FooterSection />
-    </>
+      </div>
+    </section>
   );
-}
+};
+
+export default ProctorPage;

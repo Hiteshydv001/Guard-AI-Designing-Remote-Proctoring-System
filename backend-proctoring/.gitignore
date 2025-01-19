@@ -1,0 +1,6 @@
+node_modules
+frontend
+generate.sh
+tree.txt
+sample.http
+.env

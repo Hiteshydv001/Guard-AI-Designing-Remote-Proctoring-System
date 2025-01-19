@@ -40,7 +40,7 @@ export const HeroSection = () => {
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             {/* Existing buttons */}
             <Button
-              onClick={() => router.push("/proctor")}
+              onClick={() => router.push("/candidate")}
               className="w-5/6 md:w-1/4 font-bold group/arrow"
             >
               Check in Candidate
@@ -64,7 +64,7 @@ export const HeroSection = () => {
             <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
 
             <Button
-              onClick={() => router.push("/proctor-in")}
+              onClick={() => router.push("/proctor")}
               className="w-5/6 md:w-1/4 font-bold"
             >
               Check in Proctor
