@@ -3,13 +3,58 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useTheme } from "next-themes";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+// Dynamically import Lottie
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+
+interface AnimationData {
+  animation: any; // Replace 'any' with the specific type if you know it (e.g., `object`)
+  text: string;
+}
+
+const animationDataPaths = [
+  { path: "/s1.json", text: "Intelligent Proctoring Solutions" },
+  { path: "/s2.json", text: "Real-time Monitoring & Analysis" },
+  { path: "/security-dark.json", text: "Advanced Security Measures" },
+];
 
 export const HeroSection = () => {
-  const { theme } = useTheme();
   const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTextFading, setIsTextFading] = useState(false);
+  const [animations, setAnimations] = useState<AnimationData[]>([]); // Explicitly define state type
+
+  // Fetch animation data dynamically
+  useEffect(() => {
+    const fetchAnimations = async () => {
+      const data = await Promise.all(
+        animationDataPaths.map(async (item) => {
+          const response = await fetch(item.path);
+          const animation = await response.json();
+          return { animation, text: item.text };
+        })
+      );
+      setAnimations(data); // TypeScript now knows the type of `data`
+    };
+
+    fetchAnimations();
+  }, []);
+
+  // Handle animation index changes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTextFading(true);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % animationDataPaths.length);
+        setIsTextFading(false);
+      }, 500); // Wait for fade-out before changing text
+    }, 5000); // Change every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="container w-full">
@@ -38,7 +83,6 @@ export const HeroSection = () => {
           </p>
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
-            {/* Existing buttons */}
             <Button
               onClick={() => router.push("/candidate")}
               className="w-5/6 md:w-1/4 font-bold group/arrow"
@@ -62,34 +106,42 @@ export const HeroSection = () => {
             </Button>
 
             <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
-
-            <Button
-              onClick={() => router.push("/proctor")}
-              className="w-5/6 md:w-1/4 font-bold"
-            >
-              Check in Proctor
-              <ArrowRight className="size-7 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
-            </Button>
-
+              <Button
+                onClick={() => router.push("/proctor")}
+                className="w-5/6 md:w-1/4 font-bold"
+              >
+                Check in Proctor
+                <ArrowRight className="size-7 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+              </Button>
             </div>
-
-            
           </div>
         </div>
 
         <div className="relative group mt-14">
           <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-24 lg:h-80 bg-primary/50 rounded-full blur-3xl"></div>
-          <Image
-            width={1200}
-            height={1200}
-            className="w-full md:w-[1200px] mx-auto rounded-lg relative leading-none flex items-center border border-t-2 border-secondary  border-t-primary/30"
-            src={
-              theme === "light"
-                ? "/hero-image-light.jpeg"
-                : "/hero-image-dark.jpeg"
-            }
-            alt="Guard AI dashboard"
-          />
+          
+          <div className="relative w-full md:w-[1200px] mx-auto rounded-lg">
+            {/* Animation Container */}
+            {animations.length > 0 && (
+              <div className="w-full h-[600px] relative">
+                <Lottie
+                  animationData={animations[currentIndex].animation}
+                  loop={true}
+                  className="w-full h-full transition-opacity duration-500 ease-in-out"
+                />
+                {/* Animated text overlay */}
+                <div className="absolute bottom-8 left-0 right-0 text-center">
+                  <h3
+                    className={`text-2xl font-bold text-primary bg-background/80 inline-block px-6 py-3 rounded-lg
+                    transition-all duration-500 ease-in-out transform
+                    ${isTextFading ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}
+                  >
+                    {animations[currentIndex].text}
+                  </h3>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="absolute bottom-0 left-0 w-full h-20 md:h-28 bg-gradient-to-b from-background/0 via-background/50 to-background rounded-lg"></div>
         </div>

@@ -12,10 +12,13 @@ Methods:
 
 import cv2
 from ultralytics import YOLO
+import os
 
 class Face_Detector:
     def __init__(self):
-        self.model = YOLO('yolov11n-face.pt')
+        module_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(module_dir, "yolov11n-face.pt") 
+        self.model = YOLO(model_path)
 
     def detect(self, frame):
         """
