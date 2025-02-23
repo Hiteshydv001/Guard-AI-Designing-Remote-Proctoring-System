@@ -1,1 +1,2 @@
-from .audio_capture import capture_audio
+from .audio_capture import AudioCapture
+

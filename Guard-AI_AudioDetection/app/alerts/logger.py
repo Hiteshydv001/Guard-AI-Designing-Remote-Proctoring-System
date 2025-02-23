@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def log_event(event, timestamp, log_file='assets/logs/event_log.json'):
     log_entry = {"event": event, "timestamp": str(timestamp)}
@@ -11,3 +12,7 @@ def log_event(event, timestamp, log_file='assets/logs/event_log.json'):
     except FileNotFoundError:
         with open(log_file, 'w') as file:
             json.dump([log_entry], file, indent=4)
+
+def log_real_time_event(event):
+    timestamp = datetime.now()
+    log_event(event, timestamp)
