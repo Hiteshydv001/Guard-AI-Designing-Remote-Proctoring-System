@@ -1,3 +1,11 @@
+module.exports = {
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
 const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
