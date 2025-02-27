@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import eventlet
+from flask_socketio import SocketIO
 
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s %(levelname)s %(message)s')
 
