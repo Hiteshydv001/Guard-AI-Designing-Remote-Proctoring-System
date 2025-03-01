@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:26059918479baa39158a6ac995d19ae681613321c8f3ad1f07c9bfe297f3b1df
-size 428
+import speech_recognition as sr
+
+recognizer = sr.Recognizer()
+with sr.Microphone() as source:
+    print("Listening for audio...")
+    audio = recognizer.listen(source)
+    try:
+        text = recognizer.recognize_google(audio)
+        print("Detected Speech:", text)
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+    except sr.RequestError:
+        print("Speech recognition service unavailable")

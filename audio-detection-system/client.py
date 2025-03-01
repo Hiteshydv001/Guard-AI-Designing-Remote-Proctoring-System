@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b79da224ba21587edb15cd13445f4cb6ced36423d905bf5d2274ebbef52001a9
-size 181
+import requests
+
+url = "http://127.0.0.1:8000/detect_audio"
+files = {"file": open("test_audio/sample.wav", "rb")}
+
+response = requests.post(url, files=files)
+print(response.json())
