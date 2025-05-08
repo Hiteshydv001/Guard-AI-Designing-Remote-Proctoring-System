@@ -24,7 +24,7 @@ def main():
         # Step 4: Send Alerts
         send_alert(event, timestamp)
 
-        # Step 5: Log Event
+        # Step 5: Logs Event
         log_event(event, timestamp)
 
 if __name__ == "__main__":
