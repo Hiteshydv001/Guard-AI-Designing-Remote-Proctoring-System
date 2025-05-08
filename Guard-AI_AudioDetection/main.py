@@ -21,7 +21,7 @@ def main():
         event = "Suspicious Keyword Detected"
         timestamp = datetime.now()
         
-        # Step 4: Send Alert
+        # Step 4: Send Alerts
         send_alert(event, timestamp)
 
         # Step 5: Log Event
