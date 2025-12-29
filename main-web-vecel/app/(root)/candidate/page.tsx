@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { Card } from "@/components/ui/card";
@@ -16,6 +14,10 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useEffect, useRef } from "react";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:5000");
 
 const tabs = [
   {
@@ -194,6 +196,64 @@ export default function CandidateDashboard() {
   );
 }
 
+//Add WebRTC peer connection for the candidate
+const CandidateStream = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [warning, setWarning] = useState("");
+
+  useEffect(() => {
+    // Handle incoming warnings
+    const handleWarning = (data: { alert: string }) => setWarning(data.alert);
+    socket.on("warning", handleWarning);
+
+    // Capture and stream video
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        if (videoRef.current) videoRef.current.srcObject = stream;
+        startStreaming(socket, stream);
+      })
+      .catch((err) => console.error("Camera error:", err));
+
+    // Cleanup on unmount
+    return () => {
+      socket.off("warning", handleWarning);
+    };
+  }, []);
+
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-semibold">Candidate Camera</h2>
+      <video ref={videoRef} autoPlay playsInline className="w-full h-auto rounded-lg shadow-md border" />
+      {warning && <p className="mt-2 text-red-500 font-medium">{warning}</p>}
+    </div>
+  );
+};
+
+// **Stream video frames to Flask backend**
+const startStreaming = (socket: any, stream: MediaStream) => {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const video = document.createElement("video");
+  video.srcObject = stream;
+  video.play();
+
+  const sendFrame = () => {
+    if (!ctx) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob((blob) => {
+      if (blob) blob.arrayBuffer().then((buffer) => socket.emit("video_frame", buffer));
+    }, "image/jpeg");
+
+    requestAnimationFrame(sendFrame);
+  };
+
+  sendFrame();
+};
+
+export default CandidateStream;
 
 // "use client";
 

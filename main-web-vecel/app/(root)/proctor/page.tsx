@@ -94,6 +94,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useRef } from "react";
 
 const tabs = [
   {
@@ -165,6 +166,27 @@ export default function ProctorDashboard() {
     </div>
   );
 
+  //Receive and display the candidate's stream.
+  const ProctorStream = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const peer = new RTCPeerConnection();
+        peer.ontrack = (event) => {
+            if (videoRef.current) videoRef.current.srcObject = event.streams[0];
+        };
+    }, []);
+
+    return (
+        <div>
+            <h2>Proctor View</h2>
+            <video ref={videoRef} autoPlay playsInline className="w-full h-auto" />
+        </div>
+    );
+};
+
+export default ProctorStream;
+  
   const renderMonitoringContent = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -364,4 +386,5 @@ export default function ProctorDashboard() {
       </div>
     </div>
   );
+
 }
