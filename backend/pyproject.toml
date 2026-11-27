@@ -1,0 +1,23 @@
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["B008", "E731", "SIM105", "B904", "UP038"]
+
+[tool.ruff.lint.per-file-ignores]
+# Inline-styled email HTML reads better unwrapped.
+"app/services/email.py" = ["E501"]
+"app/api/assistant.py" = ["E501"]  # system prompt
+"tests/*" = ["E501"]
+
+[tool.ruff.lint.isort]
+# The local alembic/ migrations folder must not be mistaken for the alembic package.
+known-third-party = ["alembic"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

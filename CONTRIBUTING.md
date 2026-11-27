@@ -60,7 +60,8 @@ This project introduces a cutting-edge **AI-powered proctoring system** designed
 
 1. Dependencies missing? Use:
     ```bash
-    pip install -r requirements.txt
+    cd backend && pip install -r requirements-dev.txt && pip install --no-deps -r requirements-mediapipe.txt
+    cd main-web-vecel && pnpm install                     # frontend
     ```
 2. Facing runtime errors? Check the [FAQ.md](FAQ.md).
 

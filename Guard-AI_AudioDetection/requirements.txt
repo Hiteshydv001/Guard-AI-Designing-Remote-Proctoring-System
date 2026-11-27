@@ -1,4 +1,0 @@
-pyaudio
-librosa
-soundfile
-speechrecognition

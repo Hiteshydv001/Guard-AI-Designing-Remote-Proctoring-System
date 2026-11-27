@@ -1,0 +1,18 @@
+# --- API
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+sqlalchemy[asyncio]==2.0.36
+alembic==1.20.1
+asyncpg==0.30.0
+aiosqlite==0.20.0
+pydantic==2.10.4
+PyJWT[crypto]==2.10.1
+httpx==0.28.1
+# --- AI proctoring (CPU only)
+numpy>=2.1,<3
+opencv-python-headless==5.1.0.95
+onnxruntime==1.32.0
+absl-py>=2.1
+flatbuffers>=24.3
+# mediapipe is installed separately with --no-deps (see requirements-mediapipe.txt / Dockerfile):
+# its declared deps pull in matplotlib + the GUI build of OpenCV, which the face task never uses.
