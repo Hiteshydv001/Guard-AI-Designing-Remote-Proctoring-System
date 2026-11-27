@@ -14,6 +14,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     OMP_NUM_THREADS=1
 WORKDIR /app
 
+# MediaPipe loads libEGL/libGLESv2 at import time even when it runs on the CPU.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libegl1 libgles2 \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt requirements-mediapipe.txt ./
 RUN pip install -r requirements.txt \
  && pip install --no-deps -r requirements-mediapipe.txt
