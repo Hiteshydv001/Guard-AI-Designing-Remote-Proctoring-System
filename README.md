@@ -208,34 +208,45 @@ photo, create a batch, build an exam assigned to it and publish. Sign in as the 
 
 ## `☁️ Free Deployment Guide`
 
-**1. Supabase (database + storage)**
-1. Create a project at [supabase.com](https://supabase.com).
-2. *Project Settings → Database → Connection string*: copy the **Transaction pooler** URI (port `6543`) → `DATABASE_URL`.
-3. *Project Settings → API*: Project URL → `SUPABASE_URL`, `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (server only).
-4. Nothing else — the API runs its Alembic migrations (with RLS enabled) and creates the private `evidence` bucket on boot.
+| Piece | Free service | Holds |
+|---|---|---|
+| Database | [Neon](https://neon.tech) Postgres | users, exams, attempts, violations |
+| Files | [Cloudflare R2](https://developers.cloudflare.com/r2/) | evidence snapshots, reference photos |
+| API + AI models | [Railway](https://railway.com) (Docker) | FastAPI, vision models, live state |
+| Web app | [Vercel](https://vercel.com) | Next.js frontend |
+| Auth | [Clerk](https://clerk.com) | sign-in, student accounts, invites |
+| Assistant | [Groq](https://console.groq.com) | teacher chat assistant (optional) |
 
-**2. Clerk (auth)**
-1. Create an application; enable *Email address* and *Password*. Copy the publishable and secret keys.
-2. *API keys → Frontend API URL* → `CLERK_ISSUER`.
+**1. Neon (database).** Create a project in the region closest to your Railway region. *Connect* → copy the **pooled**
+connection string (host contains `-pooler`) → `DATABASE_URL`. The `?sslmode=require` suffix is handled; migrations run
+automatically when the API starts.
 
-**3. Railway (backend + AI)**
-1. *New Project → Deploy from GitHub repo*; in the service settings set **Root Directory** to `backend`.
-   Railway builds `backend/Dockerfile` (models are baked into the image; health check `/health`).
-2. Variables: `DATABASE_URL`, `CLERK_ISSUER`, `CLERK_SECRET_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `CORS_ORIGINS=https://<your-app>.vercel.app`, `FRONTEND_URL=https://<your-app>.vercel.app`, `ML_CONCURRENCY=1`
-   (use `2` on a 2-vCPU plan).
-3. *Settings → Networking → Generate Domain*. Keep **one replica** (in-process AI runtime).
+**2. Cloudflare R2 (files).** *R2 → Create bucket* `guardai-evidence` (private). *Manage R2 API tokens → Create* with
+**Object Read & Write** on that bucket → `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`; your account ID → `R2_ACCOUNT_ID`.
+Evidence is served to proctors through short-lived signed links; the bucket never needs public access.
 
-**4. Vercel (frontend)**
-1. *Import* the repo, **Root Directory** `main-web-vecel`.
-2. Environment variables from `main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.up.railway.app`.
-3. Deploy, then make sure the Vercel URL is in `CORS_ORIGINS` on Railway.
+**3. Clerk (auth).** Enable *Email address* and *Password* sign-in. Copy the publishable and secret keys;
+*API keys → Frontend API URL* → `CLERK_ISSUER`. A development instance works on `*.vercel.app`; a production instance
+needs your own domain.
 
-> **Capacity on free tiers.** The image needs ~450 MB RAM with models loaded. Railway's free plan fits a demo or a
-> small class. Frames arrive every second; the phone/object detector runs on every frame while the CPU has headroom
-> (phone flagged in ~1–1.5 s, ~5 candidates per vCPU), then thins to every 2nd/3rd frame as load rises (~8–11 per vCPU),
-> always running on frames with a suspicious cue such as eyes or head down. For larger exams use a 2+ vCPU plan and
-> raise `ML_CONCURRENCY`. Supabase pauses free projects after ~1 week of inactivity (one click to resume).
+**4. Railway (API + AI).** *New Project → Deploy from GitHub repo*, service **Root Directory** `backend` (it builds
+`backend/Dockerfile` with the models baked in; health check `/health`). Variables:
+`DATABASE_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET=guardai-evidence`,
+`CLERK_ISSUER`, `CLERK_SECRET_KEY`, `GROQ_API_KEY`, `ML_CONCURRENCY=1`, `FRAME_INTERVAL_MS=1000`, and after step 5
+`CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. *Settings → Networking → Generate Domain*. Keep **one replica**
+(the AI runtime and live view are in-process).
+
+**5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
+`main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.up.railway.app` (no trailing slash).
+
+**Optional:** `RESEND_API_KEY` + `EMAIL_FROM` (a domain verified in Resend) for branded invitation emails; without
+them Clerk sends its own.
+
+> **Capacity on free tiers.** The image needs ~450 MB RAM with models loaded, so keep `ML_CONCURRENCY=1` on a
+> 512 MB plan. Frames arrive every second; the phone/object detector runs on every frame while the CPU has headroom
+> (phone flagged in ~1–1.5 s, ~5 candidates per vCPU), then thins to every 2nd/3rd frame as load rises (~8–11 per
+> vCPU), always running on frames with a suspicious cue such as eyes or head down. For larger exams use a 2+ vCPU plan
+> and raise `ML_CONCURRENCY`.
 
 ## `📁 Project Structure`
 
