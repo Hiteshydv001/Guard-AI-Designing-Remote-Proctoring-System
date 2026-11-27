@@ -114,11 +114,15 @@ def _clean_history(messages: list[dict]) -> list[dict]:
 
 
 def _error_text(exc: Exception) -> str:
+    """Messages safe to show the teacher and the model; anything unexpected is logged, not echoed."""
     if isinstance(exc, HTTPException):
         return str(exc.detail)
     if isinstance(exc, ValidationError):
         return "; ".join(f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors()[:6])
-    return str(exc)
+    if isinstance(exc, KeyError):
+        return f"Missing required field: {exc.args[0] if exc.args else 'unknown'}"
+    log.warning("Assistant tool failed: %r", exc)
+    return "That action failed because some of the details were invalid."
 
 
 async def _run_tool(ctx: Ctx, name: str, args: dict) -> tuple[dict, dict | None]:

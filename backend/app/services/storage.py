@@ -6,6 +6,7 @@ import base64
 import binascii
 import logging
 import os
+import re
 
 import httpx
 
@@ -31,6 +32,26 @@ def decode_data_url(data_url: str | None) -> bytes | None:
     except (binascii.Error, ValueError):
         return None
     return raw if 0 < len(raw) <= MAX_SNAPSHOT_BYTES else None
+
+
+_KEY_PART = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def safe_key(path: str) -> str:
+    """Normalise a storage key: only [A-Za-z0-9._-] in each segment, no empty, '.' or '..' segments."""
+    parts = [_KEY_PART.sub("_", p).strip(".") for p in path.replace("\\", "/").split("/")]
+    parts = [p for p in parts if p]
+    if not parts:
+        raise ValueError("Empty storage key")
+    return "/".join(parts)
+
+
+def _local_path(key: str) -> str:
+    root = os.path.realpath(settings.local_upload_dir)
+    full = os.path.realpath(os.path.join(root, key))
+    if os.path.commonpath([root, full]) != root:
+        raise ValueError("Storage key escapes the upload directory")
+    return full
 
 
 def _headers() -> dict[str, str]:
@@ -72,6 +93,7 @@ async def ensure_bucket() -> None:
 
 async def save_snapshot(path: str, data: bytes) -> str | None:
     """Store a JPEG and return its storage path (not a public URL)."""
+    path = safe_key(path)
     if _r2:
         try:
             return path if await _r2.put(path, data) else None
@@ -84,7 +106,7 @@ async def save_snapshot(path: str, data: bytes) -> str | None:
             res = await client.post(url, content=data, headers={**_headers(), "Content-Type": "image/jpeg", "x-upsert": "true"})
         return path if res.is_success else None
 
-    full = os.path.join(settings.local_upload_dir, path)
+    full = _local_path(path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "wb") as fh:
         fh.write(data)

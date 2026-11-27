@@ -145,7 +145,7 @@ class HeartbeatIn(BaseModel):
 
 
 class ViolationIn(BaseModel):
-    type: str = Field(min_length=1, max_length=40)
+    type: str = Field(min_length=1, max_length=40, pattern=r"^[a-z][a-z0-9_]*$")
     severity: Severity = "medium"
     message: str = Field(default="", max_length=500)
     meta: dict = Field(default_factory=dict)
