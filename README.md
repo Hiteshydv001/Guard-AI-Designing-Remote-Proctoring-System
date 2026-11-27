@@ -147,7 +147,7 @@ tells browsers to slow down automatically when frames queue up.
                      Next.js 14 on Vercel  (Clerk auth, UI only)
                                      │  Bearer <Clerk session JWT>
                                      ▼
-       FastAPI on Railway ─ verifies JWT (Clerk JWKS), Clerk Backend API for student accounts
+       FastAPI on Render ─ verifies JWT (Clerk JWKS), Clerk Backend API for student accounts
         ├─ AI runtime: YuNet · Face Landmarker · SFace · YOLOX-Tiny (bounded worker pool, back-pressure)
         ├─ Per-attempt anomaly tracker + in-memory live cache (thumbnails never hit the DB)
         └─ Alembic-migrated schema
@@ -160,7 +160,7 @@ tells browsers to slow down automatically when frames queue up.
 Design notes:
 - **No video is stored.** Frames are analysed in memory; only flagged moments are saved as evidence snapshots.
 - **Answer keys never leave the server**; grading, timing and auto-termination are server-authoritative.
-- **Single API instance** by design: the AI runtime and live cache are in-process (Railway's default).
+- **Single API instance** by design: the AI runtime and live cache are in-process (one Render instance).
 
 ## `🔧 Technology Stack`
 
@@ -168,8 +168,8 @@ Design notes:
 | --- | --- | --- |
 | Frontend | Next.js 14 (App Router), Tailwind, shadcn/ui, Recharts | Vercel Hobby |
 | Auth | Clerk (sessions + Backend API for student accounts) | Clerk free tier |
-| Backend | FastAPI, SQLAlchemy 2 (async), Alembic, PyJWT, httpx | Railway |
-| AI | OpenCV (YuNet, SFace), MediaPipe Tasks, ONNX Runtime (YOLOX) | Railway (CPU) |
+| Backend | FastAPI, SQLAlchemy 2 (async), Alembic, PyJWT, httpx | Render |
+| AI | OpenCV (YuNet, SFace), MediaPipe Tasks, ONNX Runtime (YOLOX) | Render (CPU) |
 | Database | PostgreSQL | Supabase free tier |
 | Storage | Supabase Storage | Supabase free tier (1 GB) |
 | CI | GitHub Actions — ruff, pytest, Docker smoke test, Next.js lint/typecheck/build | free for public repos |
@@ -212,13 +212,13 @@ photo, create a batch, build an exam assigned to it and publish. Sign in as the 
 |---|---|---|
 | Database | [Neon](https://neon.tech) Postgres | users, exams, attempts, violations |
 | Files | [Cloudflare R2](https://developers.cloudflare.com/r2/) | evidence snapshots, reference photos |
-| API + AI models | [Railway](https://railway.com) (Docker) | FastAPI, vision models, live state |
+| API + AI models | [Render](https://render.com) free web service (Docker) | FastAPI, vision models, live state |
 | Web app | [Vercel](https://vercel.com) | Next.js frontend |
 | Auth | [Clerk](https://clerk.com) | sign-in, student accounts, invites |
 | Assistant | [Groq](https://console.groq.com) | teacher chat assistant (optional) |
 
-**1. Neon (database).** Create a project in the region closest to your Railway region. *Connect* → copy the **pooled**
-connection string (host contains `-pooler`) → `DATABASE_URL`. The `?sslmode=require` suffix is handled; migrations run
+**1. Neon (database).** Create a project. *Connect* → copy the **pooled**
+connection string (host contains `-pooler`) → `DATABASE_URL`. Pick **AWS ap-southeast-1 (Singapore)** to sit next to the Render service. The `?sslmode=require` suffix is handled; migrations run
 automatically when the API starts.
 
 **2. Cloudflare R2 (files).** *R2 → Create bucket* `guardai-evidence` (private). *Manage R2 API tokens → Create* with
@@ -229,29 +229,30 @@ Evidence is served to proctors through short-lived signed links; the bucket neve
 *API keys → Frontend API URL* → `CLERK_ISSUER`. A development instance works on `*.vercel.app`; a production instance
 needs your own domain.
 
-**4. Railway (API + AI).** *New Project → Deploy from GitHub repo*, service **Root Directory** `backend` (it builds
-`backend/Dockerfile` with the models baked in; health check `/health`). Variables:
-`DATABASE_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET=guardai-evidence`,
-`CLERK_ISSUER`, `CLERK_SECRET_KEY`, `GROQ_API_KEY`, `ML_CONCURRENCY=1`, `FRAME_INTERVAL_MS=1000`, and after step 5
-`CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. *Settings → Networking → Generate Domain*. Keep **one replica**
-(the AI runtime and live view are in-process).
+**4. Render (API + AI).** *New → Blueprint* → this repo. Render reads [`render.yaml`](render.yaml): a free Docker
+web service built from `backend/Dockerfile` (models baked in, health check `/health`, region Singapore). It asks for
+the secrets: `DATABASE_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `CLERK_ISSUER`,
+`CLERK_SECRET_KEY`, `GROQ_API_KEY`, and `CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. Keep **one instance**
+(the AI runtime and live view are in-process). Free services sleep after 15 minutes idle; to keep it ready, set the
+repository variable `API_HEALTH_URL` (e.g. `https://guardai-api.onrender.com/health`) and the
+[keep-warm workflow](.github/workflows/keep-warm.yml) pings it every 10 minutes.
 
 **5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
-`main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.up.railway.app` (no trailing slash).
+`main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.onrender.com` (no trailing slash).
 
 **Optional:** `RESEND_API_KEY` + `EMAIL_FROM` (a domain verified in Resend) for branded invitation emails; without
 them Clerk sends its own.
 
-> **Capacity on free tiers.** The image needs ~450 MB RAM with models loaded, so keep `ML_CONCURRENCY=1` on a
-> 512 MB plan. Frames arrive every second; the phone/object detector runs on every frame while the CPU has headroom
-> (phone flagged in ~1–1.5 s, ~5 candidates per vCPU), then thins to every 2nd/3rd frame as load rises (~8–11 per
-> vCPU), always running on frames with a suspicious cue such as eyes or head down. For larger exams use a 2+ vCPU plan
-> and raise `ML_CONCURRENCY`.
+> **Capacity on free tiers.** All models together use ~185 MB RAM, well inside 512 MB. CPU is the limit: Render's
+> free instance has 0.1 CPU, so a frame takes ~1.5–2 s and the server automatically thins out object detection
+> (every 3rd–4th frame plus any frame with a suspicious cue such as eyes or head down) and asks browsers to send frames
+> less often. Expect phones flagged in ~3–6 s with 1–3 simultaneous candidates: right for a demo or a small class.
+> On 1 full vCPU (e.g. Render Starter) the same code flags phones in ~1–1.5 s with ~5 candidates, ~8–11 under load.
 
 ## `📁 Project Structure`
 
 ```
-├── backend/                          FastAPI service (Railway)
+├── backend/                          FastAPI service (Render)
 │   ├── app/
 │   │   ├── main.py                   app factory, lifespan (migrations, bucket, model loading), middleware
 │   │   ├── api/                      routers: me, exams, monitor, students, candidate
@@ -263,7 +264,7 @@ them Clerk sends its own.
 │   ├── alembic/                      migrations (0001 schema, 0002 RLS)
 │   ├── scripts/download_models.py
 │   ├── tests/                        API flow, frame pipeline, anomaly rules
-│   └── Dockerfile · railway.json
+│   └── Dockerfile (render.yaml at the repo root)
 ├── main-web-vecel/                   Next.js frontend (Vercel)
 │   ├── app/
 │   │   ├── page.tsx                  landing page
