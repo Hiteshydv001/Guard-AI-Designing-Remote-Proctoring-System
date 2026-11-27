@@ -233,9 +233,8 @@ needs your own domain.
 web service built from `backend/Dockerfile` (models baked in, health check `/health`, region Singapore). It asks for
 the secrets: `DATABASE_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `CLERK_ISSUER`,
 `CLERK_SECRET_KEY`, `GROQ_API_KEY`, and `CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. Keep **one instance**
-(the AI runtime and live view are in-process). Free services sleep after 15 minutes idle; to keep it ready, set the
-repository variable `API_HEALTH_URL` (e.g. `https://guardai-api.onrender.com/health`) and the
-[keep-warm workflow](.github/workflows/keep-warm.yml) pings it every 10 minutes.
+(the AI runtime and live view are in-process). Free services sleep after 15 minutes idle and take about a minute to
+wake, so open the app a few minutes before an exam starts.
 
 **5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
 `main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.onrender.com` (no trailing slash).
