@@ -9,7 +9,7 @@ pydantic==2.10.4
 PyJWT[crypto]==2.15.1
 httpx==0.28.1
 # --- AI proctoring (CPU only)
-numpy>=2.1,<3
+numpy>=2.5.5,<3
 opencv-python-headless==5.1.0.95
 onnxruntime==1.32.0
 absl-py>=2.1
