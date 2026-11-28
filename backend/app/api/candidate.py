@@ -17,6 +17,7 @@ from ..ml.runtime import MLUnavailable, runtime
 from ..models import Attempt, BatchMember, Exam, ExamBatch, ProctorMessage, Violation, utcnow
 from ..schemas import AnswersIn, CalibrateIn, FrameIn, HeartbeatIn, JoinIn, SubmitIn, VerifyIn, ViolationIn
 from ..services import exams as svc
+from ..services import live as live_video
 from ..services.storage import decode_data_url, save_snapshot
 from .deps import candidate_attempt
 
@@ -174,6 +175,8 @@ async def _pulse(db: AsyncSession, attempt_id: str) -> dict:
         "remaining_seconds": max(0, int((svc.aware(deadline) - now).total_seconds())) if status == "in_progress" else 0,
         "termination_reason": reason,
         "messages": messages,
+        # An active "watch live" request from the proctor, or None (stop streaming).
+        "live": live_video.request_for(attempt_id) if status == "in_progress" else None,
     }
 
 

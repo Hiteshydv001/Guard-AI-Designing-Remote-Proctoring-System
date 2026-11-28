@@ -110,6 +110,7 @@ Watch our community demo:
 - **Student management** — create student accounts (Clerk) with generated passwords, bulk import from CSV, email invites, reset passwords, link existing students by email
 - **Batches** — group students into classes and assign exams to batches; restrict an exam to assigned students only
 - **Face ID** — upload a reference photo per student; identity is verified before the exam and re-checked during it
+- **Live video** — click *Watch live* on any student to see their camera and hear their mic in real time; peer-to-peer WebRTC (video never touches the server), on demand only, and the student sees a "watching live" banner
 - **Teacher assistant** — chat to create exams (AI writes the questions), invite students, publish and read results; powered by Groq, and anything that emails people, publishes or deletes waits for an approve click
 - **Branded invitations** — invite emails sent from your own domain via Resend (falls back to Clerk's email); revoked or expired links get a clear explanation
 - **Exam builder** — single / multiple choice and written questions, explanations, schedule window, shuffle questions & options, pass mark, auto-terminate after *N* flags, duplicate exams
@@ -241,6 +242,11 @@ wake, so open the app a few minutes before an exam starts.
 
 **5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
 `main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.onrender.com` (no trailing slash).
+
+**Optional: TURN relay for live video.** Live video connects peer to peer using public STUN servers, which works
+on most networks. Very strict networks (some campus/office Wi-Fi, some mobile carriers) need a relay: create a free
+TURN key in Cloudflare's dashboard (*Realtime → TURN*) and set `CLOUDFLARE_TURN_KEY_ID` + `CLOUDFLARE_TURN_API_TOKEN`
+on Render.
 
 **Optional: branded invitation emails.** [Brevo](https://www.brevo.com) is free for 300 emails/day and needs no
 domain: add and verify your own address under *Senders*, create an API key, then set `BREVO_API_KEY` and

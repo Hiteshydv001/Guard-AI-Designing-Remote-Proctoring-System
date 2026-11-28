@@ -107,6 +107,13 @@ class Settings:
     contact_to: str = field(default_factory=lambda: _env("CONTACT_TO"))
     contact_from: str = field(default_factory=lambda: _env("CONTACT_FROM", "Guard AI <onboarding@resend.dev>"))
     # --- Teacher assistant (Groq, OpenAI-compatible) -------------------------------------------
+    # --- Live video (WebRTC). STUN is built in; TURN relays video for networks that block direct connections.
+    cloudflare_turn_key_id: str = field(default_factory=lambda: _env("CLOUDFLARE_TURN_KEY_ID"))
+    cloudflare_turn_api_token: str = field(default_factory=lambda: _env("CLOUDFLARE_TURN_API_TOKEN"))
+    turn_urls: list[str] = field(default_factory=lambda: [u.strip() for u in _env("TURN_URLS").split(",") if u.strip()])
+    turn_username: str = field(default_factory=lambda: _env("TURN_USERNAME"))
+    turn_credential: str = field(default_factory=lambda: _env("TURN_CREDENTIAL"))
+
     groq_api_key: str = field(default_factory=lambda: _env("GROQ_API_KEY"))
     groq_model: str = field(default_factory=lambda: _env("GROQ_MODEL", "openai/gpt-oss-120b"))
     # Used when the main model is rate limited (free Groq keys have a separate per-model token budget).
