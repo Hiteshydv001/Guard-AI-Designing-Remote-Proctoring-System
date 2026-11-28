@@ -1,8 +1,13 @@
-"""Transactional email via Resend, plus the branded templates the API sends."""
+"""Transactional email (Brevo or Resend over HTTPS), plus the branded templates the API sends.
+
+HTTPS APIs only: Render's free instances block outbound SMTP, so SMTP relays (including Gmail) can't be used.
+Brevo works with a single verified sender address (no domain needed); Resend needs a verified domain.
+"""
 
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from html import escape
@@ -14,6 +19,7 @@ from ..core.config import settings
 log = logging.getLogger("guardai.email")
 
 RESEND_URL = "https://api.resend.com/emails"
+BREVO_URL = "https://api.brevo.com/v3/smtp/email"
 
 
 class EmailError(RuntimeError):
@@ -27,26 +33,53 @@ class Email:
     text: str
 
 
-async def send_email(to: str, email: Email, *, sender: str | None = None, reply_to: str | None = None) -> None:
-    if not settings.resend_api_key:
-        raise EmailError("RESEND_API_KEY is not configured")
-    payload = {
-        "from": sender or settings.email_from,
-        "to": [to],
+def parse_sender(value: str) -> tuple[str | None, str]:
+    """'Guard AI <invites@x.com>' -> ('Guard AI', 'invites@x.com'); a bare address has no name."""
+    m = re.match(r"^\s*(.*?)\s*<([^>]+)>\s*$", value or "")
+    if m:
+        return (m.group(1).strip('"') or None), m.group(2).strip()
+    return None, (value or "").strip()
+
+
+async def _post(url: str, headers: dict, payload: dict) -> httpx.Response:
+    async with httpx.AsyncClient(timeout=15) as client:
+        return await client.post(url, headers=headers, json=payload)
+
+
+def _brevo_request(to: str, email: Email, sender: str, reply_to: str | None) -> tuple[str, dict, dict]:
+    name, address = parse_sender(sender)
+    payload: dict = {
+        "sender": {"email": address, **({"name": name} if name else {})},
+        "to": [{"email": to}],
         "subject": email.subject,
-        "html": email.html,
-        "text": email.text,
+        "htmlContent": email.html,
+        "textContent": email.text,
     }
     if reply_to:
+        payload["replyTo"] = {"email": reply_to}
+    return BREVO_URL, {"api-key": settings.brevo_api_key, "accept": "application/json"}, payload
+
+
+def _resend_request(to: str, email: Email, sender: str, reply_to: str | None) -> tuple[str, dict, dict]:
+    payload: dict = {"from": sender, "to": [to], "subject": email.subject, "html": email.html, "text": email.text}
+    if reply_to:
         payload["reply_to"] = reply_to
+    return RESEND_URL, {"Authorization": f"Bearer {settings.resend_api_key}"}, payload
+
+
+async def send_email(to: str, email: Email, *, sender: str | None = None, reply_to: str | None = None) -> None:
+    provider = settings.email_provider
+    if provider is None:
+        raise EmailError("No email provider configured (BREVO_API_KEY or RESEND_API_KEY)")
+    build = _brevo_request if provider == "brevo" else _resend_request
+    url, headers, payload = build(to, email, sender or settings.email_from, reply_to)
     try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            res = await client.post(RESEND_URL, headers={"Authorization": f"Bearer {settings.resend_api_key}"}, json=payload)
+        res = await _post(url, headers, payload)
     except httpx.HTTPError as exc:
-        raise EmailError(f"Resend unreachable: {exc}") from exc
+        raise EmailError(f"{provider} unreachable: {exc}") from exc
     if not res.is_success:
-        log.error("Resend error %s: %s", res.status_code, res.text[:300])
-        raise EmailError(f"Resend rejected the email ({res.status_code})")
+        log.error("%s rejected an email: %s %s", provider, res.status_code, res.text[:300])
+        raise EmailError(f"{provider} rejected the email ({res.status_code})")
 
 
 # --------------------------------------------------------------------------------- templates

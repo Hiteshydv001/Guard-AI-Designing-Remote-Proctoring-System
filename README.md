@@ -242,8 +242,10 @@ wake, so open the app a few minutes before an exam starts.
 **5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
 `main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.onrender.com` (no trailing slash).
 
-**Optional:** `RESEND_API_KEY` + `EMAIL_FROM` (a domain verified in Resend) for branded invitation emails; without
-them Clerk sends its own.
+**Optional: branded invitation emails.** [Brevo](https://www.brevo.com) is free for 300 emails/day and needs no
+domain: add and verify your own address under *Senders*, create an API key, then set `BREVO_API_KEY` and
+`EMAIL_FROM="Guard AI <you@gmail.com>"` on Render. (Resend also works with `RESEND_API_KEY` if you own a domain.)
+Without either, Clerk sends its plain invitation email. Render's free plan blocks SMTP, so Gmail SMTP isn't an option.
 
 > **Capacity on free tiers.** All models together use ~185 MB RAM, well inside 512 MB. CPU is the limit: Render's
 > free instance has 0.1 CPU, so a frame takes ~1.5–2 s and the server automatically thins out object detection

@@ -39,6 +39,11 @@ services:
         sync: false
       - key: GROQ_API_KEY
         sync: false
+      # Optional: branded invitation emails via Brevo (verified sender address, e.g. "Guard AI <you@gmail.com>")
+      - key: BREVO_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
       - key: CORS_ORIGINS # your Vercel URL, e.g. https://guard-ai-proctor.vercel.app
         sync: false
       - key: FRONTEND_URL # same Vercel URL (used in invitation links)
