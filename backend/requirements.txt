@@ -6,7 +6,7 @@ alembic==1.20.1
 asyncpg==0.30.0
 aiosqlite==0.20.0
 pydantic==2.10.4
-PyJWT[crypto]==2.10.1
+PyJWT[crypto]==2.15.1
 httpx==0.28.1
 # --- AI proctoring (CPU only)
 numpy>=2.1,<3
