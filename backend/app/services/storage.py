@@ -47,9 +47,10 @@ def safe_key(path: str) -> str:
 
 
 def _local_path(key: str) -> str:
+    """Absolute path for a key, guaranteed to sit inside the upload directory."""
     root = os.path.realpath(settings.local_upload_dir)
-    full = os.path.realpath(os.path.join(root, key))
-    if os.path.commonpath([root, full]) != root:
+    full = os.path.normpath(os.path.join(root, key))
+    if not full.startswith(root + os.sep):
         raise ValueError("Storage key escapes the upload directory")
     return full
 
