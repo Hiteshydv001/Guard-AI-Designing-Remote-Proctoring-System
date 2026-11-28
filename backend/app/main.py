@@ -98,7 +98,7 @@ async def health():
 
 @app.post("/contact")
 async def contact(payload: ContactIn):
-    if not (settings.resend_api_key and settings.contact_to):
+    if not (settings.email_provider and settings.contact_to):
         raise HTTPException(503, "Contact form is not configured")
     body = "".join(
         f"<p><strong>{label}:</strong> {escape(value)}</p>"
@@ -111,7 +111,9 @@ async def contact(payload: ContactIn):
     )
     message = Email(subject=f"[Guard AI] {payload.subject[:150]}", html=body, text=payload.message)
     try:
-        await send_email(settings.contact_to, message, sender=settings.contact_from, reply_to=payload.email)
+        await send_email(
+            settings.contact_to, message, sender=settings.email_from or settings.contact_from, reply_to=payload.email
+        )
     except EmailError as exc:
         raise HTTPException(502, "Could not send your message, please try again later") from exc
     return {"ok": True}

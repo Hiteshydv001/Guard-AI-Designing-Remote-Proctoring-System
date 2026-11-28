@@ -102,6 +102,8 @@ class Settings:
 
     # --- Email (contact form) ------------------------------------------------------------------
     resend_api_key: str = field(default_factory=lambda: _env("RESEND_API_KEY"))
+    # Brevo (300 emails/day free; send from one verified address, no domain needed). Preferred when both are set.
+    brevo_api_key: str = field(default_factory=lambda: _env("BREVO_API_KEY"))
     contact_to: str = field(default_factory=lambda: _env("CONTACT_TO"))
     contact_from: str = field(default_factory=lambda: _env("CONTACT_FROM", "Guard AI <onboarding@resend.dev>"))
     # --- Teacher assistant (Groq, OpenAI-compatible) -------------------------------------------
@@ -114,8 +116,12 @@ class Settings:
     email_from: str = field(default_factory=lambda: _env("EMAIL_FROM"))
 
     @property
+    def email_provider(self) -> str | None:
+        return "brevo" if self.brevo_api_key else "resend" if self.resend_api_key else None
+
+    @property
     def branded_invites(self) -> bool:
-        return bool(self.resend_api_key and self.email_from)
+        return bool(self.email_provider and self.email_from)
 
     @property
     def jwks_url(self) -> str:
