@@ -291,6 +291,8 @@ export interface FrameResponse {
   skipped?: boolean;
   analysis?: LiveAnalysis | null;
   events?: { type: string; severity: Severity; message: string }[];
+  /** Proctor's request to watch live (peer-to-peer video), or null. */
+  live?: { session_id: string; ice_servers: RTCIceServer[] } | null;
 }
 
 export interface CheckResponse {

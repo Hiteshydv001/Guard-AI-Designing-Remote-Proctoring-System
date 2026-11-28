@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { AlertTriangle, Clock, Loader2, Maximize, Send, ShieldCheck, WifiOff } from "lucide-react";
+import { AlertTriangle, Clock, Loader2, Maximize, Radio, Send, ShieldCheck, WifiOff } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError, formatDuration, useApi } from "@/lib/api";
 import type { AnswerValue, AttemptDetail, AttemptSummary, FrameResponse, LiveAnalysis, Severity } from "@/lib/types";
@@ -14,6 +14,7 @@ import { QuestionCard, QuestionNavigator, isAnswered } from "@/components/exam/q
 import { DoneScreen } from "@/components/exam/done-screen";
 import { AudioMeter, captureJpeg, enterFullscreen, openMedia, sleep } from "@/components/exam/media";
 import { cn } from "@/lib/utils";
+import { LiveBroadcaster, type BroadcastState } from "@/lib/live-rtc";
 
 type Phase = "check" | "exam" | "done";
 
@@ -57,6 +58,8 @@ function ExamRoom() {
   const [reconnecting, setReconnecting] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(true);
   const [proctorMsg, setProctorMsg] = useState<string | null>(null);
+  const [liveState, setLiveState] = useState<BroadcastState>("idle");
+  const broadcasterRef = useRef<LiveBroadcaster | null>(null);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -93,6 +96,8 @@ function ExamRoom() {
   }, []);
 
   const stopMedia = useCallback(() => {
+    broadcasterRef.current?.stop();
+    broadcasterRef.current = null;
     meterRef.current?.close();
     meterRef.current = null;
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -230,6 +235,11 @@ function ExamRoom() {
             toast.warning(ev.message, { description: "Recorded for your proctor." });
           }
           if (r.messages.length) setProctorMsg(r.messages.map((m) => m.body).join("\n\n"));
+          // Proctor asked to watch live (or stopped): stream the camera peer to peer, or hang up.
+          if (r.live || broadcasterRef.current) {
+            broadcasterRef.current ??= new LiveBroadcaster(api, attemptId, () => streamRef.current, setLiveState);
+            void broadcasterRef.current.handle(r.live ?? null);
+          }
           if (r.status !== "in_progress") {
             finish();
             return;
@@ -353,7 +363,13 @@ function ExamRoom() {
 
   return (
     <div className="ambient min-h-screen select-none">
-      <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+      {liveState !== "idle" && (
+        <div role="status" className="sticky top-0 z-40 flex items-center justify-center gap-2 bg-destructive px-4 py-1.5 text-xs font-medium text-destructive-foreground">
+          <Radio className="h-3.5 w-3.5 animate-pulse" />
+          {liveState === "live" ? "Your proctor is watching your camera live" : "Your proctor is connecting to watch your camera live…"}
+        </div>
+      )}
+      <header className={cn("sticky z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl", liveState !== "idle" ? "top-7" : "top-0")}>
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <ShieldCheck className="h-4 w-4" />

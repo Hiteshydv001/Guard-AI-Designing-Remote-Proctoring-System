@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, ArrowUpRight, Eye, EyeOff, Smartphone, Users, VideoOff } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, Eye, EyeOff, Smartphone, Users, Video, VideoOff } from "lucide-react";
 import { formatDuration } from "@/lib/api";
 import type { AttemptSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, EmptyState, ProgressBar, RiskBadge, riskLevel } from "@/components/app/kit";
 import { AttemptActions } from "@/components/app/attempt-actions";
 import { IdentityBadge, identityOf } from "./common";
+import { LiveViewerDialog } from "./live-viewer";
 
 export function LiveGrid({
   attempts,
@@ -47,6 +49,7 @@ function LiveCard({ a, total, onChange }: { a: AttemptSummary; total: number; on
   const risk = riskLevel(a.risk_score);
   const idBad = identityOf(a).kind === "bad";
   const objects = (live?.objects ?? []).filter((o) => o.label !== "person");
+  const [watching, setWatching] = useState(false);
 
   return (
     <article
@@ -78,6 +81,17 @@ function LiveCard({ a, total, onChange }: { a: AttemptSummary; total: number; on
             {formatDuration(a.remaining_seconds)}
           </span>
         </div>
+        {a.status === "in_progress" && (
+          <Button
+            size="sm"
+            variant="glass"
+            className="absolute bottom-2 right-2 h-8 bg-black/45 px-3 text-xs"
+            onClick={() => setWatching(true)}
+            title={a.online ? "Watch this student's camera live" : "The student looks offline; they'll connect when they're back"}
+          >
+            <Video className="h-3.5 w-3.5" /> Watch live
+          </Button>
+        )}
         <div className="absolute inset-x-2 bottom-2 flex flex-wrap items-end justify-between gap-1.5">
           <div className="flex flex-wrap gap-1.5">
             {live && (
@@ -129,6 +143,7 @@ function LiveCard({ a, total, onChange }: { a: AttemptSummary; total: number; on
           </div>
         </div>
       </div>
+      {watching && <LiveViewerDialog attemptId={a.id} name={name} open={watching} onOpenChange={setWatching} />}
     </article>
   );
 }

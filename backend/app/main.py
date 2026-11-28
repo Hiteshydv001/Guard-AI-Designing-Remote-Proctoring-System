@@ -15,7 +15,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from .api import assistant, candidate, exams, me, monitor, students
+from .api import assistant, candidate, exams, live, me, monitor, students
 from .core.config import settings
 from .core.db import run_migrations
 from .ml.runtime import runtime
@@ -77,7 +77,7 @@ async def request_context(request: Request, call_next):
     return response
 
 
-for module in (me, exams, monitor, students, candidate, assistant):
+for module in (me, exams, monitor, students, candidate, assistant, live):
     app.include_router(module.router)
 
 if settings.storage_backend == "local":

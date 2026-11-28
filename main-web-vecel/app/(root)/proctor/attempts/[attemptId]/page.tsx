@@ -15,6 +15,7 @@ import {
   MonitorSmartphone,
   ShieldCheck,
   UserRound,
+  Video,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ import {
 } from "@/components/app/kit";
 import { AttemptActions } from "@/components/app/attempt-actions";
 import { IdentityBadge, formatOffset, identityOf } from "@/components/proctor/common";
+import { LiveViewerDialog } from "@/components/proctor/live-viewer";
 
 type Filter = "all" | "ai" | "browser";
 
@@ -50,6 +52,7 @@ export default function ReviewPage() {
   const [saving, setSaving] = useState(false);
   const [approving, setApproving] = useState(false);
   const [zoom, setZoom] = useState<ViolationOut | null>(null);
+  const [watching, setWatching] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
 
   const inProgress = data?.attempt.status === "in_progress";
@@ -141,9 +144,13 @@ export default function ReviewPage() {
         </div>
         {inProgress && (
           <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setWatching(true)}>
+              <Video /> Watch live
+            </Button>
             <AttemptActions attemptId={a.id} candidate={name} onDone={reload} size="default" />
           </div>
         )}
+        {watching && <LiveViewerDialog attemptId={a.id} name={name} open={watching} onOpenChange={setWatching} />}
       </div>
 
       {a.termination_reason && (

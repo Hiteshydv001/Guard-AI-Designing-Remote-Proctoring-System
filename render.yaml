@@ -44,6 +44,11 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
+      # Optional: TURN relay for live video on strict networks (Cloudflare Realtime TURN, free tier)
+      - key: CLOUDFLARE_TURN_KEY_ID
+        sync: false
+      - key: CLOUDFLARE_TURN_API_TOKEN
+        sync: false
       - key: CORS_ORIGINS # your Vercel URL, e.g. https://guard-ai-proctor.vercel.app
         sync: false
       - key: FRONTEND_URL # same Vercel URL (used in invitation links)
