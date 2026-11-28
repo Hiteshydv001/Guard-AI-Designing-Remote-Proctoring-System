@@ -211,7 +211,7 @@ photo, create a batch, build an exam assigned to it and publish. Sign in as the 
 | Piece | Free service | Holds |
 |---|---|---|
 | Database | [Neon](https://neon.tech) Postgres | users, exams, attempts, violations |
-| Files | [Cloudflare R2](https://developers.cloudflare.com/r2/) | evidence snapshots, reference photos |
+| Files | [Backblaze B2](https://www.backblaze.com/cloud-storage) (or any S3-compatible store, e.g. Cloudflare R2) | evidence snapshots, reference photos |
 | API + AI models | [Render](https://render.com) free web service (Docker) | FastAPI, vision models, live state |
 | Web app | [Vercel](https://vercel.com) | Next.js frontend |
 | Auth | [Clerk](https://clerk.com) | sign-in, student accounts, invites |
@@ -221,9 +221,12 @@ photo, create a batch, build an exam assigned to it and publish. Sign in as the 
 connection string (host contains `-pooler`) → `DATABASE_URL`. Pick **AWS ap-southeast-1 (Singapore)** to sit next to the Render service. The `?sslmode=require` suffix is handled; migrations run
 automatically when the API starts.
 
-**2. Cloudflare R2 (files).** *R2 → Create bucket* `guardai-evidence` (private). *Manage R2 API tokens → Create* with
-**Object Read & Write** on that bucket → `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`; your account ID → `R2_ACCOUNT_ID`.
-Evidence is served to proctors through short-lived signed links; the bucket never needs public access.
+**2. Backblaze B2 (files, 10 GB free, no card).** *Buckets → Create a Bucket* `guardai-evidence`, **Private**; note
+its *Endpoint* (e.g. `s3.us-west-004.backblazeb2.com`, region `us-west-004`). *Application Keys → Add a New Application
+Key* with Read and Write on that bucket → `S3_ACCESS_KEY_ID` (keyID) and `S3_SECRET_ACCESS_KEY` (applicationKey).
+Evidence is served to proctors through short-lived signed links; the bucket never needs to be public. Any
+S3-compatible store works the same way (Cloudflare R2: endpoint `https://<account>.r2.cloudflarestorage.com`, region
+`auto`).
 
 **3. Clerk (auth).** Enable *Email address* and *Password* sign-in. Copy the publishable and secret keys;
 *API keys → Frontend API URL* → `CLERK_ISSUER`. A development instance works on `*.vercel.app`; a production instance
@@ -231,7 +234,7 @@ needs your own domain.
 
 **4. Render (API + AI).** *New → Blueprint* → this repo. Render reads [`render.yaml`](render.yaml): a free Docker
 web service built from `backend/Dockerfile` (models baked in, health check `/health`, region Singapore). It asks for
-the secrets: `DATABASE_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `CLERK_ISSUER`,
+the secrets: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `CLERK_ISSUER`,
 `CLERK_SECRET_KEY`, `GROQ_API_KEY`, and `CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. Keep **one instance**
 (the AI runtime and live view are in-process). Free services sleep after 15 minutes idle and take about a minute to
 wake, so open the app a few minutes before an exam starts.

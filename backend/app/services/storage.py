@@ -1,4 +1,5 @@
-"""Evidence snapshots and reference photos: Cloudflare R2 or Supabase Storage in production, local disk in dev."""
+"""Evidence snapshots and reference photos: S3-compatible storage (Backblaze B2, Cloudflare R2) or Supabase in
+production, local disk in development."""
 
 from __future__ import annotations
 
@@ -11,12 +12,14 @@ import re
 import httpx
 
 from ..core.config import settings
-from .r2 import R2
+from .s3 import S3Store
 
 log = logging.getLogger("guardai.storage")
-_r2 = (
-    R2(settings.r2_account_id, settings.r2_access_key_id, settings.r2_secret_access_key, settings.r2_bucket)
-    if settings.use_r2
+_s3 = (
+    S3Store(
+        settings.s3_endpoint, settings.s3_region, settings.s3_access_key_id, settings.s3_secret_access_key, settings.s3_bucket
+    )
+    if settings.use_s3
     else None
 )
 
@@ -61,14 +64,14 @@ def _headers() -> dict[str, str]:
 
 async def ensure_bucket() -> None:
     """Create the private evidence bucket on first boot (no-op if it already exists)."""
-    if _r2:
-        ok, detail = await _r2.bucket_reachable()
+    if _s3:
+        ok, detail = await _s3.bucket_reachable()
         if ok:
-            log.info("Storage: Cloudflare R2 bucket %r", settings.r2_bucket)
+            log.info("Storage: bucket %r at %s", settings.s3_bucket, settings.s3_endpoint)
         else:
             log.error(
-                "Storage: can't reach R2 bucket %r (%s). Check R2_* variables and the token's bucket access.",
-                settings.r2_bucket,
+                "Storage: can't reach bucket %r (%s). Check the S3_* (or R2_*) variables and the key's bucket access.",
+                settings.s3_bucket,
                 detail,
             )
         return
@@ -95,11 +98,11 @@ async def ensure_bucket() -> None:
 async def save_snapshot(path: str, data: bytes) -> str | None:
     """Store a JPEG and return its storage path (not a public URL)."""
     path = safe_key(path)
-    if _r2:
+    if _s3:
         try:
-            return path if await _r2.put(path, data) else None
+            return path if await _s3.put(path, data) else None
         except httpx.HTTPError as exc:
-            log.warning("R2 upload failed for %s: %s", path, exc)
+            log.warning("Upload failed for %s: %s", path, exc)
             return None
     if settings.use_supabase_storage:
         url = f"{settings.supabase_url}/storage/v1/object/{settings.supabase_bucket}/{path}"
@@ -119,8 +122,8 @@ async def signed_urls(paths: list[str], base_url: str, expires_in: int = 3600) -
     paths = [p for p in paths if p]
     if not paths:
         return {}
-    if _r2:  # presigning is local maths, no network round trip
-        return {p: _r2.presign_get(p, expires_in) for p in paths}
+    if _s3:  # presigning is local maths, no network round trip
+        return {p: _s3.presign_get(p, expires_in) for p in paths}
     if not settings.use_supabase_storage:
         return {p: f"{base_url.rstrip('/')}/uploads/{p}" for p in paths}
     async with httpx.AsyncClient(timeout=15) as client:

@@ -81,11 +81,16 @@ class Settings:
     supabase_service_key: str = field(default_factory=lambda: _env("SUPABASE_SERVICE_ROLE_KEY"))
     supabase_bucket: str = field(default_factory=lambda: _env("SUPABASE_BUCKET", "evidence"))
     local_upload_dir: str = field(default_factory=lambda: _env("LOCAL_UPLOAD_DIR", "./uploads"))
-    # Cloudflare R2 (S3-compatible). Takes precedence over Supabase Storage when set.
-    r2_account_id: str = field(default_factory=lambda: _env("R2_ACCOUNT_ID"))
-    r2_access_key_id: str = field(default_factory=lambda: _env("R2_ACCESS_KEY_ID"))
-    r2_secret_access_key: str = field(default_factory=lambda: _env("R2_SECRET_ACCESS_KEY"))
-    r2_bucket: str = field(default_factory=lambda: _env("R2_BUCKET", "guardai-evidence"))
+    # Any S3-compatible object store (Backblaze B2, Cloudflare R2, AWS S3...). Takes precedence over Supabase.
+    # For R2 you can instead set R2_ACCOUNT_ID / R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY / R2_BUCKET.
+    s3_endpoint: str = field(
+        default_factory=lambda: _env("S3_ENDPOINT")
+        or (f"https://{_env('R2_ACCOUNT_ID')}.r2.cloudflarestorage.com" if _env("R2_ACCOUNT_ID") else "")
+    )
+    s3_region: str = field(default_factory=lambda: _env("S3_REGION") or ("auto" if _env("R2_ACCOUNT_ID") else "us-east-1"))
+    s3_access_key_id: str = field(default_factory=lambda: _env("S3_ACCESS_KEY_ID") or _env("R2_ACCESS_KEY_ID"))
+    s3_secret_access_key: str = field(default_factory=lambda: _env("S3_SECRET_ACCESS_KEY") or _env("R2_SECRET_ACCESS_KEY"))
+    s3_bucket: str = field(default_factory=lambda: _env("S3_BUCKET") or _env("R2_BUCKET", "guardai-evidence"))
 
     # --- AI proctoring -------------------------------------------------------------------------
     ml_enabled: bool = field(default_factory=lambda: _bool("ML_ENABLED", True))
@@ -119,12 +124,12 @@ class Settings:
         return f"{self.clerk_issuer}/.well-known/jwks.json" if self.clerk_issuer else ""
 
     @property
-    def use_r2(self) -> bool:
-        return bool(self.r2_account_id and self.r2_access_key_id and self.r2_secret_access_key)
+    def use_s3(self) -> bool:
+        return bool(self.s3_endpoint and self.s3_access_key_id and self.s3_secret_access_key)
 
     @property
     def use_supabase_storage(self) -> bool:
-        return not self.use_r2 and bool(self.supabase_url and self.supabase_service_key)
+        return not self.use_s3 and bool(self.supabase_url and self.supabase_service_key)
 
     @property
     def db_connect_args(self) -> dict:
@@ -138,7 +143,7 @@ class Settings:
 
     @property
     def storage_backend(self) -> str:
-        return "r2" if self.use_r2 else "supabase" if self.use_supabase_storage else "local"
+        return "s3" if self.use_s3 else "supabase" if self.use_supabase_storage else "local"
 
     @property
     def is_postgres(self) -> bool:
