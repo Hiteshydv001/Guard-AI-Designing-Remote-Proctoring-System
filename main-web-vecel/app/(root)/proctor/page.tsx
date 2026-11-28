@@ -1,367 +1,225 @@
-// "use client";
-
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import { ArrowRight } from "lucide-react";
-// import { useRouter } from "next/navigation";
-// import dynamic from "next/dynamic";
-
-// // Dynamically import the Lottie component with SSR disabled
-// const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
-// import animationData from "@/public/proctor-animation.json"; // Replace with the correct path to your JSON file
-
-// const ProctorPage = () => {
-//   const router = useRouter();
-
-//   return (
-//     <section className="container w-full">
-//       <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-//         <div className="text-center space-y-8">
-//           <Badge variant="outline" className="text-sm py-2">
-//             <span className="mr-2 text-primary">
-//               <Badge>Proctor</Badge>
-//             </span>
-//             <span> Securely manage candidate check-ins with Guard AI</span>
-//           </Badge>
-
-//           <div className="max-w-screen-md mx-auto text-center text-4xl md:text-6xl font-bold">
-//             <h1>
-//               Monitor with precision using
-//               <span className="text-transparent px-2 bg-gradient-to-r from-[#D247BF] to-primary bg-clip-text">
-//                 Guard AI Proctor
-//               </span>
-//             </h1>
-//           </div>
-
-//           <p className="max-w-screen-sm mx-auto text-xl text-muted-foreground">
-//             {`Guard AI Proctor enables you to seamlessly monitor and manage candidate check-ins with a high level of security and precision.
-//             Experience the future of secure digital check-ins and ensure the integrity of your assessments.`}
-//           </p>
-
-//           <div className="space-y-4 md:space-y-0 md:space-x-4 pt-8">
-//             <Button
-//               onClick={() => router.push("/proctor-in")}
-//               className="w-5/6 md:w-1/4 font-bold group/arrow"
-//             >
-//               Start Proctoring Now
-//               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
-//             </Button>
-//           </div>
-//         </div>
-
-//         <div className="relative group mt-14">
-//           <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-20 lg:h-40 bg-primary/50 rounded-full blur-3xl"></div>
-//           <div className="w-full md:w-[800px] mx-auto h-[400px]">
-//             <Lottie
-//               animationData={animationData}
-//               loop={true}
-//               className="w-full h-full object-contain"
-//             />
-//           </div>
-//           <div className="absolute bottom-0 left-0 w-full h-16 md:h-20 bg-gradient-to-b from-background/0 via-background/50 to-background rounded-lg"></div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ProctorPage;
-
-
 "use client";
 
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import {
-  AlertTriangle,
-  Users,
-  Video,
-  Activity,
-  MoreVertical,
-  LayoutDashboard,
-  Monitor,
-  Bell,
-  Settings,
-  Maximize2,
-  MessageSquare,
-  Ban,
-} from "lucide-react";
+import Link from "next/link";
+import { AlertTriangle, ArrowUpRight, CalendarClock, CheckCircle2, Plus, Radio, Sparkles, Users } from "lucide-react";
+import { formatDate, greeting, timeAgo, useQuery } from "@/lib/api";
+import { violationLabel, type Overview } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { ActivityChart, BarList } from "@/components/app/charts";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Avatar,
+  EmptyState,
+  ErrorNote,
+  MonoTag,
+  PageHeader,
+  PageSkeleton,
+  Section,
+  SeverityBadge,
+  StatCard,
+  StatusPill,
+} from "@/components/app/kit";
+import { useProfile } from "@/components/app/role-gate";
 
-const tabs = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    id: "monitoring",
-    label: "Live Monitoring",
-    icon: Monitor,
-  },
-  {
-    id: "alerts",
-    label: "Alerts",
-    icon: Bell,
-  },
-  {
-    id: "settings",
-    label: "Settings",
-    icon: Settings,
-  },
-];
+export default function ProctorOverview() {
+  const profile = useProfile();
+  const { data, error, loading, reload } = useQuery<Overview>("/api/proctor/overview", { refreshMs: 15000 });
+  const first = profile?.name?.split(" ")[0];
 
-export default function ProctorDashboard() {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [selectedView, setSelectedView] = useState<"grid" | "featured">("grid");
-
-  const renderDashboardContent = () => (
-    <div className="grid gap-6">
-      <div className="grid gap-6 md:grid-cols-4">
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <Users className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">Active Students</h3>
-              <p className="text-2xl font-bold">24</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <AlertTriangle className="h-8 w-8 text-destructive" />
-            <div>
-              <h3 className="text-sm font-medium">Alerts</h3>
-              <p className="text-2xl font-bold">3</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <Video className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">Active Sessions</h3>
-              <p className="text-2xl font-bold">12</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <Activity className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">System Status</h3>
-              <p className="text-sm font-medium text-green-500">All Systems Normal</p>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-
-  const renderMonitoringContent = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-semibold">Live Monitoring</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Monitoring {selectedView === "grid" ? "12" : "1"} active sessions
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            variant={selectedView === "grid" ? "default" : "outline"}
-            onClick={() => setSelectedView("grid")}
-          >
-            Grid View
-          </Button>
-          <Button
-            variant={selectedView === "featured" ? "default" : "outline"}
-            onClick={() => setSelectedView("featured")}
-          >
-            Featured View
-          </Button>
-        </div>
-      </div>
-
-      {selectedView === "grid" ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((_, i) => (
-            <Card key={i} className="overflow-hidden">
-              <div className="relative aspect-video bg-muted">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Video className="h-12 w-12 text-muted-foreground/20" />
-                </div>
-                {i === 2 && (
-                  <div className="absolute top-2 right-2">
-                    <span className="px-2 py-1 text-xs font-medium bg-destructive text-destructive-foreground rounded-full">
-                      Alert
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Student {i + 1}</h4>
-                    <p className="text-sm text-muted-foreground">Mathematics Exam</p>
-                  </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => setSelectedView("featured")}>
-                        <Maximize2 className="h-4 w-4 mr-2" />
-                        View Fullscreen
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <MessageSquare className="h-4 w-4 mr-2" />
-                        Send Warning
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">
-                        <Ban className="h-4 w-4 mr-2" />
-                        End Session
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-                <div className="mt-2 text-sm">
-                  <div className="flex items-center justify-between text-muted-foreground">
-                    <span>Time Remaining: 1h 45m</span>
-                    <span>Progress: 65%</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <Card className="overflow-hidden">
-          <div className="relative aspect-video bg-muted">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Video className="h-24 w-24 text-muted-foreground/20" />
-            </div>
-          </div>
-          <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-semibold">Student 3</h3>
-                <p className="text-muted-foreground">Mathematics Exam</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Send Warning
-                </Button>
-                <Button variant="destructive" size="sm">
-                  <Ban className="h-4 w-4 mr-2" />
-                  End Session
-                </Button>
-              </div>
-            </div>
-            <div className="mt-4 grid gap-4">
-              <div className="grid grid-cols-3 gap-4">
-                <Card className="p-4">
-                  <h4 className="text-sm font-medium text-muted-foreground">Time Elapsed</h4>
-                  <p className="text-2xl font-bold">1h 15m</p>
-                </Card>
-                <Card className="p-4">
-                  <h4 className="text-sm font-medium text-muted-foreground">Warnings</h4>
-                  <p className="text-2xl font-bold">2</p>
-                </Card>
-                <Card className="p-4">
-                  <h4 className="text-sm font-medium text-muted-foreground">Progress</h4>
-                  <p className="text-2xl font-bold">65%</p>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-    </div>
-  );
-
-  const renderAlertsContent = () => (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Recent Alerts</h2>
-      <div className="space-y-4">
-        {[1, 2, 3].map((_, i) => (
-          <div key={i} className="flex items-center gap-4 p-4 rounded-lg bg-muted/50">
-            <div className="w-2 h-2 rounded-full bg-destructive" />
-            <div className="flex-1">
-              <h4 className="font-medium">Multiple faces detected</h4>
-              <p className="text-sm text-muted-foreground">Student 4 - Mathematics Exam</p>
-            </div>
-            <Button variant="outline" size="sm">Review</Button>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-
-  const renderSettingsContent = () => (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Settings</h2>
-      <div className="space-y-4">
-        <p className="text-muted-foreground">System settings and preferences will appear here.</p>
-      </div>
-    </Card>
-  );
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "dashboard":
-        return renderDashboardContent();
-      case "monitoring":
-        return renderMonitoringContent();
-      case "alerts":
-        return renderAlertsContent();
-      case "settings":
-        return renderSettingsContent();
-      default:
-        return renderDashboardContent();
-    }
-  };
+  if (loading && !data) return <PageSkeleton />;
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
-      {/* Side Tabs */}
-      <div className="w-64 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="space-y-2 p-4">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "flex items-center gap-3 w-full rounded-lg px-3 py-2 text-sm transition-colors",
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted"
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {tab.label}
-              </button>
-            );
-          })}
-        </nav>
-      </div>
+    <>
+      <PageHeader
+        eyebrow={`[ 01 ]  ${greeting()}`}
+        title={
+          <>
+            {first ? <b>{first},</b> : <b>Welcome,</b>} here&apos;s what&apos;s happening <b>across your exams.</b>
+          </>
+        }
+        actions={
+          <>
+            <Button asChild variant="outline">
+              <Link href="/proctor/students">
+                <Users /> Students
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/proctor/exams/new">
+                <Plus /> New exam
+              </Link>
+            </Button>
+          </>
+        }
+      />
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto p-6">
-        {renderContent()}
+      {error && (
+        <div className="mb-6">
+          <ErrorNote message={error} onRetry={reload} />
+        </div>
+      )}
+
+      {data && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <StatCard
+              tone="ink"
+              label="Live right now"
+              value={data.online_now}
+              icon={Radio}
+              hint={`${data.active_attempts} attempt${data.active_attempts === 1 ? "" : "s"} in progress`}
+            />
+            <StatCard label="Students" value={data.student_count} icon={Users} hint={`${data.published_count}/${data.exam_count} exams live`} />
+            <StatCard
+              label="Average score"
+              value={data.average_score != null ? `${Math.round(data.average_score)}%` : "—"}
+              icon={CheckCircle2}
+              tone="success"
+              hint={`${data.completed_attempts} completed attempt${data.completed_attempts === 1 ? "" : "s"}`}
+            />
+            <StatCard label="AI alerts · 24h" value={data.alerts_24h} icon={AlertTriangle} tone="danger" hint="Flags raised by the proctoring engine" />
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            <Section title="Activity" description="Attempts started and AI flags, last 14 days" className="lg:col-span-2">
+              <ActivityChart data={data.activity} />
+            </Section>
+            <Section title="What the AI flagged" description="Last 14 days, by type">
+              <BarList
+                items={data.violations_by_type.slice(0, 6).map((v) => ({ label: violationLabel(v.type), value: v.count }))}
+                empty="Nothing flagged yet — clean exams so far."
+              />
+            </Section>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-5">
+            <div className="space-y-6 lg:col-span-2">
+              <LiveExams data={data} />
+              <Upcoming data={data} />
+            </div>
+
+            <Section
+              title="Latest AI alerts"
+              description="Auto-refreshes every 15 seconds"
+              className="lg:col-span-3"
+              bodyClassName="px-3 pb-3 pt-1"
+            >
+              {data.recent_violations.length === 0 ? (
+                <EmptyState icon={CheckCircle2} title="No alerts yet" className="m-3">
+                  Flags raised by the AI proctor — with snapshot evidence — will appear here.
+                </EmptyState>
+              ) : (
+                <ul className="divide-y divide-border/60">
+                  {data.recent_violations.map((v) => (
+                    <li key={v.id}>
+                      <Link
+                        href={`/proctor/attempts/${v.attempt_id}`}
+                        className="flex items-center gap-3 rounded-2xl px-3 py-3 transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        <Avatar name={v.candidate_name} size={38} />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium">
+                            {violationLabel(v.type)}
+                            <span className="font-normal text-muted-foreground"> · {v.candidate_name ?? "Candidate"}</span>
+                          </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {v.exam_title} · {timeAgo(v.created_at)}
+                          </p>
+                        </div>
+                        <SeverityBadge severity={v.severity} />
+                        <ArrowUpRight className="hidden h-4 w-4 text-muted-foreground sm:block" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Section>
+          </div>
+
+          {!data.ml.ready && (
+            <div className="flex items-center gap-3 rounded-2xl border border-warning/30 bg-warning/5 px-4 py-3 text-sm">
+              <Sparkles className="h-4 w-4 text-warning" />
+              <span>
+                The AI engine is {data.ml.error ? "unavailable" : "starting"}.
+                {data.ml.error && <span className="text-muted-foreground"> {data.ml.error}</span>}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+function LiveExams({ data }: { data: Overview }) {
+  return (
+    <section className="bronze rounded-[28px] p-6">
+      <div className="relative z-10">
+        <div className="flex items-center justify-between">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/70">Live now</p>
+          <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs backdrop-blur">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+            {data.online_now} online
+          </span>
+        </div>
+        {data.live_exams.length === 0 ? (
+          <div className="py-6">
+            <p className="text-2xl font-medium tracking-tight">No exams running.</p>
+            <p className="mt-1 text-sm text-white/70">When candidates start, you can watch them live here.</p>
+          </div>
+        ) : (
+          <ul className="mt-4 space-y-2">
+            {data.live_exams.map((e) => (
+              <li key={e.id}>
+                <Link
+                  href={`/proctor/exams/${e.id}`}
+                  className="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 backdrop-blur transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-medium">{e.title}</p>
+                    <p className="text-xs text-white/70">
+                      {e.live_count} taking it · {e.duration_minutes} min
+                    </p>
+                  </div>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#3d2719]">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-    </div>
+    </section>
+  );
+}
+
+function Upcoming({ data }: { data: Overview }) {
+  return (
+    <Section title="Upcoming" description="Scheduled exams that haven't opened yet" bodyClassName="px-3 pb-3 pt-1">
+      {data.upcoming.length === 0 ? (
+        <p className="px-3 py-4 text-sm text-muted-foreground">Nothing scheduled. Set an opening time on an exam to see it here.</p>
+      ) : (
+        <ul className="space-y-1">
+          {data.upcoming.map((e) => (
+            <li key={e.id}>
+              <Link
+                href={`/proctor/exams/${e.id}`}
+                className="flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted">
+                  <CalendarClock className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{e.title}</p>
+                  <p className="text-xs text-muted-foreground">{formatDate(e.starts_at)}</p>
+                </div>
+                <MonoTag>{e.access_code}</MonoTag>
+                <StatusPill status={e.status} className="hidden sm:inline-flex" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Section>
   );
 }

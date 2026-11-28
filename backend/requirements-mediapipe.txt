@@ -1,0 +1,2 @@
+# Install with: pip install --no-deps -r requirements-mediapipe.txt
+mediapipe==1.2.3

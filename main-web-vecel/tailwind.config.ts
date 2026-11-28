@@ -51,6 +51,12 @@ module.exports = {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
+  			success: 'hsl(var(--success))',
+  			warning: 'hsl(var(--warning))',
+  			lavender: {
+  				DEFAULT: 'hsl(var(--lavender))',
+  				foreground: 'hsl(var(--lavender-foreground))'
+  			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -63,7 +69,14 @@ module.exports = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
+  		fontFamily: {
+  			sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+  			mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace']
+  		},
   		borderRadius: {
+  			'4xl': '2rem',
+  			'3xl': '1.75rem',
+  			'2xl': '1.25rem',
   			xl: 'calc(var(--radius) + 4px)',
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

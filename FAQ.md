@@ -13,13 +13,11 @@ You can contribute by following the guidelines in the [CONTRIBUTING.md](CONTRIBU
 ### How do I set up the development environment?
 1. Fork the repository.
 2. Clone your forked repository.
-3. Install the required dependencies using:
-    ```bash
-    pip install -r requirements.txt
-    ```
+3. Follow the **Development Setup** section of the [README](README.md#️-development-setup)
+   (FastAPI backend in `backend/`, Next.js frontend in `main-web-vecel/`).
 
 ### What should I do if I encounter a runtime error?
-Check the Troubleshooting Common Issues section in the [CONTRIBUTING.md](http://_vscodecontentref_/0) file.
+Check the Troubleshooting Common Issues section in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Participation Questions
 

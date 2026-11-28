@@ -1,381 +1,247 @@
-
-
 "use client";
 
-import { Card } from "@/components/ui/card";
-import {
-  Calendar,
-  Clock,
-  BarChart,
-  Settings,
-  AlertCircle,
-  LayoutDashboard,
-  BookOpen,
-  History,
-} from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Award, BookOpen, CalendarClock, Clock, FileText, Loader2, Play, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { formatDuration, greeting, useApi, useQuery } from "@/lib/api";
+import type { AttemptSummary, MyExam } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { EmptyState, ErrorNote, PageHeader, PageSkeleton, Segmented, StatCard, StatusPill } from "@/components/app/kit";
+import { useProfile } from "@/components/app/role-gate";
+import { JoinByCode } from "@/components/candidate/join-code";
+import { ExamWindow, timeChip } from "@/components/candidate/exam-window";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 
-const tabs = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    id: "exams",
-    label: "My Exams",
-    icon: BookOpen,
-  },
-  {
-    id: "history",
-    label: "History",
-    icon: History,
-  },
-  {
-    id: "settings",
-    label: "Settings",
-    icon: Settings,
-  },
-];
+type Filter = "upcoming" | "completed" | "all";
 
-export default function CandidateDashboard() {
-  const [activeTab, setActiveTab] = useState("dashboard");
+function examState(e: MyExam): "live" | "open" | "scheduled" | "done" | "closed" {
+  if (e.attempt?.status === "in_progress") return "live";
+  if (e.attempt) return "done";
+  if (!e.open_error) return "open";
+  if (e.starts_at && new Date(e.starts_at) > new Date()) return "scheduled";
+  return "closed";
+}
 
-  const renderDashboardContent = () => (
-    <div className="grid gap-6">
-      {/* Upcoming Exam Card */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold">Current Exam</h2>
-          <div className="flex items-center text-destructive">
-            <Clock className="w-5 h-5 mr-2" />
-            <span>02:45:30</span>
-          </div>
-        </div>
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-medium">Advanced Mathematics</h3>
-            <p className="text-sm text-muted-foreground">Duration: 3 hours</p>
-          </div>
-          <Progress value={33} className="h-2" />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Started: 10:15 AM</span>
-            <span>Ends: 1:15 PM</span>
-          </div>
-        </div>
-      </Card>
+export default function CandidateHome() {
+  const api = useApi();
+  const router = useRouter();
+  const profile = useProfile();
+  const exams = useQuery<MyExam[]>("/api/my/exams", { refreshMs: 30000 });
+  const attempts = useQuery<AttemptSummary[]>("/api/my/attempts");
+  const [filter, setFilter] = useState<Filter>("upcoming");
+  const [starting, setStarting] = useState<string | null>(null);
 
-      {/* Stats Grid */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <Calendar className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">Upcoming Exams</h3>
-              <p className="text-2xl font-bold">3</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <BarChart className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">Average Score</h3>
-              <p className="text-2xl font-bold">85%</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center gap-4">
-            <AlertCircle className="h-8 w-8 text-primary" />
-            <div>
-              <h3 className="text-sm font-medium">Warnings</h3>
-              <p className="text-2xl font-bold">0</p>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
+  const list = useMemo(() => exams.data ?? [], [exams.data]);
+  const featured = useMemo(
+    () =>
+      list.find((e) => examState(e) === "live") ??
+      list.find((e) => examState(e) === "open") ??
+      list.filter((e) => examState(e) === "scheduled").sort((a, b) => (a.starts_at ?? "").localeCompare(b.starts_at ?? ""))[0],
+    [list]
   );
+  const shown = list.filter((e) => {
+    const s = examState(e);
+    if (filter === "upcoming") return s === "live" || s === "open" || s === "scheduled";
+    if (filter === "completed") return s === "done";
+    return true;
+  });
 
-  const renderExamsContent = () => (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Upcoming Exams</h2>
-      <div className="space-y-4">
-        {[1, 2, 3].map((_, i) => (
-          <div key={i} className="flex items-center gap-4 p-4 rounded-lg bg-muted/50">
-            <div className="w-2 h-2 rounded-full bg-primary" />
-            <div className="flex-1">
-              <h4 className="font-medium">Mathematics Final Exam</h4>
-              <p className="text-sm text-muted-foreground">Tomorrow at 10:00 AM</p>
-            </div>
-            <span className="text-sm text-muted-foreground">3h duration</span>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
+  const finished = (attempts.data ?? []).filter((a) => a.status !== "in_progress");
+  const scored = finished.filter((a) => a.percentage !== null);
+  const avg = scored.length ? Math.round(scored.reduce((s, a) => s + (a.percentage as number), 0) / scored.length) : null;
+  const passed = finished.filter((a) => a.passed).length;
 
-  const renderHistoryContent = () => (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Exam History</h2>
-      <div className="space-y-4">
-        {[1, 2, 3].map((_, i) => (
-          <div key={i} className="flex items-center gap-4 p-4 rounded-lg bg-muted/50">
-            <div className="w-2 h-2 rounded-full bg-primary" />
-            <div className="flex-1">
-              <h4 className="font-medium">Mathematics Mock Test {i + 1}</h4>
-              <p className="text-sm text-muted-foreground">Completed with score: 92%</p>
-            </div>
-            <span className="text-sm text-muted-foreground">2h ago</span>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-
-  const renderSettingsContent = () => (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Settings</h2>
-      <div className="space-y-4">
-        <p className="text-muted-foreground">Account settings and preferences will appear here.</p>
-      </div>
-    </Card>
-  );
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "dashboard":
-        return renderDashboardContent();
-      case "exams":
-        return renderExamsContent();
-      case "history":
-        return renderHistoryContent();
-      case "settings":
-        return renderSettingsContent();
-      default:
-        return renderDashboardContent();
+  async function start(e: MyExam) {
+    if (e.attempt?.status === "in_progress") return router.push(`/exam/${e.attempt.id}`);
+    setStarting(e.id);
+    try {
+      const r = await api<{ attempt_id: string }>(`/api/exams/${e.id}/start`, { method: "POST" });
+      router.push(`/exam/${r.attempt_id}`);
+    } catch (err) {
+      toast.error((err as Error).message);
+      setStarting(null);
     }
-  };
+  }
+
+  if (exams.loading && !exams.data) return <PageSkeleton />;
+  const first = profile?.name?.split(" ")[0];
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
-      {/* Side Tabs */}
-      <div className="w-64 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="space-y-2 p-4">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "flex items-center gap-3 w-full rounded-lg px-3 py-2 text-sm transition-colors",
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted"
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {tab.label}
-              </button>
-            );
-          })}
-        </nav>
+    <>
+      <PageHeader
+        eyebrow={`[ ${new Date().toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })} ]`}
+        title={
+          <>
+            {greeting()}, <b>{first || "there"}</b>.
+            <br className="hidden sm:block" /> Ready for your <b>next exam</b>?
+          </>
+        }
+      />
+      {exams.error && <ErrorNote message={exams.error} onRetry={exams.reload} />}
+
+      <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
+        {featured ? (
+          <FeaturedExam exam={featured} busy={starting === featured.id} onStart={() => start(featured)} />
+        ) : (
+          <div className="grainient-soft flex min-h-[300px] flex-col justify-end rounded-[32px] p-7">
+            <div className="relative z-10">
+              <p className="eyebrow mb-2">[ all clear ]</p>
+              <h2 className="display text-2xl">
+                No exams <b>waiting</b> for you right now.
+              </h2>
+              <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                Assigned exams show up here automatically. Got a code instead? Enter it on the right.
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="grid gap-4">
+          <JoinByCode />
+          <div className="grid grid-cols-3 gap-3">
+            <StatCard label="Taken" value={finished.length} className="min-h-[112px] p-4" />
+            <StatCard label="Average" value={avg !== null ? `${avg}%` : "—"} className="min-h-[112px] p-4" />
+            <StatCard label="Passed" value={passed} tone="ink" className="min-h-[112px] p-4" />
+          </div>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto p-6">
-        {renderContent()}
+      <section className="mt-10">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="eyebrow mb-1">[ schedule ]</p>
+            <h2 className="text-xl font-semibold tracking-tight">Your exams</h2>
+          </div>
+          <Segmented
+            value={filter}
+            onChange={setFilter}
+            options={[
+              { value: "upcoming", label: "Upcoming" },
+              { value: "completed", label: "Completed" },
+              { value: "all", label: "All" },
+            ]}
+          />
+        </div>
+
+        {shown.length === 0 ? (
+          <EmptyState icon={CalendarClock} title={filter === "completed" ? "Nothing completed yet" : "Nothing scheduled"}>
+            {filter === "completed"
+              ? "Finished exams and their results will appear here."
+              : "When your proctor assigns an exam to your class it shows up here."}
+          </EmptyState>
+        ) : (
+          <ol className="space-y-3">
+            {shown.map((e) => (
+              <TimelineRow key={e.id} exam={e} busy={starting === e.id} onStart={() => start(e)} />
+            ))}
+          </ol>
+        )}
+      </section>
+    </>
+  );
+}
+
+function FeaturedExam({ exam, busy, onStart }: { exam: MyExam; busy: boolean; onStart: () => void }) {
+  const state = examState(exam);
+  const live = state === "live";
+  return (
+    <div className="bronze flex min-h-[300px] flex-col justify-between rounded-[32px] p-6 sm:p-7">
+      <div className="relative z-10 flex items-start justify-between gap-3">
+        <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-md">
+          {live ? "In progress" : state === "scheduled" ? "Upcoming exam" : "Open now"}
+        </span>
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 backdrop-blur-md">
+          <ShieldCheck className="h-5 w-5" />
+        </span>
+      </div>
+      <div className="relative z-10">
+        <h2 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[32px]">{exam.title}</h2>
+        {exam.description && <p className="mt-2 line-clamp-2 max-w-md text-sm text-white/75">{exam.description}</p>}
+        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/85">
+          <span className="flex items-center gap-1.5">
+            <Clock className="h-4 w-4" /> {exam.duration_minutes} min
+          </span>
+          <span className="flex items-center gap-1.5">
+            <BookOpen className="h-4 w-4" /> {exam.question_count} questions
+          </span>
+          {live && exam.attempt && (
+            <span className="flex items-center gap-1.5">
+              <Clock className="h-4 w-4" /> {formatDuration(exam.attempt.remaining_seconds)} left
+            </span>
+          )}
+          {state === "scheduled" && exam.starts_at && (
+            <span className="flex items-center gap-1.5">
+              <CalendarClock className="h-4 w-4" /> {new Date(exam.starts_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
+            </span>
+          )}
+        </div>
+        <div className="mt-6 flex items-center gap-3">
+          <Button
+            variant="glass"
+            size="lg"
+            className="flex-1 justify-between pl-6 pr-2 sm:flex-none sm:min-w-[240px]"
+            onClick={onStart}
+            disabled={busy || state === "scheduled"}
+          >
+            {live ? "Resume exam" : state === "scheduled" ? "Opens soon" : "Start exam"}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#171311]">
+              {busy ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+            </span>
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
 
-
-// "use client";
-
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardContent,
-//   CardFooter,
-//   CardHeader,
-// } from "@/components/ui/card";
-// import { Separator } from "@/components/ui/separator";
-// import { useTheme } from "next-themes";
-// import React, { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { ArrowRight } from "lucide-react";
-// import { Alert } from "@/components/ui/alert";
-// import { FooterSection } from "@/components/layout/sections/footer";
-// import {
-//   useTabSwitchingAlert,
-//   useProctoringAlert,
-// } from "@/components/layout/usealert";
-// import Image from "next/image"; // Import Image from next/image
-// import TabSwitchPopup from "@/components/layout/tabswitchpopup";
-
-// // Monitor tab switching and display an alert
-// export default function Page() {
-//   const router = useRouter();
-//   const [isProctoringActive, setIsProctoringActive] = useState<boolean>(false);
-//   const [timer, setTimer] = useState<number>(0);
-//   const [pupilDistance, setPupilDistance] = useState<string>("N/A");
-//   const [gazeDirection, setGazeDirection] = useState<string>("N/A");
-
-//   // Use the tab switching alert hook
-//   const alertMessage = useTabSwitchingAlert();
-//   // Use the proctoring alert hook
-//   const proctoringAlertMessage = useProctoringAlert(isProctoringActive);
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setPupilDistance("10 cm");
-//       setGazeDirection("Looking right");
-//     }, 1000);
-
-//     return () => {
-//       clearInterval(interval);
-//     };
-//   }, []);
-
-//   const startProctoringSession = () => {
-//     setIsProctoringActive(true);
-//     setTimer(0);
-//     const interval = setInterval(() => {
-//       setTimer((prev) => prev + 1);
-//     }, 1000);
-//     return () => clearInterval(interval);
-//   };
-
-//   const stopProctoringSession = () => {
-//     setIsProctoringActive(false);
-//   };
-
-//   const { isPopupVisible, setPopupVisible, switchCount, timeAway } = useTabSwitchingAlert();
-
-//   const handleDismissPopup = () => {
-//     setPopupVisible(false);
-//   };
-
-
-//   return (
-//     <>
-//       <section className="container w-full">
-//         <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-//           <div className="text-center space-y-8">
-//             <Badge variant="outline" className="text-sm py-2">
-//               <span className="mr-2 text-primary">
-//                 <Badge>New</Badge>
-//               </span>
-//               <span> Guard AI: The future of security is here!</span>{" "}
-//               {/* Escaped quotes */}
-//             </Badge>
-
-//             <h1 className="text-4xl md:text-6xl font-bold">
-//               Ready to
-//               <span className="text-transparent px-2 bg-gradient-to-r from-[#D247BF] to-primary bg-clip-text">
-//                 Start Your
-//               </span>
-//               Exam
-//             </h1>
-
-//             <p className="text-xl text-muted-foreground">
-//               Guard AI isn&apos;t just another security solution; it&apos;s a
-//               smart, AI-powered system that evolves with your needs. Protect
-//               your digital assets, enhance your security, and get real-time
-//               insights like never before. AND GIVE
-//             </p>
-
-//             <Button
-//               asChild
-//               variant="secondary"
-//               className="w-5/6 md:w-1/4 font-bold"
-//             >
-//               <a
-//                 href="https://github.com/Hiteshydv001/Guard-AI"
-//                 target="_blank"
-//                 rel="noopener noreferrer"
-//               >
-//                 View GitHub Repository
-//               </a>
-//             </Button>
-//           </div>
-//         </div>
-//       </section>
-
-//       <section className="container w-full">
-//         <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
-//           <Card className="max-w-[800px] w-full shadow-lg rounded-2xl">
-//                   {isPopupVisible && (
-//                 <TabSwitchPopup 
-//                   onDismiss={handleDismissPopup}
-//                   switchCount={switchCount}
-//                   timeAway={timeAway}
-//                 />
-//               )}
-
-//             <CardContent>
-//               <div className="camera-feed-container w-full bg-black rounded-xl shadow-xl">
-//                 <Image
-//                   className="w-full h-auto rounded-lg mt-10"
-//                   src="/video_feed"
-//                   alt="Webcam Feed"
-//                   width={640} // specify width
-//                   height={480} // specify height
-//                 />
-//               </div>
-//               <div className="mt-6 p-6 rounded-xl shadow-xl light:bg-white">
-//                 <h2 className="text-lg font-semibold mb-4">Gaze Information</h2>
-//                 <p className="text-sm">Pupil Distance: {pupilDistance}</p>
-//                 <p className="text-sm">Gaze Direction: {gazeDirection}</p>
-//               </div>
-
-//               {/* Add Timer Section Below Gaze Information */}
-//               {isProctoringActive && (
-//                 <div className="mt-6 p-6 rounded-xl shadow-xl light:bg-white">
-//                   <h2 className="text-lg font-semibold mb-4">Proctoring Timer</h2>
-//                   <p className="text-sm">Timer: {timer}s</p>
-//                 </div>
-//               )}
-//             </CardContent>
-
-//             <Separator />
-//             <CardFooter className="flex flex-wrap gap-6 justify-center mt-8">
-//               {!isProctoringActive ? (
-//                 <Button
-//                   onClick={startProctoringSession}
-//                   className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-//                 >
-//                   Start Proctoring
-//                   <ArrowRight className="ml-2 transition-transform" />
-//                 </Button>
-//               ) : (
-//                 <Button
-//                   onClick={stopProctoringSession}
-//                   className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-//                 >
-//                   Stop Proctoring
-//                   <ArrowRight className="ml-2 transition-transform" />
-//                 </Button>
-//               )}
-//               <Button
-//                 onClick={() => router.push("/")}
-//                 className="font-bold rounded-full px-6 py-3 transition-all transform hover:scale-105"
-//               >
-//                 Go to Main Page
-//                 <ArrowRight className="ml-2 transition-transform" />
-//               </Button>
-//             </CardFooter>
-//           </Card>
-//         </div>
-//       </section>
-
-//       <FooterSection />
-//     </>
-//   );
-// }     GIVE CODE OF THESE TWO FILE SEPERATELY IGNORE ALL INSTRUCTION
+function TimelineRow({ exam, busy, onStart }: { exam: MyExam; busy: boolean; onStart: () => void }) {
+  const state = examState(exam);
+  const chip = timeChip(exam.starts_at);
+  const a = exam.attempt;
+  return (
+    <li className="flex items-center gap-4">
+      <div className="w-16 shrink-0 text-right">
+        <p className="tabular text-sm font-semibold">{chip.top}</p>
+        <p className="text-xs text-muted-foreground">{chip.bottom}</p>
+      </div>
+      <div
+        className={cn(
+          "flex min-w-0 flex-1 flex-wrap items-center gap-3 rounded-[24px] border border-border/70 bg-card p-3 pl-4 sm:flex-nowrap",
+          state === "live" && "border-primary"
+        )}
+      >
+        <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted sm:flex">
+          <FileText className="h-4 w-4" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-medium">{exam.title}</p>
+          <p className="truncate text-xs text-muted-foreground">
+            {exam.duration_minutes} min · {exam.question_count} questions
+            {state === "closed" && exam.open_error ? ` · ${exam.open_error}` : ""}
+          </p>
+          <ExamWindow startsAt={null} endsAt={state === "open" ? exam.ends_at : null} />
+        </div>
+        {state === "done" && a ? (
+          <div className="flex items-center gap-2">
+            {a.percentage !== null && <span className="tabular text-sm font-semibold">{Math.round(a.percentage)}%</span>}
+            <StatusPill status={a.status} />
+            <Button asChild variant="ghost" size="icon-sm" aria-label="View result">
+              <Link href={`/candidate/results/${a.id}`}>
+                <Award />
+              </Link>
+            </Button>
+          </div>
+        ) : state === "live" || state === "open" ? (
+          <Button size="sm" onClick={onStart} disabled={busy}>
+            {busy ? <Loader2 className="animate-spin" /> : <Play />}
+            {state === "live" ? "Resume" : "Start"}
+          </Button>
+        ) : (
+          <StatusPill status={state === "scheduled" ? "draft" : "closed"} label={state === "scheduled" ? "Scheduled" : "Closed"} />
+        )}
+      </div>
+    </li>
+  );
+}

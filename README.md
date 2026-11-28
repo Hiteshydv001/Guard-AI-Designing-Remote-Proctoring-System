@@ -106,386 +106,184 @@ Watch our community demo:
 
 ## `🌟 Features`
 
-<table>
-  <tr>
-    <td>
-      <h3>🤖 AI-Powered Monitoring</h3>
-      <ul>
-        <li>Eyeball and Lips Movement Detection</li>
-        <li>Facial Emotion Recognition</li>
-        <li>Screen and Audio Analysis</li>
-      </ul>
-    </td>
-    <td>
-      <h3>🔒 Device and Port Checks</h3>
-      <ul>
-        <li>Unauthorized device detection</li>
-        <li>Port monitoring and anomaly detection</li>
-        <li>Wi-Fi/Bluetooth signal analysis</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+**For teachers / proctors**
+- **Student management** — create student accounts (Clerk) with generated passwords, bulk import from CSV, email invites, reset passwords, link existing students by email
+- **Batches** — group students into classes and assign exams to batches; restrict an exam to assigned students only
+- **Face ID** — upload a reference photo per student; identity is verified before the exam and re-checked during it
+- **Teacher assistant** — chat to create exams (AI writes the questions), invite students, publish and read results; powered by Groq, and anything that emails people, publishes or deletes waits for an approve click
+- **Branded invitations** — invite emails sent from your own domain via Resend (falls back to Clerk's email); revoked or expired links get a clear explanation
+- **Exam builder** — single / multiple choice and written questions, explanations, schedule window, shuffle questions & options, pass mark, auto-terminate after *N* flags, duplicate exams
+- **Live monitoring** — webcam thumbnails, online status, identity badge, head-pose / object readings, risk score, warn or end an attempt in one click
+- **Evidence review** — timeline of every AI and browser flag with snapshots, reference photo vs. live frame, manual identity approval, grading for written answers
+- **Analytics & export** — score distribution, pass rate, per-question accuracy, flag breakdown, 14-day activity, CSV export of results
+
+**For students**
+- Assigned exams appear on the dashboard (or join with an access code)
+- Guided pre-exam flow: camera/mic check → identity verification → head-pose calibration → rules
+- Distraction-free exam UI with question navigator, autosave, server-authoritative timer and auto-submit
+- Results page with per-question breakdown (when the teacher enables it)
+
+**Server-side AI proctoring** — the browser only uploads a compressed frame every ~1.5 s; all analysis runs on the API server:
+
+| Signal | Model / method |
+| --- | --- |
+| Face count, no face, multiple people | **YuNet** face detector (OpenCV, MIT) + YOLOX person class |
+| Prolonged looking away, frequent head movement | **MediaPipe Face Landmarker** head pose vs. the candidate's calibrated neutral pose (port of the original `anomaly_detection.py` rules) |
+| Eyes off screen, talking | Face Landmarker gaze & jaw blendshapes + browser audio level |
+| Phone, book/notes, extra laptop | **YOLOX-Tiny** object detector (ONNX, Apache-2.0) |
+| Identity verification & mid-exam swap | **SFace** face embeddings (OpenCV, Apache-2.0), cosine match against the teacher-uploaded photo |
+| Camera covered | Frame brightness |
+| Tab switch, window blur, fullscreen exit, copy/paste, extra monitor | Browser events |
+
+All models are permissively licensed (no AGPL), CPU-only, ~65 MB total, ~100–130 ms per frame. Object detection runs on
+every 2nd frame and identity on every 8th, so a single vCPU handles roughly 8–12 concurrent candidates; the server
+tells browsers to slow down automatically when frames queue up.
 
 ## `🏗️ Architecture & Design`
 
-<table>
-  <tr>
-    <td>
-      <h3>🎥 Screen and Audio Monitoring</h3>
-      <ul>
-        <li>Real-time screen activity analysis</li>
-        <li>Speech-to-text conversion for audio validation</li>
-      </ul>
-    </td>
-    <td>
-      <h3>📶 Device and Network Monitoring</h3>
-      <ul>
-        <li>Wi-Fi and Bluetooth signal scanning</li>
-        <li>Pattern recognition for unauthorized devices</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+```
+ Student browser ── JPEG frame + audio level every ~1.5 s ──┐        ┌── Teacher browser (live grid polls 3 s)
+                                                            ▼        ▼
+                     Next.js 14 on Vercel  (Clerk auth, UI only)
+                                     │  Bearer <Clerk session JWT>
+                                     ▼
+       FastAPI on Render ─ verifies JWT (Clerk JWKS), Clerk Backend API for student accounts
+        ├─ AI runtime: YuNet · Face Landmarker · SFace · YOLOX-Tiny (bounded worker pool, back-pressure)
+        ├─ Per-attempt anomaly tracker + in-memory live cache (thumbnails never hit the DB)
+        └─ Alembic-migrated schema
+              │                                   │
+              ▼                                   ▼
+     Supabase Postgres (RLS on)        Supabase Storage (private bucket: evidence + reference photos,
+                                                          served via short-lived signed URLs)
+```
 
----
-
-### `Key Features and Uniqueness`
-
-<img src="demo/features.jpg" width="100%" alt="Behavioral Analysis"/>
-
-<img src="demo/features1.jpg" width="100%" alt="Behavioral Analysis"/>
-
-
-
-
-
-## `Added Features`
-
-#### `Gaze Tracker`
-
-
-<img src="demo/gaze_tracer.png" width="100%" alt="Behavioral Analysis"/>
-
-
-### `Priority Areas for Contribution`
-
-1. Database Integration
-
-2. Features Integration
-
-3. UI/UX Improvements
-
-4. Features Development
-   
-
-## `🛣️ Project Roadmap`
-
-### Phase 1 (Current)
-
-
-### Phase 2 (Upcoming)
-
-
-### Phase 3 (Future)
-
-
+Design notes:
+- **No video is stored.** Frames are analysed in memory; only flagged moments are saved as evidence snapshots.
+- **Answer keys never leave the server**; grading, timing and auto-termination are server-authoritative.
+- **Single API instance** by design: the AI runtime and live cache are in-process (one Render instance).
 
 ## `🔧 Technology Stack`
 
-### `Backend Infrastructure`
-
-
-
-
-
-### `Frontend Technologies`
-
-
-
-
-
-## `🚀 Future Improvements`
-
-<table>
-  <tr>
-    <td>
-      <h3>🧠 Enhanced Behavioral Analysis</h3>
-      <ul>
-        <li>Typing cadence detection</li>
-        <li>Posture analysis for better behavior tracking</li>
-      </ul>
-    </td>
-    <td>
-      <h3>🔒 Blockchain for Data Integrity</h3>
-      <ul>
-        <li>Tamper-proof logs of proctoring sessions</li>
-        <li>Improved transparency and data auditability</li>
-      </ul>
-    </td>
-  </tr>
-</table>
-
-
----
+| Layer | Tech | Free hosting |
+| --- | --- | --- |
+| Frontend | Next.js 14 (App Router), Tailwind, shadcn/ui, Recharts | Vercel Hobby |
+| Auth | Clerk (sessions + Backend API for student accounts) | Clerk free tier |
+| Backend | FastAPI, SQLAlchemy 2 (async), Alembic, PyJWT, httpx | Render |
+| AI | OpenCV (YuNet, SFace), MediaPipe Tasks, ONNX Runtime (YOLOX) | Render (CPU) |
+| Database | PostgreSQL | Supabase free tier |
+| Storage | Supabase Storage | Supabase free tier (1 GB) |
+| CI | GitHub Actions — ruff, pytest, Docker smoke test, Next.js lint/typecheck/build | free for public repos |
 
 ## `⚙️ Development Setup`
 
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add your feature"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a pull request for review.
+**Prerequisites:** Node 18+ with pnpm, Python 3.12+, a free [Clerk](https://clerk.com) application with
+*Email address* + *Password* sign-in enabled.
 
-### `Troubleshooting Common Issues`
+**1. Backend**
 
+```bash
+cd backend
+python -m venv .venv
+.venv/Scripts/activate                          # macOS/Linux: source .venv/bin/activate
+pip install -r requirements-dev.txt
+pip install --no-deps -r requirements-mediapipe.txt
+python scripts/download_models.py               # ~65 MB of model weights into backend/models/
+cp .env.example .env                            # set CLERK_ISSUER and CLERK_SECRET_KEY
+uvicorn app.main:app --reload --port 8000 --env-file .env
+```
 
+Migrations run automatically on startup (SQLite file `guardai_dev.db` locally). Tests: `pytest -q`.
 
+**2. Frontend**
 
+```bash
+cd main-web-vecel
+pnpm install
+cp .env.example .env.local                      # Clerk keys + NEXT_PUBLIC_API_URL=http://localhost:8000
+pnpm dev                                        # http://localhost:3000
+```
+
+Sign up, choose **"I conduct exams"**, add a student under **Students** (copy the generated password), upload their
+photo, create a batch, build an exam assigned to it and publish. Sign in as the student in a private window.
+
+## `☁️ Free Deployment Guide`
+
+| Piece | Free service | Holds |
+|---|---|---|
+| Database | [Neon](https://neon.tech) Postgres | users, exams, attempts, violations |
+| Files | [Backblaze B2](https://www.backblaze.com/cloud-storage) (or any S3-compatible store, e.g. Cloudflare R2) | evidence snapshots, reference photos |
+| API + AI models | [Render](https://render.com) free web service (Docker) | FastAPI, vision models, live state |
+| Web app | [Vercel](https://vercel.com) | Next.js frontend |
+| Auth | [Clerk](https://clerk.com) | sign-in, student accounts, invites |
+| Assistant | [Groq](https://console.groq.com) | teacher chat assistant (optional) |
+
+**1. Neon (database).** Create a project. *Connect* → copy the **pooled**
+connection string (host contains `-pooler`) → `DATABASE_URL`. Pick **AWS ap-southeast-1 (Singapore)** to sit next to the Render service. The `?sslmode=require` suffix is handled; migrations run
+automatically when the API starts.
+
+**2. Backblaze B2 (files, 10 GB free, no card).** *Buckets → Create a Bucket* `guardai-evidence`, **Private**; note
+its *Endpoint* (e.g. `s3.us-west-004.backblazeb2.com`, region `us-west-004`). *Application Keys → Add a New Application
+Key* with Read and Write on that bucket → `S3_ACCESS_KEY_ID` (keyID) and `S3_SECRET_ACCESS_KEY` (applicationKey).
+Evidence is served to proctors through short-lived signed links; the bucket never needs to be public. Any
+S3-compatible store works the same way (Cloudflare R2: endpoint `https://<account>.r2.cloudflarestorage.com`, region
+`auto`).
+
+**3. Clerk (auth).** Enable *Email address* and *Password* sign-in. Copy the publishable and secret keys;
+*API keys → Frontend API URL* → `CLERK_ISSUER`. A development instance works on `*.vercel.app`; a production instance
+needs your own domain.
+
+**4. Render (API + AI).** *New → Blueprint* → this repo. Render reads [`render.yaml`](render.yaml): a free Docker
+web service built from `backend/Dockerfile` (models baked in, health check `/health`, region Singapore). It asks for
+the secrets: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `CLERK_ISSUER`,
+`CLERK_SECRET_KEY`, `GROQ_API_KEY`, and `CORS_ORIGINS` / `FRONTEND_URL` = your Vercel URL. Keep **one instance**
+(the AI runtime and live view are in-process). Free services sleep after 15 minutes idle and take about a minute to
+wake, so open the app a few minutes before an exam starts.
+
+**5. Vercel (web).** Import the repo with **Root Directory** `main-web-vecel`; set the variables from
+`main-web-vecel/.env.example`, with `NEXT_PUBLIC_API_URL=https://<your-api>.onrender.com` (no trailing slash).
+
+**Optional:** `RESEND_API_KEY` + `EMAIL_FROM` (a domain verified in Resend) for branded invitation emails; without
+them Clerk sends its own.
+
+> **Capacity on free tiers.** All models together use ~185 MB RAM, well inside 512 MB. CPU is the limit: Render's
+> free instance has 0.1 CPU, so a frame takes ~1.5–2 s and the server automatically thins out object detection
+> (every 3rd–4th frame plus any frame with a suspicious cue such as eyes or head down) and asks browsers to send frames
+> less often. Expect phones flagged in ~3–6 s with 1–3 simultaneous candidates: right for a demo or a small class.
+> On 1 full vCPU (e.g. Render Starter) the same code flags phones in ~1–1.5 s with ~5 candidates, ~8–11 under load.
 
 ## `📁 Project Structure`
 
 ```
-Directory structure:
-└── hiteshydv001-guard-ai-designing-remote-proctoring-system/
-    ├── README.md
-    ├── CONTRIBUTING.md
-    ├── FAQ.md
-    ├── Procfile
-    ├── index.html
-    ├── lips_movement_detection.py
-    ├── requirements.txt
-    ├── requiremnts.txt
-    ├── server.py
-    ├── GazeTracking/
-    │   ├── example.py
-    │   ├── requirements.txt
-    │   └── gaze_tracking/
-    │       ├── __init__.py
-    │       ├── calibration.py
-    │       ├── eye.py
-    │       ├── gaze_tracking.py
-    │       ├── pupil.py
-    │       └── trained_models/
-    │           └── shape_predictor_68_face_landmarks.dat
-    ├── Guard-AI_AudioDetection/
-    │   ├── README.md
-    │   ├── main.py
-    │   ├── requirements.txt
-    │   ├── .DS_Store
-    │   ├── app/
-    │   │   ├── __init__.py
-    │   │   ├── audio_capture.py
-    │   │   ├── noise_reduction.py
-    │   │   ├── .DS_Store
-    │   │   ├── __pycache__/
-    │   │   ├── alerts/
-    │   │   │   ├── alert_system.py
-    │   │   │   ├── logger.py
-    │   │   │   └── __pycache__/
-    │   │   └── detection/
-    │   │       ├── keyword_detection.py
-    │   │       └── __pycache__/
-    │   ├── assets/
-    │   │   ├── logs/
-    │   │   │   └── event_log.json
-    │   │   └── samples/
-    │   └── tests/
-    │       └── test_audio_capture.py
-    ├── HeadPoseDetect/
-    │   ├── README.md
-    │   ├── head_app.py
-    │   ├── head_pose_detection.py
-    │   └── index2.html
-    ├── HeadPoseEstimation/
-    │   ├── README.md
-    │   ├── anomaly_detection.py
-    │   ├── demo.py
-    │   ├── face_detection.py
-    │   ├── face_landmarker.py
-    │   ├── face_landmarker.task
-    │   ├── head_pose_estimation.py
-    │   ├── requirements.txt
-    │   ├── session.py
-    │   ├── yolov11n-face.pt
-    │   ├── Suspicious Activity/
-    │   │   └── User1/
-    │   │       ├── 2025-01-08/
-    │   │       │   └── 19_54_13/
-    │   │       │       ├── logs.json
-    │   │       │       └── Captures/
-    │   │       │           ├── Frequent Head Movement/
-    │   │       │           ├── More than 1 face/
-    │   │       │           ├── No face/
-    │   │       │           └── Prolonged Looking Away/
-    │   │       ├── 2025-01-09/
-    │   │       │   ├── 11_30_40/
-    │   │       │   │   ├── logs.json
-    │   │       │   │   └── Captures/
-    │   │       │   │       ├── Frequent Head Movement/
-    │   │       │   │       ├── More than 1 face/
-    │   │       │   │       ├── No face/
-    │   │       │   │       └── Prolonged Looking Away/
-    │   │       │   └── 11_38_04/
-    │   │       │       ├── logs.json
-    │   │       │       └── Captures/
-    │   │       │           ├── Frequent Head Movement/
-    │   │       │           ├── More than 1 face/
-    │   │       │           ├── No face/
-    │   │       │           └── Prolonged Looking Away/
-    │   │       └── 2025-01-12/
-    │   │           └── 22_50_36/
-    │   │               ├── logs.json
-    │   │               └── Captures/
-    │   │                   ├── Frequent Head Movement/
-    │   │                   ├── More than 1 face/
-    │   │                   └── Prolonged Looking Away/
-    │   └── templates/
-    │       ├── calibrate.html
-    │       ├── hello.html
-    │       ├── index.html
-    │       ├── proctering_screen.html
-    │       └── stop_proctering.html
-    ├── demo/
-    │   └── Readme.md
-    ├── images/
-    ├── main-web-vecel/
-    │   ├── Readme.md
-    │   ├── components.json
-    │   ├── middleware.ts
-    │   ├── next.config.mjs
-    │   ├── package.json
-    │   ├── pnpm-lock.yaml
-    │   ├── postcss.config.mjs
-    │   ├── tailwind.config.ts
-    │   ├── tsconfig.json
-    │   ├── .env
-    │   ├── .eslintrc.json
-    │   ├── .gitignore
-    │   ├── app/
-    │   │   ├── globals.css
-    │   │   ├── layout.tsx
-    │   │   ├── page.tsx
-    │   │   ├── (root)/
-    │   │   │   ├── loading.tsx
-    │   │   │   ├── candidate/
-    │   │   │   │   └── page.tsx
-    │   │   │   ├── features/
-    │   │   │   │   ├── capture/
-    │   │   │   │   │   └── page.tsx
-    │   │   │   │   ├── showcase/
-    │   │   │   │   │   └── page.tsx
-    │   │   │   │   └── trust/
-    │   │   │   │       └── page.tsx
-    │   │   │   └── proctor/
-    │   │   │       └── page.tsx
-    │   │   ├── Signin/
-    │   │   │   └── [[...sign-in]]/
-    │   │   │       └── page.tsx
-    │   │   └── Signup/
-    │   │       └── [[...sign-up]]/
-    │   │           └── page.tsx
-    │   ├── components/
-    │   │   ├── icons/
-    │   │   │   ├── discord-icon.tsx
-    │   │   │   ├── github-icon.tsx
-    │   │   │   ├── linkedin-icon.tsx
-    │   │   │   └── x-icon.tsx
-    │   │   ├── layout/
-    │   │   │   ├── navbar.tsx
-    │   │   │   ├── tabswitchpopup.tsx
-    │   │   │   ├── theme-provider.tsx
-    │   │   │   ├── toogle-theme.tsx
-    │   │   │   ├── usealert.tsx
-    │   │   │   └── sections/
-    │   │   │       ├── benefits.tsx
-    │   │   │       ├── community.tsx
-    │   │   │       ├── contact.tsx
-    │   │   │       ├── faq.tsx
-    │   │   │       ├── features.tsx
-    │   │   │       ├── footer.tsx
-    │   │   │       ├── hero.tsx
-    │   │   │       ├── pricing.tsx
-    │   │   │       ├── services.tsx
-    │   │   │       ├── sponsors.tsx
-    │   │   │       ├── team.tsx
-    │   │   │       └── testimonial.tsx
-    │   │   └── ui/
-    │   │       ├── accordion.tsx
-    │   │       ├── alert-dialog.tsx
-    │   │       ├── alert.tsx
-    │   │       ├── animation-container.tsx
-    │   │       ├── avatar.tsx
-    │   │       ├── badge.tsx
-    │   │       ├── button.tsx
-    │   │       ├── card.tsx
-    │   │       ├── carousel.tsx
-    │   │       ├── collapsible.tsx
-    │   │       ├── dialog.tsx
-    │   │       ├── dropdown-menu.tsx
-    │   │       ├── form.tsx
-    │   │       ├── icon.tsx
-    │   │       ├── input.tsx
-    │   │       ├── label.tsx
-    │   │       ├── navigation-menu.tsx
-    │   │       ├── placeholder.tsx
-    │   │       ├── popover.tsx
-    │   │       ├── progress.tsx
-    │   │       ├── scroll-area.tsx
-    │   │       ├── select.tsx
-    │   │       ├── separator.tsx
-    │   │       ├── sheet.tsx
-    │   │       ├── skeleton.tsx
-    │   │       ├── slider.tsx
-    │   │       ├── switch.tsx
-    │   │       ├── table.tsx
-    │   │       ├── tabs.tsx
-    │   │       ├── textarea.tsx
-    │   │       ├── toast.tsx
-    │   │       ├── toaster.tsx
-    │   │       └── tooltip.tsx
-    │   ├── hooks/
-    │   │   └── use-toast.ts
-    │   ├── lib/
-    │   │   └── utils.ts
-    │   ├── public/
-    │   │   ├── proctor-animation.json
-    │   │   ├── s1.json
-    │   │   ├── s2.json
-    │   │   ├── security-dark.json
-    │   │   └── security-light.json
-    │   └── .vscode/
-    │       └── settings.json
-    ├── project-static-info-website/
-    │   ├── Readme.md
-    │   ├── css/
-    │   │   └── styles.css
-    │   ├── img/
-    │   ├── js/
-    │   │   └── main.js
-    │   └── scss/
-    │       └── styles.scss
-    └── .github/
-        ├── ISSUE_TEMPLATE/
-        │   ├── bug_report.md
-        │   ├── custom.md
-        │   └── feature_request.md
-        └── workflows/
-            └── static.yml
-
+├── backend/                          FastAPI service (Render)
+│   ├── app/
+│   │   ├── main.py                   app factory, lifespan (migrations, bucket, model loading), middleware
+│   │   ├── api/                      routers: me, exams, monitor, students, candidate
+│   │   ├── ml/                       detector.py (YuNet, Face Landmarker, SFace, YOLOX), tracker.py (rules),
+│   │   │                             runtime.py (worker pool, back-pressure, live cache)
+│   │   ├── services/                 exams (grading, timing, serializers), analytics, storage
+│   │   ├── core/                     config, db, security (Clerk JWT), clerk (Backend API client)
+│   │   ├── models.py · schemas.py
+│   ├── alembic/                      migrations (0001 schema, 0002 RLS)
+│   ├── scripts/download_models.py
+│   ├── tests/                        API flow, frame pipeline, anomaly rules
+│   └── Dockerfile (render.yaml at the repo root)
+├── main-web-vecel/                   Next.js frontend (Vercel)
+│   ├── app/
+│   │   ├── page.tsx                  landing page
+│   │   ├── (root)/proctor/           overview, exams (builder, live monitor, analytics), students & batches, attempt review
+│   │   ├── (root)/candidate/         home (assigned exams, access code), results
+│   │   └── exam/[attemptId]/         system check → identity → calibration → proctored exam
+│   ├── components/app/               design-system kit, app shell, charts
+│   └── lib/                          API client, types
+└── .github/workflows/ci.yml
 ```
 
 ## `🚀 Usage`
 
+1. **Teacher:** *Students → Add student* (or *Import CSV*) → upload a reference photo → *Batches → New batch*.
+2. **Teacher:** *Exams → New exam* → assign the batch → *Publish*.
+3. **Student:** sign in → the exam is on the home screen → camera check → identity → calibration → exam → submit.
+4. **Teacher:** *Live* tab while it runs; *Results* and *Analytics* afterwards; open any attempt for evidence and grading.
 
 ## `🤝 Contributing`
 

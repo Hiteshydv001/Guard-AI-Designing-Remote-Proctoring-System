@@ -1,0 +1,45 @@
+# Render Blueprint: Dashboard -> New -> Blueprint -> pick this repo. Render reads this file and asks for the
+# values marked `sync: false` (secrets) when it creates the service.
+services:
+  - type: web
+    name: guardai-api
+    runtime: docker
+    plan: free
+    region: singapore # keep the Neon project in the same region (AWS ap-southeast-1)
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      # Free instances have 0.1 CPU: one model worker, and frames every 1.5 s (the server stretches this
+      # further under load and thins out object detection automatically).
+      - key: ML_CONCURRENCY
+        value: "1"
+      - key: FRAME_INTERVAL_MS
+        value: "1500"
+      - key: DATABASE_URL # Neon pooled connection string
+        sync: false
+      # Object storage (Backblaze B2 or Cloudflare R2), e.g. https://s3.us-west-004.backblazeb2.com + us-west-004
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: CLERK_ISSUER # e.g. https://your-app.clerk.accounts.dev
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ORIGINS # your Vercel URL, e.g. https://guard-ai-proctor.vercel.app
+        sync: false
+      - key: FRONTEND_URL # same Vercel URL (used in invitation links)
+        sync: false

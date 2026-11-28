@@ -2,154 +2,220 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
-/* *=========== Default theme =========== */
-/* @layer base {
+/* =========================================================================================
+   Guard AI design system — warm minimal: greige canvas, white rounded surfaces, ink pills,
+   grainy gradients ("grainients") for hero media, mono micro-labels.
+   ========================================================================================= */
+@layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
+    --background: 36 14% 94.5%;
+    --foreground: 20 14% 8%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 20 14% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14% 8%;
+    --primary: 20 14% 8%;
+    --primary-foreground: 36 25% 97%;
+    --secondary: 36 14% 91%;
+    --secondary-foreground: 20 14% 8%;
+    --muted: 36 14% 91%;
+    --muted-foreground: 25 6% 44%;
+    --accent: 36 14% 90%;
+    --accent-foreground: 20 14% 8%;
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 135 60% 30%;
+    --warning: 35 92% 42%;
+    --lavender: 252 75% 95%;
+    --lavender-foreground: 252 45% 40%;
+    --border: 30 12% 87%;
+    --input: 30 12% 85%;
+    --ring: 20 14% 8%;
+    --radius: 1rem;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --ring: 240 10% 3.9%;
-
-    --radius: 0.5rem;
+    /* Data-viz roles (validated reference palette, light steps) */
+    --viz-1: #2a78d6;
+    --viz-2: #eb6834;
+    --viz-grid: #e7e3de;
+    --viz-axis: #77706a;
+    --status-good: #0ca30c;
+    --status-warning: #fab219;
+    --status-serious: #ec835a;
+    --status-critical: #d03b3b;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 24 9% 6%;
+    --foreground: 36 22% 95%;
+    --card: 24 7% 10%;
+    --card-foreground: 36 22% 95%;
+    --popover: 24 7% 10%;
+    --popover-foreground: 36 22% 95%;
+    --primary: 36 22% 95%;
+    --primary-foreground: 24 9% 8%;
+    --secondary: 24 6% 15%;
+    --secondary-foreground: 36 22% 95%;
+    --muted: 24 6% 14%;
+    --muted-foreground: 30 7% 62%;
+    --accent: 24 6% 16%;
+    --accent-foreground: 36 22% 95%;
+    --destructive: 0 70% 62%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 135 55% 55%;
+    --warning: 40 90% 60%;
+    --lavender: 252 30% 20%;
+    --lavender-foreground: 252 80% 85%;
+    --border: 24 6% 17%;
+    --input: 24 6% 20%;
+    --ring: 36 22% 90%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --ring: 240 4.9% 83.9%;
-  }
-} */
-
-/* *=========== Orange theme =========== */
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 60 9.1% 97.8%;
-
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 24.6 95% 53.1%;
-    --radius: 0.5rem;
+    /* Data-viz roles (dark steps, validated against the dark surface) */
+    --viz-1: #3987e5;
+    --viz-2: #d95926;
+    --viz-grid: #2a2725;
+    --viz-axis: #a39b94;
   }
 
-  .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-
-    --card: 24 9.8% 8%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-
-    --primary: 20.5 90.2% 48.2%;
-    --primary-foreground: 60 9.1% 97.8%;
-
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 20.5 90.2% 48.2%;
-  }
-}
-
-.shadow-light {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.085);
-}
-
-.shadow-dark {
-  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.141);
-}
-
-@layer base {
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+  }
+}
+
+@layer components {
+  /* Soft warm blobs behind app pages (like frosted product shots). */
+  .ambient {
+    position: relative;
+    isolation: isolate;
+  }
+  .ambient::before {
+    content: "";
+    position: fixed;
+    inset: -20vmax -10vmax auto auto;
+    width: 60vmax;
+    height: 60vmax;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(closest-side, hsl(28 30% 72% / 0.45), transparent 70%);
+    filter: blur(40px);
+  }
+  .dark .ambient::before {
+    background: radial-gradient(closest-side, hsl(28 30% 40% / 0.25), transparent 70%);
+  }
+
+  /* Grainy multi-stop gradient used for hero media and empty-state art. */
+  .grainient {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(60% 80% at 18% 30%, #4b6bff 0%, transparent 60%),
+      radial-gradient(50% 60% at 78% 22%, #ff6aa8 0%, transparent 60%),
+      radial-gradient(55% 70% at 62% 82%, #ff7a3d 0%, transparent 60%),
+      radial-gradient(40% 50% at 92% 88%, #ff3b3b 0%, transparent 60%),
+      linear-gradient(135deg, #b9c6ff 0%, #ffd2c2 100%);
+  }
+  .grainient-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(60% 80% at 20% 20%, #c9d3ff 0%, transparent 60%),
+      radial-gradient(60% 70% at 80% 30%, #ffd0e2 0%, transparent 60%),
+      radial-gradient(60% 70% at 60% 90%, #ffd9c4 0%, transparent 60%),
+      #f6efe9;
+  }
+  .dark .grainient-soft {
+    background:
+      radial-gradient(60% 80% at 20% 20%, #2b3566 0%, transparent 60%),
+      radial-gradient(60% 70% at 80% 30%, #5a2843 0%, transparent 60%),
+      radial-gradient(60% 70% at 60% 90%, #5c3420 0%, transparent 60%),
+      #1a1715;
+  }
+  /* Warm bronze card (upcoming exam hero). */
+  .bronze {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background:
+      radial-gradient(80% 90% at 85% 10%, #e9cfb0 0%, transparent 55%),
+      radial-gradient(70% 80% at 10% 100%, #4a2f1f 0%, transparent 60%),
+      linear-gradient(160deg, #b98a5e 0%, #7a5236 55%, #3d2719 100%);
+  }
+  /* Film grain overlay for .grainient / .grainient-soft / .bronze. */
+  .grainient::after,
+  .grainient-soft::after,
+  .bronze::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>");
+  }
+
+  /* "[ 01 ]  Overview" style micro label. */
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  /* Headline that mixes ink and muted words: <h1 class="display">Find your <b>barber</b>.</h1> */
+  .display {
+    @apply font-medium tracking-[-0.035em] text-muted-foreground;
+  }
+  .display b,
+  .display strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .surface {
+    @apply rounded-[28px] border border-border/70 bg-card;
+  }
+
+  .hairline-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Clerk: hide the "Secured by Clerk" badge (owner's choice; Clerk's dashboard toggle for this needs a paid plan).
+   Keep the footer's own actions ("Already have an account? Sign in") and any legal links. */
+.cl-footer > :not(.cl-footerAction):not(.cl-footerPages),
+.cl-userButtonPopoverFooter {
+  display: none !important;
 }
